@@ -1,0 +1,95 @@
+name: Release Notes (build + publish to Pages)
+
+# Fully GitHub-native: the schedule IS the "tick", GitHub Pages is the host. No GCP, no laptop.
+# Each run reconciles Developed bugs from OpenProject, checks the CADP - QA Release mail thread
+# (rolling over if a new version was announced), rebuilds the site, commits it for durability,
+# and deploys it to GitHub Pages.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'      # every ~15 min (GitHub may delay/batch scheduled runs)
+  workflow_dispatch: {}          # manual run (e.g. to force a rollover check)
+
+# Let a run finish (a rollover mutates OpenProject) before the next starts.
+concurrency:
+  group: release-notes
+  cancel-in-progress: false
+
+permissions:
+  contents: write     # commit the rebuilt site/ back to the repo (durable state + archive)
+  pages: write        # deploy to GitHub Pages
+  id-token: write     # Pages deployment auth
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Optional: check out the platform repo so New Features / Enhancements / What-to-Test /
+      # Known Issues / API / Config can be aggregated from its docs/changes QA-Release-Note tags.
+      # Set repo var PLATFORM_REPO (owner/repo) and, for a private repo, secret PLATFORM_REPO_TOKEN.
+      - name: Check out platform repo (docs/changes)
+        if: ${{ vars.PLATFORM_REPO != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.PLATFORM_REPO }}
+          token: ${{ secrets.PLATFORM_REPO_TOKEN }}
+          path: platform
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Cache the Chromium download so PDF generation doesn't re-fetch it every run.
+      - name: Cache Puppeteer browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: puppeteer-${{ runner.os }}-v1
+
+      - name: Install Puppeteer (for PDF)
+        run: npm install puppeteer@23 --no-save --no-audit --no-fund
+
+      - name: Build release notes (reconcile + mail-watch)
+        env:
+          STORE_BACKEND: pages
+          SITE_DIR: site
+          CONTENT_DIR: content
+          CHANGELOG_ROOT: ${{ vars.PLATFORM_REPO != '' && 'platform' || '' }}
+          OPENPROJECT_TOKEN: ${{ secrets.OPENPROJECT_TOKEN }}
+          OPENPROJECT_HOST: pmt.cavininfotech.com
+          OPENPROJECT_PROJECT_ID: '3'
+          LIVE_VERSION: ${{ vars.LIVE_VERSION }}
+          RELEASE_MAIL_SUBJECT: 'CADP - QA Release'
+          GRAPH_MAILBOX: ${{ vars.GRAPH_MAILBOX }}
+          GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
+          GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
+          GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
+          PUBLIC_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        run: node scripts/tick.js
+
+      - name: Commit updated site (durable state + frozen builds)
+        run: |
+          git config user.name  "cadp-release-notes-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add site
+          if git diff --cached --quiet; then
+            echo "No site changes."
+          else
+            git commit -m "chore(release-notes): update site [skip ci]"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,162 @@
+{
+  "liveVersion": 19,
+  "latestAnnouncedVersion": 18,
+  "lastProcessedMailId": null,
+  "lastCutAt": null,
+  "bugs": [
+    {
+      "id": 623,
+      "subject": "Components --> Quantity→ Number Stepper properties (value, min, max, and step) are not reflected in the form field when custom values are set."
+    },
+    {
+      "id": 961,
+      "subject": "Formula overlaps when calling a saved Chart field in the Report Feature."
+    },
+    {
+      "id": 1233,
+      "subject": "Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted."
+    },
+    {
+      "id": 1247,
+      "subject": "Mobile APK-->The chart displays multiple colors in the web application, but only a single color is displayed in the mobile app."
+    },
+    {
+      "id": 1249,
+      "subject": "Mobile APK--> Charts-->The Horizontal Bar Chart (Bar H) is not displayed in the mobile app."
+    },
+    {
+      "id": 1252,
+      "subject": "Mobile APK--> Charts-->The Pie Chart is not displayed in the mobile app."
+    },
+    {
+      "id": 1256,
+      "subject": "Mobile APK--> Charts-->The Donut Chart is not displayed in the mobile app."
+    },
+    {
+      "id": 1258,
+      "subject": "Mobile APK--> Chart-->The Scatter Chart displays the correct feature data in the web application, but the same data is not displayed correctly in the mobile app."
+    },
+    {
+      "id": 1260,
+      "subject": "Mobile APK-->The Gauge Chart values displayed in the web application are not shown in the mobile app."
+    },
+    {
+      "id": 1282,
+      "subject": "Components → Timer→ Timer is editable on the View page without clicking the Edit button."
+    },
+    {
+      "id": 1288,
+      "subject": "Workflow → Create Record Node → When the user configures a Create Record node with an Image Upload field, the Image Upload field is displayed as a Text field in the workflow configuration."
+    },
+    {
+      "id": 1290,
+      "subject": "Workflow-->The submitted data appears in JSON/object format (or placeholders) instead of displaying individual field values in their respective spreadsheet columns."
+    },
+    {
+      "id": 1298,
+      "subject": "Workflow → Update Record → When the user updates a record using the Update Record node, the updated values are not reflected in the corresponding feature."
+    },
+    {
+      "id": 1314,
+      "subject": "Microsoft Teams OAuth Connection Fails with \"unauthorized_client\" Error Despite Providing Valid Credentials."
+    },
+    {
+      "id": 1318,
+      "subject": "WhatsApp Template Creation-->When the cursor is placed in the Message Body and a feature variable is inserted, the variable is not added at the cursor position. Instead, it is inserted at the header area."
+    },
+    {
+      "id": 1376,
+      "subject": "List--->The Fields option in the List component properties displays unidentified symbols and unreadable characters in the popup window  "
+    },
+    {
+      "id": 1389,
+      "subject": "Component → List → Layout → Compact right-side Add button is not displayed properly on the Design page"
+    },
+    {
+      "id": 1406,
+      "subject": "Component → List → Import Button Colour Is Not Updating on the Design Page"
+    },
+    {
+      "id": 1408,
+      "subject": "Component → List → Appearance → Title Color and Subtitle Color are not updating."
+    },
+    {
+      "id": 1416,
+      "subject": "Task Scheduler--> Fails to execute the Print Template trigger. The task status changes from \"Pending\" to \"Failed\", and the notification email is not received.  "
+    },
+    {
+      "id": 1420,
+      "subject": "Component → List → Shape & Image → Images overlap when changing the Image Sizing option"
+    },
+    {
+      "id": 1421,
+      "subject": "Component → List → Filter → Background, Text, and Accent color changes are not working on the Design page"
+    },
+    {
+      "id": 1422,
+      "subject": "Workflow modifications are not reflected in the Publish Workspace changes list."
+    },
+    {
+      "id": 1424,
+      "subject": "Component → List Properties → Overlay → Add to Cart button overlaps with other products."
+    },
+    {
+      "id": 1425,
+      "subject": "Archived workflow in the Development environment remains visible in the Production environment after publishing."
+    },
+    {
+      "id": 1429,
+      "subject": "Component → List → Overlapping issues are present in all properties and filters."
+    },
+    {
+      "id": 1443,
+      "subject": "User with only Workspace → View permission experiences continuous screen flickering after login."
+    },
+    {
+      "id": 1445,
+      "subject": "Cart — Event Config title displays incorrect characters (\"Â\") Description:"
+    },
+    {
+      "id": 1446,
+      "subject": "Incorrect module name is displayed after updating workspace-level permissions."
+    },
+    {
+      "id": 1447,
+      "subject": "Dropdown placeholders display incorrect characters (â€¦)."
+    },
+    {
+      "id": 1448,
+      "subject": "Save Changes button is not enabled after modifying workspace-level permissions."
+    },
+    {
+      "id": 1449,
+      "subject": "Component -> List -> Field -> Event property typography property is not working as expected."
+    },
+    {
+      "id": 1451,
+      "subject": "Component → Filter Component is displayed twice on the Design page in component list."
+    }
+  ],
+  "overview": {},
+  "narrative": {
+    "features": [],
+    "enhancements": [],
+    "whatToTest": [],
+    "knownIssues": [
+      [
+        "999",
+        "Sample manual known issue",
+        "Do the workaround"
+      ]
+    ],
+    "apiChanges": [
+      [
+        "/v1/reports",
+        "Added",
+        "New reports endpoint"
+      ]
+    ],
+    "configChanges": []
+  },
+  "approvedAt": null
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 11pt;
+      color: #222;
+      background: #fff;
+      padding: 50px 65px;
+      line-height: 1.65;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    h1 { color: #1A6BA8; font-size: 26pt; font-weight: bold; margin-bottom: 6px; }
+    .doc-kind { color: #6b7280; font-size: 9.5pt; margin: 0 0 6px 0; text-align: left; }
+    .dl { margin: 0 0 22px 0; font-size: 9.5pt; }
+    .dl a { color: #1A6BA8; text-decoration: none; font-weight: bold; }
+    @media print { .dl { display: none; } }
+    h2 {
+      color: #1A6BA8; font-size: 12.5pt; font-weight: bold;
+      margin-top: 32px; margin-bottom: 12px;
+      page-break-after: avoid; break-after: avoid;
+    }
+    p { text-align: justify; margin-bottom: 12px; line-height: 1.75; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin-bottom: 24px;
+      font-size: 10.5pt; page-break-inside: auto;
+    }
+    .std-table thead th {
+      background-color: #00B2C8; color: #fff; font-weight: bold;
+      padding: 9px 12px; border: 1px solid #009DB5; text-align: left;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .std-table tbody td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .std-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
+
+    .kv-table td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .kv-table td:first-child {
+      background-color: #00B2C8; color: #fff; font-weight: bold; width: 38%;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .kv-table td:last-child { font-weight: bold; color: #222; }
+    .kv-table tr { page-break-inside: avoid; break-inside: avoid; }
+
+    .bugfix-table td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .bugfix-table td:first-child {
+      background-color: #00B2C8; color: #fff; font-weight: bold; width: 14%;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .bugfix-table tr { page-break-inside: avoid; break-inside: avoid; }
+
+    /* Bug Fixes as an ID + Description table (v19 onward) */
+    .bugid-table thead th {
+      background-color: #00B2C8; color: #fff; font-weight: bold;
+      padding: 9px 12px; border: 1px solid #009DB5; text-align: left;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .bugid-table tbody td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .bugid-table tbody td:first-child { width: 14%; font-weight: bold; white-space: nowrap; }
+    .bugid-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
+
+    ul { margin: 6px 0 6px 0; padding-left: 22px; }
+    ol { margin: 4px 0 4px 0; padding-left: 24px; }
+    li { margin-bottom: 5px; line-height: 1.6; page-break-inside: avoid; break-inside: avoid; }
+    ol.alpha { list-style-type: lower-alpha; }
+    ol.roman { list-style-type: lower-roman; }
+    .expected { display: block; margin-top: 3px; padding-left: 0; }
+
+    .draft-banner {
+      background: #FFF3CD; border: 1px solid #FFE08A; color: #7A5B00;
+      padding: 10px 14px; border-radius: 4px; margin-bottom: 20px; font-weight: bold;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+
+    .pb-before { page-break-before: always; break-before: always; }
+    .pb-avoid { page-break-inside: avoid; break-inside: avoid; }
+  </style>
+</head>
+<body>
+
+<h1>Release Notes</h1>
+<p class="doc-kind">CADP internal QA build release notes — generated from OpenProject. Not the in-app Release Notes feature used by tenants.</p>
+<p class="dl"><a href="./index.pdf">⬇ Download PDF</a></p>
+{{DRAFT_BANNER}}
+<!-- ═══════════════════════════════════════════════ -->
+<h2>1. Release Overview</h2>
+<table class="kv-table">
+  <tr><td>Field</td><td>Details</td></tr>
+  <tr><td>Product Name</td><td>CADP Workspace</td></tr>
+  <tr><td>Release Version</td><td>Release 1.0.0 ({{VERSION}})</td></tr>
+  <tr><td>Release Date</td><td>{{RELEASE_DATE}}</td></tr>
+  <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
+  <tr><td>Prepared By</td><td>Development Team</td></tr>
+  <tr><td>Approved By</td><td>Ganagavathy</td></tr>
+  <tr><td>Environment</td><td>QA</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>2. Release Summary</h2>
+{{SUMMARY}}
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>3. New Features</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Feature ID</th><th>Feature Name</th><th>Description</th><th>Impact</th></tr>
+  </thead>
+  <tbody>
+{{NEW_FEATURES_ROWS}}
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>4. Enhancements / Improvements</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
+  </thead>
+  <tbody>
+{{ENHANCEMENTS_ROWS}}
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>5. Bug Fixes</h2>
+{{BUG_FIXES}}
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>6. Configuration Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Configuration</th><th>Description</th><th>Impact</th></tr>
+  </thead>
+  <tbody>
+{{CONFIG_CHANGES_ROWS}}
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>7. API Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>API Name</th><th>Type</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+{{API_CHANGES_ROWS}}
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. Known Issues</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Issue ID</th><th>Description</th><th>Workaround</th></tr>
+  </thead>
+  <tbody>
+{{KNOWN_ISSUES_ROWS}}
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>9. What to Test</h2>
+{{WHAT_TO_TEST}}
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 class="pb-before">10. What to Test on Mobile</h2>
+{{WHAT_TO_TEST_MOBILE}}
+
+</body>
+</html>
