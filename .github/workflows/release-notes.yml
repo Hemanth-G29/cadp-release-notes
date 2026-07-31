@@ -42,17 +42,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Optional: check out the platform repo so New Features / Enhancements / What-to-Test /
-      # Known Issues / API / Config can be aggregated from its docs/changes QA-Release-Note tags.
-      # Set repo var PLATFORM_REPO (owner/repo) and, for a private repo, secret PLATFORM_REPO_TOKEN.
-      - name: Check out platform repo (docs/changes)
-        if: ${{ vars.PLATFORM_REPO != '' }}
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ vars.PLATFORM_REPO }}
-          token: ${{ secrets.PLATFORM_REPO_TOKEN }}
-          path: platform
-          persist-credentials: false
+      # Pull ONLY docs/changes from the platform repos on GitLab, so New Features / Enhancements /
+      # What-to-Test / Known Issues / API / Config auto-populate from QA-Release-Note-tagged entries.
+      # Enable by setting the vars PLATFORM_GITLAB_HOST + PLATFORM_GITLAB_GROUP (+ optional
+      # PLATFORM_GITLAB_BRANCH) and the secret GITLAB_TOKEN (read_repository scope). Skipped if unset.
+      - name: Fetch platform docs/changes from GitLab (narrative tags)
+        if: ${{ vars.PLATFORM_GITLAB_GROUP != '' }}
+        env:
+          GITLAB_HOST: ${{ vars.PLATFORM_GITLAB_HOST }}
+          GITLAB_GROUP: ${{ vars.PLATFORM_GITLAB_GROUP }}
+          GITLAB_BRANCH: ${{ vars.PLATFORM_GITLAB_BRANCH }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          CHANGELOG_ROOT: platform
+        run: bash scripts/fetch-platform-changes.sh
 
       - uses: actions/setup-node@v4
         with:
@@ -76,7 +78,7 @@ jobs:
           ROLLOVER: ${{ inputs.rollover }}
           ROLLOVER_DRYRUN: ${{ inputs.dry_run }}
           ROLLOVER_CONFIRM: ${{ inputs.confirm_version }}
-          CHANGELOG_ROOT: ${{ vars.PLATFORM_REPO != '' && 'platform' || '' }}
+          CHANGELOG_ROOT: ${{ vars.PLATFORM_GITLAB_GROUP != '' && 'platform' || '' }}
           OPENPROJECT_TOKEN: ${{ secrets.OPENPROJECT_TOKEN }}
           OPENPROJECT_HOST: pmt.cavininfotech.com
           OPENPROJECT_PROJECT_ID: '3'

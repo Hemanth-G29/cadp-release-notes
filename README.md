@@ -60,6 +60,20 @@ at the platform repo (set the `PLATFORM_REPO` variable) so the aggregator can re
 **Optional manual manifests** (`content/*.md`) cover items with no code-change entry — long-standing
 known issues, or an API/config note. Precedence: **approved state › manifest › tag › baseline/None**.
 
+### Auto-tracking narrative from GitLab (docs/changes tags)
+
+To have New Features / Enhancements / etc. fill themselves from the platform repos' `docs/changes`
+`QA-Release-Note:` tags, the workflow shallow-sparse-clones **only `docs/changes/`** from each GitLab
+repo (`scripts/fetch-platform-changes.sh`) and points the aggregator at it. Enable it with:
+
+- **Repo variables:** `PLATFORM_GITLAB_HOST` = `scm.ckdigital.in`, `PLATFORM_GITLAB_GROUP` =
+  `cadp_platform_services`, `PLATFORM_GITLAB_BRANCH` = the QA branch (e.g. `devops/dev`).
+- **Repo secret:** `GITLAB_TOKEN` = a GitLab token with **`read_repository`** scope.
+
+Only entries **tagged** `QA-Release-Note:` and **dated after the last release cut** appear — so a
+section stays empty until tagged commits land (Claude Code adds the tag per each repo's `CLAUDE.md`).
+If the group var is unset, this step is skipped and narrative comes from the manual manifests only.
+
 ## Routes
 
 | Method | Path | Purpose |
