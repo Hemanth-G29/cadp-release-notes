@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (20) delivers 0 bug fixes, 10 new features, and 20 enhancements across the platform. Highlights include Payment Mode, Overflow (⋮) Menu, and Discount Coupon. It also includes a required configuration change (see Configuration Changes). Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (20) delivers 0 bug fixes across the platform. Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -112,16 +112,7 @@
     <tr><th>Feature ID</th><th>Feature Name</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>Payment Mode</td><td>New Payment Mode component and flow — method cards sourced from feature data, amount entry, a denomination sub-modal, and Bill/Paid/Balance totals; Confirm Payment submits the transaction.</td><td>End-to-end in-form payment capture.</td></tr>
-    <tr><td></td><td>Overflow (⋮) Menu</td><td>New kebab-menu component that groups actions (Import, Email, Print, Hold, Recall) behind one trigger; items persist on Save and render in the action toolbar.</td><td>Declutters the action bar.</td></tr>
-    <tr><td></td><td>Discount Coupon</td><td>Discount Coupon component — shoppers enter a code that is validated against configured coupons and applies a discount (builder + runtime); the computed discount can be written to a referenceable field.</td><td>Coupon/discount support at runtime.</td></tr>
-    <tr><td></td><td>DISTINCT formula aggregates</td><td>New DISTINCT aggregate family — DISTINCT_COUNT / SUM / AVG / MIN / MAX_OF_RECORDS plus a SQL-style DISTINCT({field}) modifier — for unique-value calculations (e.g. unique outlets, active users).</td><td>Distinct-count metrics the engine previously couldn&#39;t express.</td></tr>
-    <tr><td></td><td>Button – link &amp; open-modal</td><td>Buttons support a text &quot;link&quot; variant and an &quot;open-modal&quot; action that opens any modal on the page.</td><td>More flexible button behaviour.</td></tr>
-    <tr><td></td><td>Table cell display mode</td><td>Table columns can render as a read-only label that becomes editable on click, with per-column Cell Display, output decimals, and footer decimals.</td><td>Cleaner, configurable table cells.</td></tr>
-    <tr><td></td><td>Adjustable column width in Preview</td><td>Column widths are respected and columns can be marked &quot;adjustable&quot; for Excel-style drag-resizing in Preview.</td><td>Tune table columns directly in preview.</td></tr>
-    <tr><td></td><td>Formula field &quot;Show As: Label&quot;</td><td>Formula fields can render as a label row (label-left / value-right) with optional inline editing and summary-row styling (sign prefixes, coloured/emphasised values).</td><td>Presentable bill-summary style formula rows.</td></tr>
-    <tr><td></td><td>Configurable modal styling &amp; footer</td><td>Per-modal flat/Figma style overrides, a configurable set of footer action buttons, and custom Submit/Cancel labels.</td><td>Fully configurable modals.</td></tr>
-    <tr><td></td><td>Builder Preview guard</td><td>Previewing an unpublished form shows a &quot;Back to Builder&quot; button and is view-only — Submit and Save-as-Draft are blocked.</td><td>Safe preview of unpublished forms.</td></tr>
+    <tr><td></td><td>None</td><td>No new features recorded yet for this release.</td><td>N/A</td></tr>
   </tbody>
 </table>
 
@@ -132,26 +123,7 @@
     <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>Formula Engine</td><td>DISTINCT aggregates now run as a MongoDB group query — a ~12k-row distinct count drops from ~16.8s to ~0.55s.</td><td>Much faster distinct-aggregate dashboards.</td></tr>
-    <tr><td></td><td>Formula Engine</td><td>DISTINCT aggregates now appear in autocomplete/help; an Expression Builder render loop was fixed.</td><td>Discoverable DISTINCT functions.</td></tr>
-    <tr><td></td><td>Reports / Extraction</td><td>Projection-formula rows are evaluated with bounded parallelism, fetching only the reference fields a response needs.</td><td>Faster projection and extraction.</td></tr>
-    <tr><td></td><td>Data Table</td><td>Formula columns support Sum / Average / Min / Max footer totals, not just Count.</td><td>Richer totals rows.</td></tr>
-    <tr><td></td><td>Tax Summary</td><td>Pivot headers show readable labels instead of raw field keys, with an opt-in modern (Figma) style.</td><td>Readable, polished tax summary.</td></tr>
-    <tr><td></td><td>Button</td><td>Button icons persist on Save/Publish; the icon picker uses the tenant brand colour with proper alignment.</td><td>Reliable, on-brand button icons.</td></tr>
-    <tr><td></td><td>Components</td><td>Column width is now single-source — a width set to 20% no longer reverts to 35%.</td><td>Predictable column widths.</td></tr>
-    <tr><td></td><td>Transactions</td><td>Line items (including quantities) can be copied from another feature via a header lookup.</td><td>Faster line-item entry.</td></tr>
-    <tr><td></td><td>Transaction Layout</td><td>Desktop preview scrolls only the form body; tall columns scroll internally (no global page scrollbar); tighter header/padding; the summary/right column stays fully visible.</td><td>Cleaner, more usable transaction forms.</td></tr>
-    <tr><td></td><td>Save Properties Modal</td><td>Sits below the fixed app header, clips to its rounded corners, shows the real data-field count, and themes the Device Visibility card to brand.</td><td>Polished Save Properties dialog.</td></tr>
-    <tr><td></td><td>Import Feature Modal</td><td>Clears the fixed app header and scrolls tall content internally.</td><td>Usable import dialog.</td></tr>
-    <tr><td></td><td>JSON Preview</td><td>Shows the true recursive component count and matches the Save modal&#39;s size and position.</td><td>Accurate JSON preview.</td></tr>
-    <tr><td></td><td>Lookup / Dropdown</td><td>Feature-backed dropdowns open in the correct position without flicker, show a single brand focus ring, and no longer flash on selection.</td><td>Smoother dropdowns.</td></tr>
-    <tr><td></td><td>Transaction Management</td><td>Display-only components (labels/headings/dividers) no longer appear as empty columns and are excluded from the submitted payload.</td><td>Cleaner listings and saved data.</td></tr>
-    <tr><td></td><td>Payment Mode</td><td>The payment value renders as method chips with Paid/Balance (not raw JSON); Confirm Payment shows a spinner and disables during submit.</td><td>Readable payment cells; no double-submit.</td></tr>
-    <tr><td></td><td>Layout</td><td>Sections reflow when a nested accordion collapses; the accordion header title aligns with its chevron.</td><td>Tighter, responsive layouts.</td></tr>
-    <tr><td></td><td>Builder</td><td>The &quot;Save as Draft&quot; button label is editable and persists.</td><td>Custom draft-button text.</td></tr>
-    <tr><td></td><td>Properties Panel</td><td>Advanced Layout toggles can be deselected by clicking the active option.</td><td>More flexible layout configuration.</td></tr>
-    <tr><td></td><td>Overflow Menu</td><td>Compact, aligned default layout with themed line-icons that follow the text colour.</td><td>Consistent overflow menu.</td></tr>
-    <tr><td></td><td>Workspace Switcher</td><td>Inactive workspaces show a neutral gray icon chip; only the active one keeps the brand tint.</td><td>Clearer active-workspace cue.</td></tr>
+    <tr><td></td><td>None</td><td>No enhancements recorded yet for this release.</td><td>N/A</td></tr>
   </tbody>
 </table>
 
@@ -173,7 +145,7 @@
     <tr><th>Configuration</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td>Re-seed componentProperties</td><td>Re-seed `componentProperties` in the target environment so the new component styling/config keys (table column display mode &amp; number format, and label styling authored under `advanced.*`) persist on Save.</td><td>Without the re-seed, these styling/config keys are stripped on save.</td></tr>
+    <tr><td>None</td><td>No configuration changes are required for this release.</td><td>N/A</td></tr>
   </tbody>
 </table>
 
