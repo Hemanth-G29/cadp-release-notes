@@ -94,7 +94,7 @@
   <tr><td>Field</td><td>Details</td></tr>
   <tr><td>Product Name</td><td>CADP Workspace</td></tr>
   <tr><td>Release Version</td><td>Release 1.0.0 (19)</td></tr>
-  <tr><td>Release Date</td><td>July 17, 2026</td></tr>
+  <tr><td>Release Date</td><td>July 31, 2026</td></tr>
   <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
   <tr><td>Prepared By</td><td>Development Team</td></tr>
   <tr><td>Approved By</td><td>Ganagavathy</td></tr>
@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (19) delivers bug fixes across the platform. Sections below are auto-generated; narrative sections are pending review.</p>
+<p>This release of CADP Workspace Version 1.0.0 (19) delivers 121 bug fixes, 10 new features, and 20 enhancements across the platform. Highlights include Payment Mode, Overflow (⋮) Menu, and Discount Coupon. It also includes a required configuration change (see Configuration Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -112,7 +112,16 @@
     <tr><th>Feature ID</th><th>Feature Name</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No new features recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>Payment Mode</td><td>New Payment Mode component and flow — method cards sourced from feature data, amount entry, a denomination sub-modal, and Bill/Paid/Balance totals; Confirm Payment submits the transaction.</td><td>End-to-end in-form payment capture.</td></tr>
+    <tr><td></td><td>Overflow (⋮) Menu</td><td>New kebab-menu component that groups actions (Import, Email, Print, Hold, Recall) behind one trigger; items persist on Save and render in the action toolbar.</td><td>Declutters the action bar.</td></tr>
+    <tr><td></td><td>Discount Coupon</td><td>Discount Coupon component — shoppers enter a code that is validated against configured coupons and applies a discount (builder + runtime); the computed discount can be written to a referenceable field.</td><td>Coupon/discount support at runtime.</td></tr>
+    <tr><td></td><td>DISTINCT formula aggregates</td><td>New DISTINCT aggregate family — DISTINCT_COUNT / SUM / AVG / MIN / MAX_OF_RECORDS plus a SQL-style DISTINCT({field}) modifier — for unique-value calculations (e.g. unique outlets, active users).</td><td>Distinct-count metrics the engine previously couldn&#39;t express.</td></tr>
+    <tr><td></td><td>Button – link &amp; open-modal</td><td>Buttons support a text &quot;link&quot; variant and an &quot;open-modal&quot; action that opens any modal on the page.</td><td>More flexible button behaviour.</td></tr>
+    <tr><td></td><td>Table cell display mode</td><td>Table columns can render as a read-only label that becomes editable on click, with per-column Cell Display, output decimals, and footer decimals.</td><td>Cleaner, configurable table cells.</td></tr>
+    <tr><td></td><td>Adjustable column width in Preview</td><td>Column widths are respected and columns can be marked &quot;adjustable&quot; for Excel-style drag-resizing in Preview.</td><td>Tune table columns directly in preview.</td></tr>
+    <tr><td></td><td>Formula field &quot;Show As: Label&quot;</td><td>Formula fields can render as a label row (label-left / value-right) with optional inline editing and summary-row styling (sign prefixes, coloured/emphasised values).</td><td>Presentable bill-summary style formula rows.</td></tr>
+    <tr><td></td><td>Configurable modal styling &amp; footer</td><td>Per-modal flat/Figma style overrides, a configurable set of footer action buttons, and custom Submit/Cancel labels.</td><td>Fully configurable modals.</td></tr>
+    <tr><td></td><td>Builder Preview guard</td><td>Previewing an unpublished form shows a &quot;Back to Builder&quot; button and is view-only — Submit and Save-as-Draft are blocked.</td><td>Safe preview of unpublished forms.</td></tr>
   </tbody>
 </table>
 
@@ -123,7 +132,26 @@
     <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No enhancements recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>Formula Engine</td><td>DISTINCT aggregates now run as a MongoDB group query — a ~12k-row distinct count drops from ~16.8s to ~0.55s.</td><td>Much faster distinct-aggregate dashboards.</td></tr>
+    <tr><td></td><td>Formula Engine</td><td>DISTINCT aggregates now appear in autocomplete/help; an Expression Builder render loop was fixed.</td><td>Discoverable DISTINCT functions.</td></tr>
+    <tr><td></td><td>Reports / Extraction</td><td>Projection-formula rows are evaluated with bounded parallelism, fetching only the reference fields a response needs.</td><td>Faster projection and extraction.</td></tr>
+    <tr><td></td><td>Data Table</td><td>Formula columns support Sum / Average / Min / Max footer totals, not just Count.</td><td>Richer totals rows.</td></tr>
+    <tr><td></td><td>Tax Summary</td><td>Pivot headers show readable labels instead of raw field keys, with an opt-in modern (Figma) style.</td><td>Readable, polished tax summary.</td></tr>
+    <tr><td></td><td>Button</td><td>Button icons persist on Save/Publish; the icon picker uses the tenant brand colour with proper alignment.</td><td>Reliable, on-brand button icons.</td></tr>
+    <tr><td></td><td>Components</td><td>Column width is now single-source — a width set to 20% no longer reverts to 35%.</td><td>Predictable column widths.</td></tr>
+    <tr><td></td><td>Transactions</td><td>Line items (including quantities) can be copied from another feature via a header lookup.</td><td>Faster line-item entry.</td></tr>
+    <tr><td></td><td>Transaction Layout</td><td>Desktop preview scrolls only the form body; tall columns scroll internally (no global page scrollbar); tighter header/padding; the summary/right column stays fully visible.</td><td>Cleaner, more usable transaction forms.</td></tr>
+    <tr><td></td><td>Save Properties Modal</td><td>Sits below the fixed app header, clips to its rounded corners, shows the real data-field count, and themes the Device Visibility card to brand.</td><td>Polished Save Properties dialog.</td></tr>
+    <tr><td></td><td>Import Feature Modal</td><td>Clears the fixed app header and scrolls tall content internally.</td><td>Usable import dialog.</td></tr>
+    <tr><td></td><td>JSON Preview</td><td>Shows the true recursive component count and matches the Save modal&#39;s size and position.</td><td>Accurate JSON preview.</td></tr>
+    <tr><td></td><td>Lookup / Dropdown</td><td>Feature-backed dropdowns open in the correct position without flicker, show a single brand focus ring, and no longer flash on selection.</td><td>Smoother dropdowns.</td></tr>
+    <tr><td></td><td>Transaction Management</td><td>Display-only components (labels/headings/dividers) no longer appear as empty columns and are excluded from the submitted payload.</td><td>Cleaner listings and saved data.</td></tr>
+    <tr><td></td><td>Payment Mode</td><td>The payment value renders as method chips with Paid/Balance (not raw JSON); Confirm Payment shows a spinner and disables during submit.</td><td>Readable payment cells; no double-submit.</td></tr>
+    <tr><td></td><td>Layout</td><td>Sections reflow when a nested accordion collapses; the accordion header title aligns with its chevron.</td><td>Tighter, responsive layouts.</td></tr>
+    <tr><td></td><td>Builder</td><td>The &quot;Save as Draft&quot; button label is editable and persists.</td><td>Custom draft-button text.</td></tr>
+    <tr><td></td><td>Properties Panel</td><td>Advanced Layout toggles can be deselected by clicking the active option.</td><td>More flexible layout configuration.</td></tr>
+    <tr><td></td><td>Overflow Menu</td><td>Compact, aligned default layout with themed line-icons that follow the text colour.</td><td>Consistent overflow menu.</td></tr>
+    <tr><td></td><td>Workspace Switcher</td><td>Inactive workspaces show a neutral gray icon chip; only the active one keeps the brand tint.</td><td>Clearer active-workspace cue.</td></tr>
   </tbody>
 </table>
 
@@ -135,31 +163,74 @@
   </thead>
   <tbody>
     <tr><td>623</td><td>Components --&gt; Quantity→ Number Stepper properties (value, min, max, and step) are not reflected in the form field when custom values are set.</td></tr>
+    <tr><td>700</td><td>In-App Notification → OnClick Trigger--&gt;In-app notifications are not received when triggered via onClick event.</td></tr>
+    <tr><td>859</td><td>Signature field is received as encrypted/base64 text in email instead of displaying the actual signature image.</td></tr>
+    <tr><td>889</td><td>Taskscheduler--&gt; In the Task Scheduler review page, the displayed details are not shown properly.</td></tr>
+    <tr><td>898</td><td>Task Scheduler → When the user creates a scheduled task using Feature Fields as the recipient source, the Recipient Email field displays column lists other than email fields.</td></tr>
+    <tr><td>939</td><td>Report Table--&gt;when user add the tabe as the report table and publish it add data was not shown after the publish.</td></tr>
     <tr><td>961</td><td>Formula overlaps when calling a saved Chart field in the Report Feature.</td></tr>
+    <tr><td>991</td><td>Components → Integration → When the user integrates a field and later renames the same field, then publishes the changes, the old integrated field mapping is not removed and still appears in the integration configuration.</td></tr>
+    <tr><td>1075</td><td>Formula field--&gt;NOW() date operator does not display the correct current time, even though the organization&#39;s time zone is set to Indian Standard Time (IST).</td></tr>
+    <tr><td>1162</td><td>Bullet List and Numbered List actions remove selected text instead of applying formatting.</td></tr>
+    <tr><td>1173</td><td>Components → Color Picker → Color Picker Properties→ Configured palette colors are not reflected on the Create page.</td></tr>
+    <tr><td>1195</td><td>Components →Charts →Area Chart hover guide lines are missing on the Create page.</td></tr>
+    <tr><td>1196</td><td>Components → Charts → Area Chart → Design→ Area chart color changes are not reflected on the Create page.</td></tr>
+    <tr><td>1197</td><td>Components → Charts → Chart Properties → Scatter Chart→ Scatter chart selection tools are missing and non-functional.</td></tr>
+    <tr><td>1199</td><td>Components → Charts→ Export option→ Chart title is partially hidden in exported files.</td></tr>
+    <tr><td>1210</td><td>Erudite Management → Documentation : File type validation is missing for Document and Thumbnail uploads.</td></tr>
+    <tr><td>1221</td><td>Default Landing Page preference is not applied after selection.</td></tr>
     <tr><td>1233</td><td>Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted.</td></tr>
+    <tr><td>1242</td><td>Components → Table → Data Table Properties → Data Source → Platform Feature →Removing the Field Key name hides data and triggers an incorrect delete confirmation popup.</td></tr>
     <tr><td>1247</td><td>Mobile APK--&gt;The chart displays multiple colors in the web application, but only a single color is displayed in the mobile app.</td></tr>
     <tr><td>1249</td><td>Mobile APK--&gt; Charts--&gt;The Horizontal Bar Chart (Bar H) is not displayed in the mobile app.</td></tr>
+    <tr><td>1250</td><td>Metadata → Archive / Unarchive → Unarchive → Groups : Archived groups are not listed in the Unarchive section.</td></tr>
     <tr><td>1252</td><td>Mobile APK--&gt; Charts--&gt;The Pie Chart is not displayed in the mobile app.</td></tr>
+    <tr><td>1253</td><td>Components → Table → Data Table Properties → Data Source → Platform Feature→ Drag Column option is not functioning in Platform Feature Data Table.</td></tr>
+    <tr><td>1254</td><td>Components → Table → Data Table Properties → Data Source → Platform Feature→ New column is added at the end instead of next to the selected column.</td></tr>
     <tr><td>1256</td><td>Mobile APK--&gt; Charts--&gt;The Donut Chart is not displayed in the mobile app.</td></tr>
     <tr><td>1258</td><td>Mobile APK--&gt; Chart--&gt;The Scatter Chart displays the correct feature data in the web application, but the same data is not displayed correctly in the mobile app.</td></tr>
     <tr><td>1260</td><td>Mobile APK--&gt;The Gauge Chart values displayed in the web application are not shown in the mobile app.</td></tr>
     <tr><td>1282</td><td>Components → Timer→ Timer is editable on the View page without clicking the Edit button.</td></tr>
+    <tr><td>1285</td><td>workflow--&gt;File Uploade Node- uploaded file is not displayed when opening the output URL after the file upload.</td></tr>
     <tr><td>1288</td><td>Workflow → Create Record Node → When the user configures a Create Record node with an Image Upload field, the Image Upload field is displayed as a Text field in the workflow configuration.</td></tr>
     <tr><td>1290</td><td>Workflow--&gt;The submitted data appears in JSON/object format (or placeholders) instead of displaying individual field values in their respective spreadsheet columns.</td></tr>
     <tr><td>1298</td><td>Workflow → Update Record → When the user updates a record using the Update Record node, the updated values are not reflected in the corresponding feature.</td></tr>
+    <tr><td>1313</td><td>Components → Data Table → Data Table Properties → Table Type → Pivot Table→ Pivot Table configuration fields overlap on the Design page.</td></tr>
     <tr><td>1314</td><td>Microsoft Teams OAuth Connection Fails with &quot;unauthorized_client&quot; Error Despite Providing Valid Credentials.</td></tr>
+    <tr><td>1317</td><td>Task Scheduler--&gt;Email Template: The feature variables selected in the Message editor are not displayed correctly in the Preview section. The preview content does not match the message content.</td></tr>
     <tr><td>1318</td><td>WhatsApp Template Creation--&gt;When the cursor is placed in the Message Body and a feature variable is inserted, the variable is not added at the cursor position. Instead, it is inserted at the header area.</td></tr>
+    <tr><td>1319</td><td>Component → Progress Bar → Properties panel is empty on the Design page</td></tr>
+    <tr><td>1324</td><td>Component → Address AutoComplete → An &quot;Access Denied&quot; message is displayed on the Create page.</td></tr>
+    <tr><td>1326</td><td>Component → Progress Bar → No field properties are available for the Progress Bar component on the Design page.</td></tr>
+    <tr><td>1366</td><td>Components → Carousel → Carousel Properties→ Outer Margin and Horizontal Padding perform the same function in Carousel Properties.</td></tr>
+    <tr><td>1374</td><td>Components → Carousel → Carousel Properties → Navigation→ Scroll Step, Dots, and dot color settings are not working on the Create/View page.</td></tr>
     <tr><td>1376</td><td>List---&gt;The Fields option in the List component properties displays unidentified symbols and unreadable characters in the popup window  </td></tr>
+    <tr><td>1381</td><td>Component → List → Layout → Layout properties are overlapping on the Design page</td></tr>
+    <tr><td>1387</td><td>Component → List → Layout → Image right-side Add button is not displayed properly on the Design page</td></tr>
     <tr><td>1389</td><td>Component → List → Layout → Compact right-side Add button is not displayed properly on the Design page</td></tr>
+    <tr><td>1390</td><td>Navbar--&gt;The Site Layout enable option in the Navbar component is not working. The toggle cannot be enabled when clicked.  </td></tr>
+    <tr><td>1391</td><td>Component → List → Layout → &#39;No Image&#39; condition works on the Create page but not on the Preview page</td></tr>
+    <tr><td>1395</td><td>Navbar--&gt;The button icon name  logo is displayed on the Design page, but it is not reflected on the Preview page.</td></tr>
+    <tr><td>1396</td><td>Component → List → Quick Card Style → Overlay → &#39;Add to Cart&#39; button is overlapping</td></tr>
+    <tr><td>1399</td><td>Integration → Payment Gateway → When the user configures and initiates a payment using PayPal, the payment transaction fails and the application displays the error message: “Request failed with status code 500.”</td></tr>
+    <tr><td>1402</td><td>Navbar--&gt;A circle-shaped icon-only button is displayed correctly on the Design page, but the Preview page shows text instead of the icon.</td></tr>
+    <tr><td>1403</td><td>Integration → Incorrect validation message displayed for missing or invalid payment input fields</td></tr>
+    <tr><td>1404</td><td>Integration → Payment Gateway allows duplicate payment after successful transaction</td></tr>
     <tr><td>1406</td><td>Component → List → Import Button Colour Is Not Updating on the Design Page</td></tr>
     <tr><td>1408</td><td>Component → List → Appearance → Title Color and Subtitle Color are not updating.</td></tr>
+    <tr><td>1415</td><td>Component → List → Shape &amp; Image → Image Ratio and Image Size properties are not working properly and not met on the Preview page.</td></tr>
     <tr><td>1416</td><td>Task Scheduler--&gt; Fails to execute the Print Template trigger. The task status changes from &quot;Pending&quot; to &quot;Failed&quot;, and the notification email is not received.  </td></tr>
+    <tr><td>1417</td><td>Component → List → Filter → Filter properties are not working on the Design and Preview pages</td></tr>
+    <tr><td>1418</td><td>Task Scheduler--&gt;The notification email is received successfully, but the attached PDF/file is not included. Instead, the email displays [object Object] instead of the actual attachment.  </td></tr>
     <tr><td>1420</td><td>Component → List → Shape &amp; Image → Images overlap when changing the Image Sizing option</td></tr>
     <tr><td>1421</td><td>Component → List → Filter → Background, Text, and Accent color changes are not working on the Design page</td></tr>
     <tr><td>1422</td><td>Workflow modifications are not reflected in the Publish Workspace changes list.</td></tr>
     <tr><td>1424</td><td>Component → List Properties → Overlay → Add to Cart button overlaps with other products.</td></tr>
     <tr><td>1425</td><td>Archived workflow in the Development environment remains visible in the Production environment after publishing.</td></tr>
     <tr><td>1429</td><td>Component → List → Overlapping issues are present in all properties and filters.</td></tr>
+    <tr><td>1434</td><td>Auto-generated ID is duplicated for new records.</td></tr>
+    <tr><td>1441</td><td> Formula field---&gt; The formula field output is not displayed in the list data when the same feature variable is used. It only works when a different feature variable is mapped. This issue occurs only in the Aggregate field.</td></tr>
+    <tr><td>1442</td><td>Inconsistent Success Notification Display After Creating Notification Templates. Success Validation Message Missing for SMS and Email Template Creation.</td></tr>
     <tr><td>1443</td><td>User with only Workspace → View permission experiences continuous screen flickering after login.</td></tr>
     <tr><td>1445</td><td>Cart — Event Config title displays incorrect characters (&quot;Â&quot;) Description:</td></tr>
     <tr><td>1446</td><td>Incorrect module name is displayed after updating workspace-level permissions.</td></tr>
@@ -167,6 +238,51 @@
     <tr><td>1448</td><td>Save Changes button is not enabled after modifying workspace-level permissions.</td></tr>
     <tr><td>1449</td><td>Component -&gt; List -&gt; Field -&gt; Event property typography property is not working as expected.</td></tr>
     <tr><td>1451</td><td>Component → Filter Component is displayed twice on the Design page in component list.</td></tr>
+    <tr><td>1453</td><td>E-Commerce components--&gt;The mapped quantity fields are not displayed when Count Mode is set to Total Quantity (Amazon Style). They appear only after switching to Distinct Rows and back.</td></tr>
+    <tr><td>1487</td><td>Workspace--&gt;The &quot;Module&quot; label is displayed twice when navigating to the Feature page by clicking the link button.</td></tr>
+    <tr><td>1497</td><td>Components → Text Block → Text Block Properties → Text Block content is not visible until the feature is reopened.</td></tr>
+    <tr><td>1512</td><td>Dashboard--&gt;Cloning a module without features shows a &quot;Clone Successful&quot; message, but the cloned module is not displayed on the Dashboard. It is only visible in the Archive/Unarchive section.</td></tr>
+    <tr><td>1513</td><td>Metadata → Archive/Unarchive→ Select Workspace dropdown is missing in Archive and Unarchive Entry pages.</td></tr>
+    <tr><td>1514</td><td>Workspace--&gt;Archiving and unarchiving a module automatically deletes its unpublished feature.</td></tr>
+    <tr><td>1517</td><td>Cloned role disappears after page refresh.</td></tr>
+    <tr><td>1518</td><td>User Management →Newly Created Group Is Not Reflected in Group Count Without Refresh.</td></tr>
+    <tr><td>1520</td><td>Components → Carousel → Carousel Properties → Section Header→ Section Header alignment is applied only to the subtitle, not the title.</td></tr>
+    <tr><td>1523</td><td>Metadata → Tenant Password Policies→ Tenant Password Policies title is partially hidden due to UI layout issue.</td></tr>
+    <tr><td>1525</td><td>Metadata → Audit → Login Activity Audit Logs--&gt;Apply Filters in Login Activity Audit Logs Shows No Results Despite Matching Data</td></tr>
+    <tr><td>1526</td><td>Workflow--&gt;Approval Request node does not display the Push Notification channel in Approval Channels.</td></tr>
+    <tr><td>1528</td><td>Component → Tags Input → The Copy and Clear All options are missing from the right corner of the Tags Input field.</td></tr>
+    <tr><td>1529</td><td>User Management →Waiting Approval Count Is Inconsistent Between Tab Badge and Waiting Approval List.</td></tr>
+    <tr><td>1531</td><td>Component → Tags Input → Configured tag color is not retained on the Create page</td></tr>
+    <tr><td>1534</td><td>Configuration--&gt;The Show/Hide Password (eye) icon for the Firebase Server Key (Secret) field is misaligned and displayed at the edge of the input field.</td></tr>
+    <tr><td>1536</td><td>Workflow--&gt;Feature Variables dropdown in the SMS Body field does not close automatically after selection.  </td></tr>
+    <tr><td>1544</td><td>Workflow--&gt;Changes made to the In-App custom message body are reflected in the Email custom message body in the Approval Request node.  </td></tr>
+    <tr><td>1548</td><td>User Preferences → Privacy &amp; Security→ Device Management list expands indefinitely, making Save/Cancel buttons difficult to access</td></tr>
+    <tr><td>1556</td><td>Formula Field--&gt;The calculated output value of the Formula Field is not displayed in the form after the record is submitted. However, the calculated value is correctly displayed in the List/Table View.</td></tr>
+    <tr><td>1560</td><td>Formula--&gt;When the NOT operator is used with a Text Component, the validation is marked as successful without displaying any validation error, even though the condition is invalid</td></tr>
+    <tr><td>1561</td><td>Formula--&gt;The NOT operator accepts a Number Field without any validation error, allows the formula to be published successfully, and displays a calculated output value.</td></tr>
+    <tr><td>1578</td><td>Formula--&gt;The CONCAT() function accepts Number variables, validates successfully, and generates output without showing any validation error.</td></tr>
+    <tr><td>1585</td><td>Formula--&gt;The JOIN() function validates successfully when Number variables are used as arguments, even though it is intended to accept only Text/String values.</td></tr>
+    <tr><td>1592</td><td>Formula--&gt;The STARTWITH() formula field does not display any output when the case-sensitive parameter (TRUE) is used, even after entering a valid value in the mapped City field.  </td></tr>
+    <tr><td>1596</td><td>Formula--&gt;The ENDWITH() formula field does not display any output when the case-sensitive parameter (TRUE) is used, even after entering a valid value in the mapped City field.  </td></tr>
+    <tr><td>1598</td><td>Erudite Management → Tutorial Videos → Tutorial Videos action menu is clipped, hiding Edit and Delete options after adding a video</td></tr>
+    <tr><td>1599</td><td>Erudite Management → Documentation→ Clicking a DOCX document downloads the file automatically instead of opening or previewing the document.</td></tr>
+    <tr><td>1601</td><td>Erudite Management → Tutorial Videos → Video upload allows MP3 audio files instead of restricting uploads to supported video formats</td></tr>
+    <tr><td>1602</td><td>Formula--&gt;The CONTAINS() formula field does not display any output when the case-sensitive (TRUE) parameter is used.</td></tr>
+    <tr><td>1603</td><td>Integrations -&gt;No success notification is displayed after exporting documents from the Integration module.</td></tr>
+    <tr><td>1614</td><td>Formula--&gt;The ROUND function syntax displays ROUND(number, decimals), but the formula is validated successfully even when the decimals parameter is not provided.</td></tr>
+    <tr><td>1623</td><td>Formula--&gt;The SUM_OF_RECORDS() formula field does not calculate or display the total sum of records when used with &amp; without filter conditions. Instead, it displays 0.00 even though valid numeric records are available.</td></tr>
+    <tr><td>1624</td><td>Formula--&gt;The COUNT_RECORDS() formula returns 0.00 instead of the correct record count when valid records are available and no filter conditions are applied.  </td></tr>
+    <tr><td>1625</td><td>Formula--&gt;The COUNT_RECORDS() formula validates successfully without the required field argument.</td></tr>
+    <tr><td>1626</td><td>Formula--&gt;The SUM_OF_RECORDS() formula validates successfully even when a text field is passed as the argument.</td></tr>
+    <tr><td>1628</td><td>Formula--&gt;The AVG_OF_RECORDS() formula returns 0.00 instead of the correct average value, both with and without applying filter conditions, even when valid numeric records are available.</td></tr>
+    <tr><td>1629</td><td>Formula--&gt;The AVG_OF_RECORDS() formula validates successfully even when a text field is used as the argument.</td></tr>
+    <tr><td>1630</td><td>Formula--&gt;The COUNT_RECORDS() formula validates successfully when a string value is passed instead of the required field argument.</td></tr>
+    <tr><td>1632</td><td>Formula--&gt;The MIN_OF_RECORDS() formula returns 0.00 instead of the correct minimum value, both with and without applying filter conditions, even when valid numeric records are available.</td></tr>
+    <tr><td>1636</td><td>Formula--&gt;The MAX_OF_RECORDS() formula returns 0.00 instead of the correct maximum value, both with and without applying filter conditions, even when valid numeric records are available.</td></tr>
+    <tr><td>1638</td><td>Formula--&gt;The UNIQUE() formula field returns a blank output even when the mapped Department field contains valid values.</td></tr>
+    <tr><td>1652</td><td>Formula--&gt;Cross-feature formula using where() returns an empty value even when the matching records and filter condition are valid.</td></tr>
+    <tr><td>1653</td><td>Formula--&gt;Expression Builder incorrectly validates non-existent field references as valid expressions.</td></tr>
+    <tr><td>1656</td><td>Formula--&gt;The Formula Playground throws an Evaluation Error when testing the valid Boolean constant values (True and False), even though the formula passes validation successfully.</td></tr>
   </tbody>
 </table>
 
@@ -177,7 +293,7 @@
     <tr><th>Configuration</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td>None</td><td>No configuration changes are required for this release.</td><td>N/A</td></tr>
+    <tr><td>Re-seed componentProperties</td><td>Re-seed `componentProperties` in the target environment so the new component styling/config keys (table column display mode &amp; number format, and label styling authored under `advanced.*`) persist on Save.</td><td>Without the re-seed, these styling/config keys are stripped on save.</td></tr>
   </tbody>
 </table>
 
@@ -188,7 +304,7 @@
     <tr><th>API Name</th><th>Type</th><th>Description</th></tr>
   </thead>
   <tbody>
-    <tr><td>/v1/reports</td><td>Added</td><td>New reports endpoint</td></tr>
+    <tr><td>None</td><td>N/A</td><td>No API changes are included in this release.</td></tr>
   </tbody>
 </table>
 
@@ -199,17 +315,29 @@
     <tr><th>Issue ID</th><th>Description</th><th>Workaround</th></tr>
   </thead>
   <tbody>
-    <tr><td>999</td><td>Sample manual known issue</td><td>Do the workaround</td></tr>
+    <tr><td></td><td>Role Management Change Effect</td><td>Because some menu structures have changed, certain features may return a 403 status code. To resolve this, edit the role, select the platform feature, and save the role again.</td></tr>
+    <tr><td></td><td>Scheduler with Workflow Not Working</td><td>Use the conventional feature-wise approach wherever workflow scheduling is required.</td></tr>
+    <tr><td></td><td>Formula Builder UI – Field Insertion Through Typing</td><td>This works in current fields. For external feature fields, it won&#39;t work, as there could be fields with same names from multiple features.</td></tr>
+    <tr><td></td><td>Formula Builder – AI-Based Formula Writing/Editing Not Implemented</td><td>Use manual formula entry instead.</td></tr>
+    <tr><td>364</td><td>Organization Details → Basic Info: Website URL accepts invalid URL formats without validation.</td><td>Expected: Validate the URL format and show an error message for invalid values, such as www.example or example@123.www.example</td></tr>
+    <tr><td></td><td>Builder Tool Not Available on Mobile Web</td><td>The builder tool is not supported on mobile web. This is implemented as expected — builder functionality is restricted to desktop browsers by design. It should be available on Tab though.</td></tr>
+    <tr><td></td><td>Mobile – Formula Field Not Working in Tables &amp; Charts</td><td>Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review.</td></tr>
+    <tr><td></td><td>AI Components — the AI Text Generator, OCR Extraction (Field Extraction), and Doc Summarizer currently do not work, because the LLM Gateway API is blocking the domains (CORS).</td><td>Use OCR Extraction (General Extraction), which works as expected.</td></tr>
   </tbody>
 </table>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>9. What to Test</h2>
 <ul>
-  <li>Login – Login, Sign In with Google, Sign In with Microsoft (configured in external providers in Tenants of metadata)</li>
+  <li>Login – Login, Sign In with Google (have to be configured in external providers in Tenants of metadata), Sign In with Microsoft (have to be configured in external providers in Tenants of metadata)</li>
+
   <li><strong>Create Application</strong>
-    <ol><li>Start from Scratch</li><li>Choose/Create Vertical Template</li></ol>
+    <ol>
+      <li>Start from Scratch</li>
+      <li>Choose/Create Vertical Template</li>
+    </ol>
   </li>
+
   <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong>
     <ol>
       <li><strong>AI App Creation</strong>
@@ -217,42 +345,452 @@
           <li>Open the AI application builder and enter a prompt describing the application to build.</li>
           <li>Verify the AI generates the application along with its modules and features.</li>
           <li>Verify the generated modules and features are listed and can be opened in the workspace.</li>
+          <li>Refine/regenerate from the prompt and verify the application updates accordingly.</li>
           <li>Publish the generated application and verify it renders correctly at runtime.</li>
           <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
         </ol>
       </li>
       <li><strong>AI Module Creation</strong>
         <ol class="alpha">
-          <li>From within an application, choose "Create Module with AI" and describe the module.</li>
-          <li>Verify the AI generates the module with the expected features and fields; it is editable and publishable.</li>
+          <li>From within an application, choose "Create Module with AI" and describe the module to build.</li>
+          <li>Verify the AI generates the module with the expected features and fields.</li>
+          <li>Verify the module appears in the module list and can be edited further.</li>
+          <li>Publish the module and verify it is available at runtime.</li>
           <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
         </ol>
       </li>
       <li><strong>AI Feature Creation</strong>
         <ol class="alpha">
-          <li>Within a module, choose "Create Feature with AI" and describe the feature.</li>
-          <li>Verify the AI generates the feature form with appropriate components/fields; publish and verify records CRUD.</li>
+          <li>Within a module, choose "Create Feature with AI" and describe the feature to build.</li>
+          <li>Verify the AI generates the feature form with the appropriate components and fields.</li>
+          <li>Verify the feature appears in the feature list and can be designed/edited further.</li>
+          <li>Publish the feature and verify records can be created, viewed, and edited.</li>
           <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
         </ol>
       </li>
       <li><strong>AI Ask FAQ</strong>
-        <p><strong>Scope:</strong> AI Ask FAQ is trained only on the platform documentation set (CADP User Login Guide, Functional Specifications, Erudite Management, Workspace Guide, User Preferences Guide, Role Management, AI FAQ Guide Transactions Runtime, Login Complete, Features Guide, Modules Guide, Platform Architecture Report, Templates Integrations Workflows Basics Guide, Features And Submodules Guide, Organization Guide, Builder Tool Guide). Ask questions on these topics only.</p>
+        <p><strong>Scope:</strong> AI Ask FAQ is trained only on the following platform documentation.
+           Questions must be asked on these topics only:</p>
+        <ul>
+          <li>CADP User Login Guide</li>
+          <li>CADP Functional Specifications</li>
+          <li>CADP Erudite Management Complete</li>
+          <li>CADP Workspace Guide</li>
+          <li>CADP User Preferences Guide</li>
+          <li>CADP Role Management</li>
+          <li>AI FAQ Guide Transactions Runtime</li>
+          <li>CADP Login Complete</li>
+          <li>CADP Erudite Management Complete Guide</li>
+          <li>CADP Features Guide</li>
+          <li>CADP Modules Guide</li>
+          <li>CADP Platform Architecture Report</li>
+          <li>CADP Templates Integrations Workflows Basics Guide</li>
+          <li>CADP Features And Submodules Guide</li>
+          <li>CADP Organization Guide</li>
+          <li>CADP Builder Tool Guide</li>
+        </ul>
         <ol class="alpha">
-          <li>Ask a question about platform configuration on a trained topic; verify a relevant, accurate answer.</li>
-          <li>Ask an out-of-scope question; verify an appropriate fallback rather than a fabricated answer.</li>
+          <li>Open AI Ask FAQ and ask a question about platform configuration on one of the trained topics above.</li>
+          <li>Verify a relevant and accurate answer is returned.</li>
+          <li>Ask a follow-up or ambiguous question and verify it is handled gracefully.</li>
+          <li>Ask a question outside the trained topics and verify AI Ask FAQ declines or returns an appropriate out-of-scope fallback rather than a fabricated answer.</li>
           <li>Verify the prompt and response are logged and routed through CavinGuard.</li>
         </ol>
       </li>
     </ol>
   </li>
+
   <li><strong>User Management</strong>
-    <ol><li>Create/Manage Users &amp; Groups</li><li>Import/Export Users</li><li>Archive/Unarchive, Locked Users, Waiting Approval</li></ol>
+    <ol>
+      <li>Create/Manage Users</li>
+      <li>Create/Manage Groups</li>
+      <li>Import/Export Users</li>
+      <li>Archive/Unarchive Users</li>
+      <li>Locked Users</li>
+      <li>Waiting Approval</li>
+      <li>Please update existing users in each workspace.</li>
+      <li>In the Users tab, when creating a new user, the Approval Type default is No Approval.</li>
+    </ol>
   </li>
-  <li><strong>Components</strong> — Layouts, Data Management, Input Components, OCR, Analytics &amp; Report (Chart/Gantt/KPI), Table (table &amp; summary formulas), Reusable Component.</li>
-  <li><strong>Page Builder</strong> — create/edit/publish pages; drag-and-drop layouts &amp; reusable components; responsive; role-based access.</li>
-  <li><strong>Workflow Management</strong> — visual canvas, nodes (control flow, communication, approval), monitoring, SLA/escalation.</li>
-  <li><strong>Formula Builder</strong> — same-feature and cross-feature functions; validation errors; helper tools (Cheat Sheet, Examples, Test Formula, Template Library, Wizard).</li>
-  <li><strong>Integrations</strong> — Third-Party Software → Third-Party API / Google Drive dynamic configuration fields.</li>
+
+  <li><strong>User Preferences</strong>
+    <ol>
+      <li>Profile update – first name, last name updating, profile picture updating.</li>
+      <li>Change password</li>
+      <li>Locale and Date-time updating</li>
+      <li>Interface
+        <ol class="roman">
+          <li>Theme change, color change. Color change here will override the brand color for that specific user of that workspace only.</li>
+          <li>Records per page is reflecting.</li>
+          <li>Language (currently only English accepted)</li>
+        </ol>
+      </li>
+      <li>Customization – module and features are visible based on visibility setting, quick access for that enabled feature is redirecting to feature transactions (records) page.</li>
+      <li>Privacy &amp; Security</li>
+      <li>Miscellaneous – Default landing page, preferred currency, auto-save drafts, save interval</li>
+      <li>Preferred user workspace</li>
+      <li>Reset Preferences</li>
+    </ol>
+  </li>
+
+  <li><strong>Groups</strong>
+    <ol>
+      <li>Archive/Unarchive</li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Roles</strong>
+    <ol>
+      <li>Platform Roles</li>
+      <li>Archive/Unarchive</li>
+      <li>Workspace Role</li>
+      <li>Feature Access Level</li>
+      <li>Data Access Level</li>
+      <li>User or Group Role Mapping</li>
+    </ol>
+  </li>
+
+  <li><strong>Workspace Management</strong>
+    <ol>
+      <li>Create Workspace</li>
+      <li>Clone Workspace</li>
+      <li>Archive Workspace</li>
+      <li>Workspace Settings</li>
+    </ol>
+  </li>
+
+  <li><strong>Organization Management</strong>
+    <ol>
+      <li>Organization Details</li>
+      <li>Organization Address</li>
+      <li>Branding Details</li>
+    </ol>
+  </li>
+
+  <li><strong>Module/Feature Management</strong>
+    <ol>
+      <li>Create/Manage Module</li>
+      <li>Create/Manage Features</li>
+      <li>Design components for features</li>
+      <li>Features and Modules can be published</li>
+      <li>Audit Logs (Platform &amp; Workspace)</li>
+      <li>Version Logs (Workspace &amp; Workflow)</li>
+      <li>Staging</li>
+      <li>Feature Card and Module Card Customization</li>
+    </ol>
+  </li>
+
+  <li><strong>Notification &amp; Alerts</strong>
+    <ol>
+      <li>Email Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>SMS Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>WhatsApp Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>In-App Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>Push Notification &amp; Templates – Create template and use template to send notification</li>
+    </ol>
+  </li>
+
+  <li><strong>Erudite Management</strong>
+    <ol>
+      <li><strong>Configuration (prerequisite)</strong>
+        <ol class="alpha">
+          <li>Enable Erudite Management in Role Management before testing.</li>
+          <li>Verify users without the role cannot access the Erudite Management module.</li>
+        </ol>
+      </li>
+      <li><strong>FAQs</strong>
+        <ol class="alpha">
+          <li>Create a new FAQ with a question, answer, and category (Account, Billing, General, Technical).</li>
+          <li>Verify the FAQ appears in the FAQ list after saving.</li>
+          <li>Enable "Display this on the dashboard" and verify the FAQ is visible on the dashboard.</li>
+          <li>Edit an existing FAQ and verify changes are saved correctly.</li>
+          <li>Delete a FAQ and verify it is removed from the list.</li>
+          <li>Search for a FAQ by keyword and verify correct results are returned.</li>
+        </ol>
+      </li>
+      <li><strong>Documentation</strong>
+        <ol class="alpha">
+          <li>Upload a document (PDF or DOC, max 5 MB) with a name, description, and category.</li>
+          <li>Verify the document appears in the Documentation list after saving.</li>
+          <li>Attempt to upload a file exceeding 5 MB and verify a validation error is shown.</li>
+          <li>Attempt to upload an unsupported file format and verify it is rejected.</li>
+          <li>Enable "Display this on the dashboard" and verify the document is visible on the dashboard.</li>
+          <li>Edit document details and verify changes are saved correctly.</li>
+          <li>Delete a document and verify it is removed from the list.</li>
+        </ol>
+      </li>
+      <li><strong>Tutorial Videos</strong>
+        <ol class="alpha">
+          <li>Upload a video (MP4, MOV, or MKV, max 50 MB) with a name, description, and category.</li>
+          <li>Verify the video appears in the Tutorial Videos list after saving.</li>
+          <li>Attempt to upload a file exceeding 50 MB and verify a validation error is shown.</li>
+          <li>Attempt to upload an unsupported file format and verify it is rejected.</li>
+          <li>Enable "Display this on the dashboard" and verify the video is visible on the dashboard.</li>
+          <li>Edit video details and verify changes are saved correctly.</li>
+          <li>Delete a video and verify it is removed from the list.</li>
+        </ol>
+      </li>
+      <li><strong>End User Access</strong>
+        <ol class="alpha">
+          <li>Verify end users can browse and read FAQs, documentation, and tutorial videos.</li>
+          <li>Verify items marked "Display on dashboard" appear on the user's dashboard.</li>
+          <li>Verify items not marked for dashboard display do not appear on the dashboard.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Components</strong>
+    <ol>
+      <li>Layouts
+        <ol>
+          <li>Column</li>
+          <li>Section (various nested scenarios)</li>
+        </ol>
+      </li>
+      <li>Data Management (API Integration, Device Integration)</li>
+      <li>Input Components (Phone Number, Password, Dropdown with Feature as Field Value)</li>
+      <li>Specialized Input &amp; Display</li>
+      <li>Display and Interaction</li>
+      <li>Media and Files</li>
+      <li>Forms and Validation</li>
+      <li>Utility Components</li>
+      <li>Data Config Component</li>
+      <li>Hyper Link Component</li>
+      <li>Favorite Component</li>
+      <li>OCR Component
+        <ol class="alpha">
+          <li>Add the OCR component to a feature form and upload an image or document.</li>
+          <li>General text extraction &#8594; verify the text is extracted from the uploaded image/document and displayed within the selected output textarea</li>
+          <li>Verify the extracted text is saved correctly with the record and is visible on View/Edit.</li>
+        </ol>
+      </li>
+      <li>Analytics &amp; Report Components
+        <ol>
+          <li>Chart Component</li>
+          <li>Gantt Chart Component</li>
+          <li>KPI Card Component</li>
+        </ol>
+      </li>
+      <li>Form UI
+        <ol>
+          <li>Table component and Table level formulas, Summary row formulas</li>
+        </ol>
+      </li>
+      <li>Reusable Component</li>
+    </ol>
+  </li>
+
+  <li><strong>Page Builder</strong>
+    <ol>
+      <li>Create a new page and verify it is saved and listed.</li>
+      <li>Drag-and-drop layouts (columns, sections) and reusable components onto the page canvas.</li>
+      <li>Configure component properties and verify changes reflect on the page.</li>
+      <li>Reorder, move, and delete components on the canvas.</li>
+      <li>Edit an existing page and verify changes are persisted.</li>
+      <li>Delete a page and verify it is removed from the list.</li>
+      <li>Publish the page and verify it renders correctly at runtime.</li>
+      <li>Verify the page is responsive across mobile, tablet, and desktop.</li>
+      <li>Verify role-based access — only authorized users can build/edit pages.</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Management</strong>
+    <ol>
+      <li>Visual canvas for creating workflows</li>
+      <li>Drag-and-drop node placement</li>
+      <li>Node connection with visual links</li>
+      <li>Canvas zoom and pan controls</li>
+      <li>Grid snap for alignment</li>
+      <li>Create new workflows</li>
+      <li>Edit existing workflows</li>
+      <li>Delete workflows</li>
+      <li>List/view all workflows</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Control Flow</strong>
+    <ol>
+      <li>Start Node (workflow trigger point)</li>
+      <li>End Node (workflow termination)</li>
+      <li>Condition/Decision Node (if-else logic)</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Communication</strong>
+    <ol>
+      <li>Email Notification Node</li>
+      <li>SMS Notification Node</li>
+      <li>User Task/Approval Node</li>
+      <li>System Notification Node</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Monitoring</strong>
+    <ol>
+      <li>Execution history logs</li>
+      <li>Workflow instance status tracking</li>
+      <li>Node-level execution details</li>
+      <li>Error logs and stack traces</li>
+      <li>Approval node changes for user selection</li>
+      <li>Added SLA and escalation reminder for approvals</li>
+      <li>Added parallel workflow approval node</li>
+    </ol>
+  </li>
+
+  <li><strong>Printing Templates</strong>
+    <ol>
+      <li>QR Code – Generate and Print</li>
+      <li>Barcode – Generate and Print</li>
+      <li>Invoice – Generate and Print</li>
+    </ol>
+  </li>
+
+  <li><strong>Role-Based Dashboards</strong>
+    <ol>
+      <li>Role-based dashboard template creation</li>
+      <li>Dashboard rendering based on created template</li>
+    </ol>
+  </li>
+
+  <li><strong>Scheduler &amp; Task Scheduler</strong>
+    <ol>
+      <li>Create and use Schedule</li>
+      <li>Create and use Task Schedule</li>
+      <li>Event-based task schedule</li>
+      <li>Schedule-based task schedule</li>
+      <li>Schedule a notification</li>
+      <li>SMS</li>
+      <li>Mail</li>
+      <li>WhatsApp</li>
+      <li>Push</li>
+      <li>In-App</li>
+      <li>Schedule a report send (PDF) through mail from a configured email template.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder Functionality</strong>
+    <ol>
+      <li>Same Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Cross Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Incompatible datatype operations, for example, arithmetic on a text input field, should show a
+          validation error.</li>
+      <li>Unrecognized fields, functions, or operators should show a validation error.</li>
+      <li>If external fields are called without where() conditions, it should show MULTIPLE RECORDS FOUND
+          ERROR in preview for non-aggregate functions/operations.</li>
+      <li>Variables are not working. Review which variables should be displayed in the modal.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder UI</strong>
+    <ol>
+      <li>On clicking a feature from the feature list, fields in the selected feature should be displayed,
+          except for the current field, to prevent self-call loops.</li>
+      <li>On selecting external feature fields, where() should appear in the modal.</li>
+      <li>On selecting where(), the modal should automatically switch to the Feature and Fields tab.</li>
+      <li>On hovering over a field, field information such as module name and feature name should be
+          displayed.</li>
+      <li>The Clear button or backspace should work as follows:
+        <ol class="roman">
+          <li>First click of clear/backspace will select the token.</li>
+          <li>Next click of clear/backspace will clear that token.</li>
+        </ol>
+      </li>
+      <li>Empty formulas should not be saved.</li>
+      <li>Formulas should not be saved without validation.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder – Helper Tools</strong>
+    <ol>
+      <li><strong>Cheat Sheet</strong> (<strong>?</strong> icon)
+        <ol class="alpha">
+          <li>Open the Cheat Sheet and verify functions are grouped by category (Lookup, Nested Lookup, Aggregation, Conditional, Math, String, Date).</li>
+          <li>Search for a function and verify the list filters correctly.</li>
+          <li>Click the copy icon on an example and verify it is copied to the clipboard.</li>
+          <li>Press Esc and verify the modal closes.</li>
+        </ol>
+      </li>
+      <li><strong>Examples</strong>
+        <ol class="alpha">
+          <li>Open the Examples drawer and verify 50 scenarios across all categories are listed.</li>
+          <li>Filter by a category and search; verify results update.</li>
+          <li>Click "Use This Pattern" and verify the formula is inserted into the editor.</li>
+        </ol>
+      </li>
+      <li><strong>Test Formula (Playground)</strong>
+        <ol class="alpha">
+          <li>For a current-feature calculation (e.g. <em>{number_field} * 5</em>), open Test Formula, verify a type-aware input appears per field (number/date/true-false/text), enter values, run, and verify the correct result, type, and (where relevant) matched-record count.</li>
+          <li>For a lookup formula (uses <em>.where()</em> / external feature fields), verify NO value-input form is shown and a "Lookup formula – test against a real record" message appears instead.</li>
+          <li>For an aggregate formula (SUM/COUNT/AVG/MIN/MAX of records), verify the "Aggregate formula – test against a real record" message is shown and the form is not available.</li>
+          <li>Verify the Test Formula button is disabled when the formula is empty.</li>
+        </ol>
+      </li>
+      <li><strong>Template Library</strong>
+        <ol class="alpha">
+          <li>Open the Template Library and verify the <strong>Most Used</strong> tab lists the 20 platform built-in templates (e.g. GST, TDS, net salary, lookups, aggregations).</li>
+          <li>Search and filter by category; verify results update.</li>
+          <li>Click "Use This Template" and verify the formula is inserted into the editor.</li>
+          <li>With a formula in the editor, click "Save current formula as template", fill title/category/description, save, and verify it appears under <strong>My Templates</strong>.</li>
+          <li>Delete a saved (non built-in) template and verify it is removed. Verify built-in templates cannot be deleted.</li>
+        </ol>
+      </li>
+      <li><strong>Formula Wizard</strong>
+        <ol class="alpha">
+          <li><strong>Lookup mode:</strong> choose "Lookup a value", select a source feature, select the field to return, add a match condition (verify the "Right side is a field reference" option shows a dropdown of the current feature's fields), check the live preview, and Insert.</li>
+          <li><strong>Aggregate mode:</strong> choose "Aggregate records", select feature/field, optionally add one filter condition, choose the function (SUM/COUNT/AVG/MIN/MAX), and Insert.</li>
+          <li>Verify the formula preview only appears after a return field is chosen, and that going Back keeps your previous selections.</li>
+          <li>After inserting, hover over the tokens in the editor and verify the correct Module name and Feature name are shown for each (including the source feature for the looked-up field).</li>
+        </ol>
+      </li>
+      <li><strong>Smart Validation Messages</strong>
+        <ol class="alpha">
+          <li>Enter an invalid formula (e.g. unknown function, missing where(), wrong argument count) and click Validate Expression; verify the error includes a helpful suggestion and an example, not just a generic message.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li><strong>Integrations</strong>
+    <ol>
+      <li>Step 1: Go to the Integration Type field and select "Third-Party Software".<br>
+        <span class="expected">Expected Result: A new dropdown field called Select Type should appear.</span>
+      </li>
+      <li>Step 2: Check the options inside the Select Type dropdown.<br>
+        <span class="expected">Expected Result: It should contain options including "Third-Party API" and "Google Drive".</span>
+      </li>
+      <li>Step 3: Choose "Third-Party API" from the dropdown.<br>
+        <span class="expected">Expected Result: The configuration fields specific to the Third-Party API should be displayed.</span>
+      </li>
+      <li>Step 4: Change the selection to "Google Drive".<br>
+        <span class="expected">Expected Result: The system should dynamically display the Google Drive configuration fields: Client ID, Client Secret, and Refresh Token.</span>
+      </li>
+    </ol>
+  </li>
 </ul>
 
 <!-- ═══════════════════════════════════════════════ -->

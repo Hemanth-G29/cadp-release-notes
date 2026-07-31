@@ -9,12 +9,76 @@
       "subject": "Components --> Quantity→ Number Stepper properties (value, min, max, and step) are not reflected in the form field when custom values are set."
     },
     {
+      "id": 700,
+      "subject": "In-App Notification → OnClick Trigger-->In-app notifications are not received when triggered via onClick event."
+    },
+    {
+      "id": 859,
+      "subject": "Signature field is received as encrypted/base64 text in email instead of displaying the actual signature image."
+    },
+    {
+      "id": 889,
+      "subject": "Taskscheduler--> In the Task Scheduler review page, the displayed details are not shown properly."
+    },
+    {
+      "id": 898,
+      "subject": "Task Scheduler → When the user creates a scheduled task using Feature Fields as the recipient source, the Recipient Email field displays column lists other than email fields."
+    },
+    {
+      "id": 939,
+      "subject": "Report Table-->when user add the tabe as the report table and publish it add data was not shown after the publish."
+    },
+    {
       "id": 961,
       "subject": "Formula overlaps when calling a saved Chart field in the Report Feature."
     },
     {
+      "id": 991,
+      "subject": "Components → Integration → When the user integrates a field and later renames the same field, then publishes the changes, the old integrated field mapping is not removed and still appears in the integration configuration."
+    },
+    {
+      "id": 1075,
+      "subject": "Formula field-->NOW() date operator does not display the correct current time, even though the organization's time zone is set to Indian Standard Time (IST)."
+    },
+    {
+      "id": 1162,
+      "subject": "Bullet List and Numbered List actions remove selected text instead of applying formatting."
+    },
+    {
+      "id": 1173,
+      "subject": "Components → Color Picker → Color Picker Properties→ Configured palette colors are not reflected on the Create page."
+    },
+    {
+      "id": 1195,
+      "subject": "Components →Charts →Area Chart hover guide lines are missing on the Create page."
+    },
+    {
+      "id": 1196,
+      "subject": "Components → Charts → Area Chart → Design→ Area chart color changes are not reflected on the Create page."
+    },
+    {
+      "id": 1197,
+      "subject": "Components → Charts → Chart Properties → Scatter Chart→ Scatter chart selection tools are missing and non-functional."
+    },
+    {
+      "id": 1199,
+      "subject": "Components → Charts→ Export option→ Chart title is partially hidden in exported files."
+    },
+    {
+      "id": 1210,
+      "subject": "Erudite Management → Documentation : File type validation is missing for Document and Thumbnail uploads."
+    },
+    {
+      "id": 1221,
+      "subject": "Default Landing Page preference is not applied after selection."
+    },
+    {
       "id": 1233,
       "subject": "Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted."
+    },
+    {
+      "id": 1242,
+      "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature →Removing the Field Key name hides data and triggers an incorrect delete confirmation popup."
     },
     {
       "id": 1247,
@@ -25,8 +89,20 @@
       "subject": "Mobile APK--> Charts-->The Horizontal Bar Chart (Bar H) is not displayed in the mobile app."
     },
     {
+      "id": 1250,
+      "subject": "Metadata → Archive / Unarchive → Unarchive → Groups : Archived groups are not listed in the Unarchive section."
+    },
+    {
       "id": 1252,
       "subject": "Mobile APK--> Charts-->The Pie Chart is not displayed in the mobile app."
+    },
+    {
+      "id": 1253,
+      "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature→ Drag Column option is not functioning in Platform Feature Data Table."
+    },
+    {
+      "id": 1254,
+      "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature→ New column is added at the end instead of next to the selected column."
     },
     {
       "id": 1256,
@@ -45,6 +121,10 @@
       "subject": "Components → Timer→ Timer is editable on the View page without clicking the Edit button."
     },
     {
+      "id": 1285,
+      "subject": "workflow-->File Uploade Node- uploaded file is not displayed when opening the output URL after the file upload."
+    },
+    {
       "id": 1288,
       "subject": "Workflow → Create Record Node → When the user configures a Create Record node with an Image Upload field, the Image Upload field is displayed as a Text field in the workflow configuration."
     },
@@ -57,20 +137,88 @@
       "subject": "Workflow → Update Record → When the user updates a record using the Update Record node, the updated values are not reflected in the corresponding feature."
     },
     {
+      "id": 1313,
+      "subject": "Components → Data Table → Data Table Properties → Table Type → Pivot Table→ Pivot Table configuration fields overlap on the Design page."
+    },
+    {
       "id": 1314,
       "subject": "Microsoft Teams OAuth Connection Fails with \"unauthorized_client\" Error Despite Providing Valid Credentials."
+    },
+    {
+      "id": 1317,
+      "subject": "Task Scheduler-->Email Template: The feature variables selected in the Message editor are not displayed correctly in the Preview section. The preview content does not match the message content."
     },
     {
       "id": 1318,
       "subject": "WhatsApp Template Creation-->When the cursor is placed in the Message Body and a feature variable is inserted, the variable is not added at the cursor position. Instead, it is inserted at the header area."
     },
     {
+      "id": 1319,
+      "subject": "Component → Progress Bar → Properties panel is empty on the Design page"
+    },
+    {
+      "id": 1324,
+      "subject": "Component → Address AutoComplete → An \"Access Denied\" message is displayed on the Create page."
+    },
+    {
+      "id": 1326,
+      "subject": "Component → Progress Bar → No field properties are available for the Progress Bar component on the Design page."
+    },
+    {
+      "id": 1366,
+      "subject": "Components → Carousel → Carousel Properties→ Outer Margin and Horizontal Padding perform the same function in Carousel Properties."
+    },
+    {
+      "id": 1374,
+      "subject": "Components → Carousel → Carousel Properties → Navigation→ Scroll Step, Dots, and dot color settings are not working on the Create/View page."
+    },
+    {
       "id": 1376,
       "subject": "List--->The Fields option in the List component properties displays unidentified symbols and unreadable characters in the popup window  "
     },
     {
+      "id": 1381,
+      "subject": "Component → List → Layout → Layout properties are overlapping on the Design page"
+    },
+    {
+      "id": 1387,
+      "subject": "Component → List → Layout → Image right-side Add button is not displayed properly on the Design page"
+    },
+    {
       "id": 1389,
       "subject": "Component → List → Layout → Compact right-side Add button is not displayed properly on the Design page"
+    },
+    {
+      "id": 1390,
+      "subject": "Navbar-->The Site Layout enable option in the Navbar component is not working. The toggle cannot be enabled when clicked.  "
+    },
+    {
+      "id": 1391,
+      "subject": "Component → List → Layout → 'No Image' condition works on the Create page but not on the Preview page"
+    },
+    {
+      "id": 1395,
+      "subject": "Navbar-->The button icon name  logo is displayed on the Design page, but it is not reflected on the Preview page."
+    },
+    {
+      "id": 1396,
+      "subject": "Component → List → Quick Card Style → Overlay → 'Add to Cart' button is overlapping"
+    },
+    {
+      "id": 1399,
+      "subject": "Integration → Payment Gateway → When the user configures and initiates a payment using PayPal, the payment transaction fails and the application displays the error message: “Request failed with status code 500.”"
+    },
+    {
+      "id": 1402,
+      "subject": "Navbar-->A circle-shaped icon-only button is displayed correctly on the Design page, but the Preview page shows text instead of the icon."
+    },
+    {
+      "id": 1403,
+      "subject": "Integration → Incorrect validation message displayed for missing or invalid payment input fields"
+    },
+    {
+      "id": 1404,
+      "subject": "Integration → Payment Gateway allows duplicate payment after successful transaction"
     },
     {
       "id": 1406,
@@ -81,8 +229,20 @@
       "subject": "Component → List → Appearance → Title Color and Subtitle Color are not updating."
     },
     {
+      "id": 1415,
+      "subject": "Component → List → Shape & Image → Image Ratio and Image Size properties are not working properly and not met on the Preview page."
+    },
+    {
       "id": 1416,
       "subject": "Task Scheduler--> Fails to execute the Print Template trigger. The task status changes from \"Pending\" to \"Failed\", and the notification email is not received.  "
+    },
+    {
+      "id": 1417,
+      "subject": "Component → List → Filter → Filter properties are not working on the Design and Preview pages"
+    },
+    {
+      "id": 1418,
+      "subject": "Task Scheduler-->The notification email is received successfully, but the attached PDF/file is not included. Instead, the email displays [object Object] instead of the actual attachment.  "
     },
     {
       "id": 1420,
@@ -107,6 +267,18 @@
     {
       "id": 1429,
       "subject": "Component → List → Overlapping issues are present in all properties and filters."
+    },
+    {
+      "id": 1434,
+      "subject": "Auto-generated ID is duplicated for new records."
+    },
+    {
+      "id": 1441,
+      "subject": " Formula field---> The formula field output is not displayed in the list data when the same feature variable is used. It only works when a different feature variable is mapped. This issue occurs only in the Aggregate field."
+    },
+    {
+      "id": 1442,
+      "subject": "Inconsistent Success Notification Display After Creating Notification Templates. Success Validation Message Missing for SMS and Email Template Creation."
     },
     {
       "id": 1443,
@@ -135,28 +307,425 @@
     {
       "id": 1451,
       "subject": "Component → Filter Component is displayed twice on the Design page in component list."
+    },
+    {
+      "id": 1453,
+      "subject": "E-Commerce components-->The mapped quantity fields are not displayed when Count Mode is set to Total Quantity (Amazon Style). They appear only after switching to Distinct Rows and back."
+    },
+    {
+      "id": 1487,
+      "subject": "Workspace-->The \"Module\" label is displayed twice when navigating to the Feature page by clicking the link button."
+    },
+    {
+      "id": 1497,
+      "subject": "Components → Text Block → Text Block Properties → Text Block content is not visible until the feature is reopened."
+    },
+    {
+      "id": 1512,
+      "subject": "Dashboard-->Cloning a module without features shows a \"Clone Successful\" message, but the cloned module is not displayed on the Dashboard. It is only visible in the Archive/Unarchive section."
+    },
+    {
+      "id": 1513,
+      "subject": "Metadata → Archive/Unarchive→ Select Workspace dropdown is missing in Archive and Unarchive Entry pages."
+    },
+    {
+      "id": 1514,
+      "subject": "Workspace-->Archiving and unarchiving a module automatically deletes its unpublished feature."
+    },
+    {
+      "id": 1517,
+      "subject": "Cloned role disappears after page refresh."
+    },
+    {
+      "id": 1518,
+      "subject": "User Management →Newly Created Group Is Not Reflected in Group Count Without Refresh."
+    },
+    {
+      "id": 1520,
+      "subject": "Components → Carousel → Carousel Properties → Section Header→ Section Header alignment is applied only to the subtitle, not the title."
+    },
+    {
+      "id": 1523,
+      "subject": "Metadata → Tenant Password Policies→ Tenant Password Policies title is partially hidden due to UI layout issue."
+    },
+    {
+      "id": 1525,
+      "subject": "Metadata → Audit → Login Activity Audit Logs-->Apply Filters in Login Activity Audit Logs Shows No Results Despite Matching Data"
+    },
+    {
+      "id": 1526,
+      "subject": "Workflow-->Approval Request node does not display the Push Notification channel in Approval Channels."
+    },
+    {
+      "id": 1528,
+      "subject": "Component → Tags Input → The Copy and Clear All options are missing from the right corner of the Tags Input field."
+    },
+    {
+      "id": 1529,
+      "subject": "User Management →Waiting Approval Count Is Inconsistent Between Tab Badge and Waiting Approval List."
+    },
+    {
+      "id": 1531,
+      "subject": "Component → Tags Input → Configured tag color is not retained on the Create page"
+    },
+    {
+      "id": 1534,
+      "subject": "Configuration-->The Show/Hide Password (eye) icon for the Firebase Server Key (Secret) field is misaligned and displayed at the edge of the input field."
+    },
+    {
+      "id": 1536,
+      "subject": "Workflow-->Feature Variables dropdown in the SMS Body field does not close automatically after selection.  "
+    },
+    {
+      "id": 1544,
+      "subject": "Workflow-->Changes made to the In-App custom message body are reflected in the Email custom message body in the Approval Request node.  "
+    },
+    {
+      "id": 1548,
+      "subject": "User Preferences → Privacy & Security→ Device Management list expands indefinitely, making Save/Cancel buttons difficult to access"
+    },
+    {
+      "id": 1556,
+      "subject": "Formula Field-->The calculated output value of the Formula Field is not displayed in the form after the record is submitted. However, the calculated value is correctly displayed in the List/Table View."
+    },
+    {
+      "id": 1560,
+      "subject": "Formula-->When the NOT operator is used with a Text Component, the validation is marked as successful without displaying any validation error, even though the condition is invalid"
+    },
+    {
+      "id": 1561,
+      "subject": "Formula-->The NOT operator accepts a Number Field without any validation error, allows the formula to be published successfully, and displays a calculated output value."
+    },
+    {
+      "id": 1578,
+      "subject": "Formula-->The CONCAT() function accepts Number variables, validates successfully, and generates output without showing any validation error."
+    },
+    {
+      "id": 1585,
+      "subject": "Formula-->The JOIN() function validates successfully when Number variables are used as arguments, even though it is intended to accept only Text/String values."
+    },
+    {
+      "id": 1592,
+      "subject": "Formula-->The STARTWITH() formula field does not display any output when the case-sensitive parameter (TRUE) is used, even after entering a valid value in the mapped City field.  "
+    },
+    {
+      "id": 1596,
+      "subject": "Formula-->The ENDWITH() formula field does not display any output when the case-sensitive parameter (TRUE) is used, even after entering a valid value in the mapped City field.  "
+    },
+    {
+      "id": 1598,
+      "subject": "Erudite Management → Tutorial Videos → Tutorial Videos action menu is clipped, hiding Edit and Delete options after adding a video"
+    },
+    {
+      "id": 1599,
+      "subject": "Erudite Management → Documentation→ Clicking a DOCX document downloads the file automatically instead of opening or previewing the document."
+    },
+    {
+      "id": 1601,
+      "subject": "Erudite Management → Tutorial Videos → Video upload allows MP3 audio files instead of restricting uploads to supported video formats"
+    },
+    {
+      "id": 1602,
+      "subject": "Formula-->The CONTAINS() formula field does not display any output when the case-sensitive (TRUE) parameter is used."
+    },
+    {
+      "id": 1603,
+      "subject": "Integrations ->No success notification is displayed after exporting documents from the Integration module."
+    },
+    {
+      "id": 1614,
+      "subject": "Formula-->The ROUND function syntax displays ROUND(number, decimals), but the formula is validated successfully even when the decimals parameter is not provided."
+    },
+    {
+      "id": 1623,
+      "subject": "Formula-->The SUM_OF_RECORDS() formula field does not calculate or display the total sum of records when used with & without filter conditions. Instead, it displays 0.00 even though valid numeric records are available."
+    },
+    {
+      "id": 1624,
+      "subject": "Formula-->The COUNT_RECORDS() formula returns 0.00 instead of the correct record count when valid records are available and no filter conditions are applied.  "
+    },
+    {
+      "id": 1625,
+      "subject": "Formula-->The COUNT_RECORDS() formula validates successfully without the required field argument."
+    },
+    {
+      "id": 1626,
+      "subject": "Formula-->The SUM_OF_RECORDS() formula validates successfully even when a text field is passed as the argument."
+    },
+    {
+      "id": 1628,
+      "subject": "Formula-->The AVG_OF_RECORDS() formula returns 0.00 instead of the correct average value, both with and without applying filter conditions, even when valid numeric records are available."
+    },
+    {
+      "id": 1629,
+      "subject": "Formula-->The AVG_OF_RECORDS() formula validates successfully even when a text field is used as the argument."
+    },
+    {
+      "id": 1630,
+      "subject": "Formula-->The COUNT_RECORDS() formula validates successfully when a string value is passed instead of the required field argument."
+    },
+    {
+      "id": 1632,
+      "subject": "Formula-->The MIN_OF_RECORDS() formula returns 0.00 instead of the correct minimum value, both with and without applying filter conditions, even when valid numeric records are available."
+    },
+    {
+      "id": 1636,
+      "subject": "Formula-->The MAX_OF_RECORDS() formula returns 0.00 instead of the correct maximum value, both with and without applying filter conditions, even when valid numeric records are available."
+    },
+    {
+      "id": 1638,
+      "subject": "Formula-->The UNIQUE() formula field returns a blank output even when the mapped Department field contains valid values."
+    },
+    {
+      "id": 1652,
+      "subject": "Formula-->Cross-feature formula using where() returns an empty value even when the matching records and filter condition are valid."
+    },
+    {
+      "id": 1653,
+      "subject": "Formula-->Expression Builder incorrectly validates non-existent field references as valid expressions."
+    },
+    {
+      "id": 1656,
+      "subject": "Formula-->The Formula Playground throws an Evaluation Error when testing the valid Boolean constant values (True and False), even though the formula passes validation successfully."
     }
   ],
   "overview": {},
   "narrative": {
-    "features": [],
-    "enhancements": [],
+    "features": [
+      {
+        "id": "",
+        "name": "Payment Mode",
+        "description": "New Payment Mode component and flow — method cards sourced from feature data, amount entry, a denomination sub-modal, and Bill/Paid/Balance totals; Confirm Payment submits the transaction.",
+        "impact": "End-to-end in-form payment capture."
+      },
+      {
+        "id": "",
+        "name": "Overflow (⋮) Menu",
+        "description": "New kebab-menu component that groups actions (Import, Email, Print, Hold, Recall) behind one trigger; items persist on Save and render in the action toolbar.",
+        "impact": "Declutters the action bar."
+      },
+      {
+        "id": "",
+        "name": "Discount Coupon",
+        "description": "Discount Coupon component — shoppers enter a code that is validated against configured coupons and applies a discount (builder + runtime); the computed discount can be written to a referenceable field.",
+        "impact": "Coupon/discount support at runtime."
+      },
+      {
+        "id": "",
+        "name": "DISTINCT formula aggregates",
+        "description": "New DISTINCT aggregate family — DISTINCT_COUNT / SUM / AVG / MIN / MAX_OF_RECORDS plus a SQL-style DISTINCT({field}) modifier — for unique-value calculations (e.g. unique outlets, active users).",
+        "impact": "Distinct-count metrics the engine previously couldn't express."
+      },
+      {
+        "id": "",
+        "name": "Button – link & open-modal",
+        "description": "Buttons support a text \"link\" variant and an \"open-modal\" action that opens any modal on the page.",
+        "impact": "More flexible button behaviour."
+      },
+      {
+        "id": "",
+        "name": "Table cell display mode",
+        "description": "Table columns can render as a read-only label that becomes editable on click, with per-column Cell Display, output decimals, and footer decimals.",
+        "impact": "Cleaner, configurable table cells."
+      },
+      {
+        "id": "",
+        "name": "Adjustable column width in Preview",
+        "description": "Column widths are respected and columns can be marked \"adjustable\" for Excel-style drag-resizing in Preview.",
+        "impact": "Tune table columns directly in preview."
+      },
+      {
+        "id": "",
+        "name": "Formula field \"Show As: Label\"",
+        "description": "Formula fields can render as a label row (label-left / value-right) with optional inline editing and summary-row styling (sign prefixes, coloured/emphasised values).",
+        "impact": "Presentable bill-summary style formula rows."
+      },
+      {
+        "id": "",
+        "name": "Configurable modal styling & footer",
+        "description": "Per-modal flat/Figma style overrides, a configurable set of footer action buttons, and custom Submit/Cancel labels.",
+        "impact": "Fully configurable modals."
+      },
+      {
+        "id": "",
+        "name": "Builder Preview guard",
+        "description": "Previewing an unpublished form shows a \"Back to Builder\" button and is view-only — Submit and Save-as-Draft are blocked.",
+        "impact": "Safe preview of unpublished forms."
+      }
+    ],
+    "enhancements": [
+      {
+        "id": "",
+        "module": "Formula Engine",
+        "description": "DISTINCT aggregates now run as a MongoDB group query — a ~12k-row distinct count drops from ~16.8s to ~0.55s.",
+        "benefit": "Much faster distinct-aggregate dashboards."
+      },
+      {
+        "id": "",
+        "module": "Formula Engine",
+        "description": "DISTINCT aggregates now appear in autocomplete/help; an Expression Builder render loop was fixed.",
+        "benefit": "Discoverable DISTINCT functions."
+      },
+      {
+        "id": "",
+        "module": "Reports / Extraction",
+        "description": "Projection-formula rows are evaluated with bounded parallelism, fetching only the reference fields a response needs.",
+        "benefit": "Faster projection and extraction."
+      },
+      {
+        "id": "",
+        "module": "Data Table",
+        "description": "Formula columns support Sum / Average / Min / Max footer totals, not just Count.",
+        "benefit": "Richer totals rows."
+      },
+      {
+        "id": "",
+        "module": "Tax Summary",
+        "description": "Pivot headers show readable labels instead of raw field keys, with an opt-in modern (Figma) style.",
+        "benefit": "Readable, polished tax summary."
+      },
+      {
+        "id": "",
+        "module": "Button",
+        "description": "Button icons persist on Save/Publish; the icon picker uses the tenant brand colour with proper alignment.",
+        "benefit": "Reliable, on-brand button icons."
+      },
+      {
+        "id": "",
+        "module": "Components",
+        "description": "Column width is now single-source — a width set to 20% no longer reverts to 35%.",
+        "benefit": "Predictable column widths."
+      },
+      {
+        "id": "",
+        "module": "Transactions",
+        "description": "Line items (including quantities) can be copied from another feature via a header lookup.",
+        "benefit": "Faster line-item entry."
+      },
+      {
+        "id": "",
+        "module": "Transaction Layout",
+        "description": "Desktop preview scrolls only the form body; tall columns scroll internally (no global page scrollbar); tighter header/padding; the summary/right column stays fully visible.",
+        "benefit": "Cleaner, more usable transaction forms."
+      },
+      {
+        "id": "",
+        "module": "Save Properties Modal",
+        "description": "Sits below the fixed app header, clips to its rounded corners, shows the real data-field count, and themes the Device Visibility card to brand.",
+        "benefit": "Polished Save Properties dialog."
+      },
+      {
+        "id": "",
+        "module": "Import Feature Modal",
+        "description": "Clears the fixed app header and scrolls tall content internally.",
+        "benefit": "Usable import dialog."
+      },
+      {
+        "id": "",
+        "module": "JSON Preview",
+        "description": "Shows the true recursive component count and matches the Save modal's size and position.",
+        "benefit": "Accurate JSON preview."
+      },
+      {
+        "id": "",
+        "module": "Lookup / Dropdown",
+        "description": "Feature-backed dropdowns open in the correct position without flicker, show a single brand focus ring, and no longer flash on selection.",
+        "benefit": "Smoother dropdowns."
+      },
+      {
+        "id": "",
+        "module": "Transaction Management",
+        "description": "Display-only components (labels/headings/dividers) no longer appear as empty columns and are excluded from the submitted payload.",
+        "benefit": "Cleaner listings and saved data."
+      },
+      {
+        "id": "",
+        "module": "Payment Mode",
+        "description": "The payment value renders as method chips with Paid/Balance (not raw JSON); Confirm Payment shows a spinner and disables during submit.",
+        "benefit": "Readable payment cells; no double-submit."
+      },
+      {
+        "id": "",
+        "module": "Layout",
+        "description": "Sections reflow when a nested accordion collapses; the accordion header title aligns with its chevron.",
+        "benefit": "Tighter, responsive layouts."
+      },
+      {
+        "id": "",
+        "module": "Builder",
+        "description": "The \"Save as Draft\" button label is editable and persists.",
+        "benefit": "Custom draft-button text."
+      },
+      {
+        "id": "",
+        "module": "Properties Panel",
+        "description": "Advanced Layout toggles can be deselected by clicking the active option.",
+        "benefit": "More flexible layout configuration."
+      },
+      {
+        "id": "",
+        "module": "Overflow Menu",
+        "description": "Compact, aligned default layout with themed line-icons that follow the text colour.",
+        "benefit": "Consistent overflow menu."
+      },
+      {
+        "id": "",
+        "module": "Workspace Switcher",
+        "description": "Inactive workspaces show a neutral gray icon chip; only the active one keeps the brand tint.",
+        "benefit": "Clearer active-workspace cue."
+      }
+    ],
     "whatToTest": [],
     "knownIssues": [
       [
-        "999",
-        "Sample manual known issue",
-        "Do the workaround"
-      ]
-    ],
-    "apiChanges": [
+        "",
+        "Role Management Change Effect",
+        "Because some menu structures have changed, certain features may return a 403 status code. To resolve this, edit the role, select the platform feature, and save the role again."
+      ],
       [
-        "/v1/reports",
-        "Added",
-        "New reports endpoint"
+        "",
+        "Scheduler with Workflow Not Working",
+        "Use the conventional feature-wise approach wherever workflow scheduling is required."
+      ],
+      [
+        "",
+        "Formula Builder UI – Field Insertion Through Typing",
+        "This works in current fields. For external feature fields, it won't work, as there could be fields with same names from multiple features."
+      ],
+      [
+        "",
+        "Formula Builder – AI-Based Formula Writing/Editing Not Implemented",
+        "Use manual formula entry instead."
+      ],
+      [
+        "364",
+        "Organization Details → Basic Info: Website URL accepts invalid URL formats without validation.",
+        "Expected: Validate the URL format and show an error message for invalid values, such as www.example or example@123.www.example"
+      ],
+      [
+        "",
+        "Builder Tool Not Available on Mobile Web",
+        "The builder tool is not supported on mobile web. This is implemented as expected — builder functionality is restricted to desktop browsers by design. It should be available on Tab though."
+      ],
+      [
+        "",
+        "Mobile – Formula Field Not Working in Tables & Charts",
+        "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
+      ],
+      [
+        "",
+        "AI Components — the AI Text Generator, OCR Extraction (Field Extraction), and Doc Summarizer currently do not work, because the LLM Gateway API is blocking the domains (CORS).",
+        "Use OCR Extraction (General Extraction), which works as expected."
       ]
     ],
-    "configChanges": []
+    "apiChanges": [],
+    "configChanges": [
+      [
+        "Re-seed componentProperties",
+        "Re-seed `componentProperties` in the target environment so the new component styling/config keys (table column display mode & number format, and label styling authored under `advanced.*`) persist on Save.",
+        "Without the re-seed, these styling/config keys are stripped on save."
+      ]
+    ]
   },
   "approvedAt": null
 }
