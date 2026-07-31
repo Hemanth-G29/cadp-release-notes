@@ -16,6 +16,8 @@
 const { createStore } = require('../src/store');
 const svc = require('../src/service');
 const mailwatch = require('../src/mailwatch');
+const { performRollover } = require('../src/rollover');
+const { fetchAccountTimeZone } = require('../src/openproject');
 const { htmlToPdf } = require('../src/pdf');
 
 /**
@@ -47,6 +49,21 @@ async function ensurePdfs(store, liveVersion) {
 
 async function main() {
   const store = createStore();
+
+  // Manual version bump (Actions → Run workflow → rollover: true) — the stand-in for the mail
+  // trigger when Microsoft Graph isn't configured. Freezes the current version, moves its bugs to
+  // Ready for Testing, and opens the next version. ROLLOVER_DRYRUN=true previews with no changes.
+  if (/^(1|true|yes)$/i.test(process.env.ROLLOVER || '')) {
+    const dryRun = /^(1|true|yes)$/i.test(process.env.ROLLOVER_DRYRUN || '');
+    const tz = await fetchAccountTimeZone().catch(() => 'Asia/Kolkata');
+    const audit = await performRollover(
+      { store, releaseDate: svc.displayDate(tz), cutoffIso: new Date().toISOString(), mailId: null, tz },
+      { dryRun }
+    );
+    console.log(`manual rollover${dryRun ? ' (DRY RUN)' : ''}: BUILD ${audit.version} → live ${audit.nextVersion}; ` +
+      `moved ${audit.moved.length}, skipped ${audit.skipped.length}, failed ${audit.failed.length}`);
+    if (audit.moved.length) console.log(`  moved IDs: ${audit.moved.join(', ')}`);
+  }
 
   const reconcile = await svc.tickReconcile(store);
   console.log(`reconcile: liveVersion=${reconcile.liveVersion} bugs=${reconcile.bugCount} tz=${reconcile.tz}` +

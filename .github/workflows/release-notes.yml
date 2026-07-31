@@ -8,7 +8,16 @@ name: Release Notes (build + publish to Pages)
 on:
   schedule:
     - cron: '*/15 * * * *'      # every ~15 min (GitHub may delay/batch scheduled runs)
-  workflow_dispatch: {}          # manual run (e.g. to force a rollover check)
+  workflow_dispatch:             # manual run
+    inputs:
+      rollover:
+        description: 'Bump version: freeze the current build, move its bugs to Ready for Testing, open the next'
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Dry run — show what the bump would do, make NO changes'
+        type: boolean
+        default: false
 
 # Let a run finish (a rollover mutates OpenProject) before the next starts.
 concurrency:
@@ -60,6 +69,8 @@ jobs:
           STORE_BACKEND: pages
           SITE_DIR: site
           CONTENT_DIR: content
+          ROLLOVER: ${{ inputs.rollover }}
+          ROLLOVER_DRYRUN: ${{ inputs.dry_run }}
           CHANGELOG_ROOT: ${{ vars.PLATFORM_REPO != '' && 'platform' || '' }}
           OPENPROJECT_TOKEN: ${{ secrets.OPENPROJECT_TOKEN }}
           OPENPROJECT_HOST: pmt.cavininfotech.com
