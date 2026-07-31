@@ -18,6 +18,10 @@ on:
         description: 'Dry run — show what the bump would do, make NO changes'
         type: boolean
         default: false
+      confirm_version:
+        description: 'To bump, type the CURRENT version number you are cutting (e.g. 20). Must match — guards against accidental double-bump.'
+        type: string
+        default: ''
 
 # Let a run finish (a rollover mutates OpenProject) before the next starts.
 concurrency:
@@ -71,6 +75,7 @@ jobs:
           CONTENT_DIR: content
           ROLLOVER: ${{ inputs.rollover }}
           ROLLOVER_DRYRUN: ${{ inputs.dry_run }}
+          ROLLOVER_CONFIRM: ${{ inputs.confirm_version }}
           CHANGELOG_ROOT: ${{ vars.PLATFORM_REPO != '' && 'platform' || '' }}
           OPENPROJECT_TOKEN: ${{ secrets.OPENPROJECT_TOKEN }}
           OPENPROJECT_HOST: pmt.cavininfotech.com

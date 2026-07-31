@@ -55,14 +55,22 @@ async function main() {
   // Ready for Testing, and opens the next version. ROLLOVER_DRYRUN=true previews with no changes.
   if (/^(1|true|yes)$/i.test(process.env.ROLLOVER || '')) {
     const dryRun = /^(1|true|yes)$/i.test(process.env.ROLLOVER_DRYRUN || '');
-    const tz = await fetchAccountTimeZone().catch(() => 'Asia/Kolkata');
-    const audit = await performRollover(
-      { store, releaseDate: svc.displayDate(tz), cutoffIso: new Date().toISOString(), mailId: null, tz },
-      { dryRun }
-    );
-    console.log(`manual rollover${dryRun ? ' (DRY RUN)' : ''}: BUILD ${audit.version} → live ${audit.nextVersion}; ` +
-      `moved ${audit.moved.length}, skipped ${audit.skipped.length}, failed ${audit.failed.length}`);
-    if (audit.moved.length) console.log(`  moved IDs: ${audit.moved.join(', ')}`);
+    // Guard: you must type the CURRENT live version to bump. A repeated click can't bump twice —
+    // after the first bump the live version changes, so the same confirm value no longer matches.
+    const confirm = String(process.env.ROLLOVER_CONFIRM || '').trim();
+    const st = await store.readState();
+    if (confirm !== String(st.liveVersion)) {
+      console.log(`rollover SKIPPED: confirm_version "${confirm || '(empty)'}" must equal the current live version (${st.liveVersion}) to proceed — guards against accidental double-bumps.`);
+    } else {
+      const tz = await fetchAccountTimeZone().catch(() => 'Asia/Kolkata');
+      const audit = await performRollover(
+        { store, releaseDate: svc.displayDate(tz), cutoffIso: new Date().toISOString(), mailId: null, tz },
+        { dryRun }
+      );
+      console.log(`manual rollover${dryRun ? ' (DRY RUN)' : ''}: BUILD ${audit.version} → live ${audit.nextVersion}; ` +
+        `moved ${audit.moved.length}, skipped ${audit.skipped.length}, failed ${audit.failed.length}`);
+      if (audit.moved.length) console.log(`  moved IDs: ${audit.moved.join(', ')}`);
+    }
   }
 
   const reconcile = await svc.tickReconcile(store);
