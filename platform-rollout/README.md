@@ -8,10 +8,14 @@ the platform repos carries a `QA-Release-Note:` tag.
 - **Layer 2 (CI enforcement):** a GitLab CI job (`ci/check-qa-release-note.sh` + a `.gitlab-ci.yml` job)
   that fails a **merge request** if any changed `docs/changes` entry is missing the tag. Requires a
   GitLab runner.
-- **Layer 3 (pre-commit hook):** `.githooks/pre-commit` blocks a **`git commit`** locally when a staged
-  `docs/changes` entry is untagged — the earliest catch, easiest to fix. Auto-activated by a
-  `package.json` `prepare` script (`git config core.hooksPath .githooks`) that runs on `npm install`.
-  Best-effort (per-clone; bypassable with `git commit --no-verify`).
+- **Layer 3 (pre-commit hook):** appends the tag check to each repo's **existing `git-hooks/pre-commit`**
+  (the repos already set `core.hooksPath git-hooks` via a *failure-safe* `postinstall`). Blocks a local
+  `git commit` when a staged `docs/changes` entry is untagged. Best-effort (per-clone; bypassable with
+  `--no-verify`). **Do NOT** add a bare `git config core.hooksPath` to `prepare` — it runs during
+  `npm install` in Docker/CI where git is absent and hard-fails the build (this happened once; see `fix.sh`).
+
+> `fix.sh <repo>` repairs a repo that got the earlier broken Layer 3 (removes the naked `prepare` and
+> stray `.githooks/`, moves the check into `git-hooks/pre-commit`). `apply.sh` now does the right thing.
 
 ## Apply to one repo
 
