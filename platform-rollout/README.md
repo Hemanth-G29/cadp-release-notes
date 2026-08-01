@@ -5,9 +5,13 @@ the platform repos carries a `QA-Release-Note:` tag.
 
 - **Layer 1 (required):** appends the tagging rule to each repo's `CLAUDE.md`, so Claude Code tags
   every changelog entry. Without this, the GitLab aggregator finds nothing.
-- **Layer 2 (enforcement):** a GitLab CI job (`ci/check-qa-release-note.sh` + a `.gitlab-ci.yml` job)
-  that fails a merge request if any changed `docs/changes` entry is missing the tag — catches manual /
-  non-Claude-Code commits. Requires a GitLab runner.
+- **Layer 2 (CI enforcement):** a GitLab CI job (`ci/check-qa-release-note.sh` + a `.gitlab-ci.yml` job)
+  that fails a **merge request** if any changed `docs/changes` entry is missing the tag. Requires a
+  GitLab runner.
+- **Layer 3 (pre-commit hook):** `.githooks/pre-commit` blocks a **`git commit`** locally when a staged
+  `docs/changes` entry is untagged — the earliest catch, easiest to fix. Auto-activated by a
+  `package.json` `prepare` script (`git config core.hooksPath .githooks`) that runs on `npm install`.
+  Best-effort (per-clone; bypassable with `git commit --no-verify`).
 
 ## Apply to one repo
 
