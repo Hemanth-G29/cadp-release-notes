@@ -1,23 +1,24 @@
 #!/usr/bin/env bash
 # Roll out the QA release-note discipline to ONE platform repo. Idempotent.
-#   Layer 1 — appends the QA-Release-Note rule to the repo's CLAUDE.md (creates it if missing),
-#             so Claude Code tags every docs/changes entry.
-#   Layer 2 — installs ci/check-qa-release-note.sh + a .gitlab-ci.yml job that FAILS a merge request
-#             if any changed docs/changes entry is missing a QA-Release-Note tag.
+#   Layer 1 — appends the QA-Release-Note rule to CLAUDE.md, so Claude Code tags every docs/changes
+#             entry (this is what actually drives the release notes).
+#   Layer 3 — appends a pre-commit check to the repo's EXISTING git-hooks/pre-commit that blocks a
+#             commit which ADDS an untagged docs/changes entry. Checks only newly-added entries, so it
+#             never trips on untagged historical entries.
 #
-# Usage: bash apply.sh <path-to-repo>
-# Apply on a branch that flows into the QA build (i.e. devops/dev), then open an MR.
+# There is intentionally NO GitLab CI layer: it needs a runner, adds a pipeline to every MR, and the
+# CLAUDE.md rule + hook already cover it. (Earlier versions added one; `fix2.sh` removes it.)
+#
+# Usage: bash apply.sh <repo-path>   — commit on a branch that flows into the QA build (devops/dev) via MR.
 set -uo pipefail
-REPO="${1:?usage: apply.sh <repo-path>}"
-[ -d "$REPO" ] || { echo "not a directory: $REPO"; exit 1; }
-name="$(basename "$REPO")"
-echo "== $name =="
+REPO="${1:?usage: apply.sh <repo-path>}"; [ -d "$REPO" ] || { echo "not a directory: $REPO"; exit 1; }
+name="$(basename "$REPO")"; echo "== $name =="
 
 # ---- Layer 1: CLAUDE.md rule ----
 CLAUDE="$REPO/CLAUDE.md"
 [ -f "$CLAUDE" ] || { printf '# %s — Claude Code Instructions\n' "$name" > "$CLAUDE"; echo "  created CLAUDE.md"; }
 if grep -q 'QA-Release-Note' "$CLAUDE"; then
-  echo "  Layer 1: CLAUDE.md already has the rule — skipped"
+  echo "  Layer 1: CLAUDE.md already has the rule"
 else
   cat >> "$CLAUDE" <<'MD'
 
@@ -39,60 +40,8 @@ MD
   echo "  Layer 1: CLAUDE.md rule appended"
 fi
 
-# ---- Layer 2: CI check script ----
-mkdir -p "$REPO/ci"
-cat > "$REPO/ci/check-qa-release-note.sh" <<'SH'
-#!/usr/bin/env bash
-# Fail if any docs/changes/*.md entry changed in this MR is missing a QA-Release-Note tag.
-# Arg 1 = the base commit/ref to diff against (GitLab: $CI_MERGE_REQUEST_DIFF_BASE_SHA).
-set -uo pipefail
-BASE="${1:-origin/devops/dev}"
-mapfile -t files < <(git diff --name-only "$BASE" HEAD -- 'docs/changes/*.md' ':(exclude)**/INDEX.md' 2>/dev/null || true)
-fail=0
-for f in "${files[@]}"; do
-  [ -f "$f" ] || continue   # deleted file
-  entries=$(grep -cE '^## ' "$f" || true)
-  tags=$(grep -cE '^[[:space:]]*-[[:space:]]*\*\*QA-Release-Note:\*\*' "$f" || true)
-  if [ "$entries" -ne "$tags" ]; then
-    echo "FAIL  $f — $entries entries but $tags QA-Release-Note tags (every entry needs exactly one)."
-    fail=1
-  fi
-done
-[ "$fail" -eq 0 ] && echo "OK: every changed docs/changes entry carries a QA-Release-Note tag."
-exit $fail
-SH
-chmod +x "$REPO/ci/check-qa-release-note.sh"
-echo "  Layer 2: ci/check-qa-release-note.sh installed"
-
-# ---- Layer 2: .gitlab-ci.yml job ----
-GLCI="$REPO/.gitlab-ci.yml"
-if [ -f "$GLCI" ]; then
-  grep -q 'qa-release-note-check' "$GLCI" \
-    && echo "  Layer 2: .gitlab-ci.yml already has the job — skipped" \
-    || echo "  Layer 2: ⚠ .gitlab-ci.yml exists — add the job manually (see platform-rollout/gitlab-ci.snippet.yml)"
-else
-  cat > "$GLCI" <<'YML'
-# QA release-note enforcement: fails a merge request if a docs/changes entry lacks a QA-Release-Note tag.
-# Requires a GitLab runner. If the project already has a .gitlab-ci.yml, merge this job into it instead.
-qa-release-note-check:
-  stage: test
-  image: alpine:3.20
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-  variables:
-    GIT_DEPTH: "0"
-  before_script:
-    - apk add --no-cache git bash
-  script:
-    - bash ci/check-qa-release-note.sh "${CI_MERGE_REQUEST_DIFF_BASE_SHA:-origin/devops/dev}"
-YML
-  echo "  Layer 2: .gitlab-ci.yml created with the check job"
-fi
-
-# ---- Layer 3: pre-commit hook via the repo's EXISTING git-hooks/ convention ----
-# DO NOT add a bare `git config core.hooksPath` to package.json `prepare` — it runs during
-# `npm install` in Docker/CI where git is absent and HARD-FAILS the build (exit 127). Reuse the
-# repo's failure-safe postinstall (try/catch) and append the check to its real git-hooks/pre-commit.
+# ---- Layer 3: pre-commit check via the repo's EXISTING git-hooks/ convention ----
+# Reuse the repo's failure-safe postinstall (try/catch) so `npm install` in Docker/CI never fails.
 REF="$(cd "$(dirname "$0")/../../Services/cadp_master_backend_nodejs" 2>/dev/null && pwd)"
 if [ -f "$REPO/package.json" ]; then
   node -e '
@@ -107,17 +56,17 @@ if [ -f "$REPO/package.json" ]; then
 fi
 mkdir -p "$REPO/git-hooks"
 [ -f "$REPO/git-hooks/pre-commit" ] || { printf '#!/bin/sh\n' > "$REPO/git-hooks/pre-commit"; chmod +x "$REPO/git-hooks/pre-commit"; }
-if grep -q 'QA-Release-Note' "$REPO/git-hooks/pre-commit"; then
-  echo "  Layer 3: git-hooks/pre-commit already has the QA check"
+if grep -q 'QA release-note tag check' "$REPO/git-hooks/pre-commit"; then
+  echo "  Layer 3: git-hooks/pre-commit already has the check"
 else
   cat >> "$REPO/git-hooks/pre-commit" <<'SH'
 
-# --- QA release-note tag check (release-notes rollout) ---
+# --- QA release-note tag check (only NEWLY-ADDED entries) ---
 for f in $(git diff --cached --name-only --diff-filter=ACM -- 'docs/changes/*.md' 2>/dev/null | grep -iv 'INDEX.md'); do
-  e=$(git show ":$f" 2>/dev/null | grep -c '^## ')
-  t=$(git show ":$f" 2>/dev/null | grep -c 'QA-Release-Note:')
-  if [ "$e" -ne "$t" ]; then
-    echo "[pre-commit] $f: $e changelog entries but $t QA-Release-Note tag(s)."
+  ne=$(git diff --cached -U0 -- "$f" | grep -cE '^\+## ')
+  nt=$(git diff --cached -U0 -- "$f" | grep -cE '^\+[[:space:]]*-[[:space:]]*\*\*QA-Release-Note:')
+  if [ "$ne" -gt "$nt" ]; then
+    echo "[pre-commit] $f: a newly-added changelog entry is missing a QA-Release-Note tag."
     echo "[pre-commit] Add: - **QA-Release-Note:** feature | enhancement | test | known-issue | api | config | none  (bypass: git commit --no-verify)"
     exit 1
   fi
@@ -126,4 +75,3 @@ SH
   echo "  Layer 3: appended QA check to git-hooks/pre-commit"
 fi
 echo
-

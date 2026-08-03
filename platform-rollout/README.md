@@ -4,18 +4,18 @@ Makes the release-notes auto-tracking actually get fed, by ensuring every `docs/
 the platform repos carries a `QA-Release-Note:` tag.
 
 - **Layer 1 (required):** appends the tagging rule to each repo's `CLAUDE.md`, so Claude Code tags
-  every changelog entry. Without this, the GitLab aggregator finds nothing.
-- **Layer 2 (CI enforcement):** a GitLab CI job (`ci/check-qa-release-note.sh` + a `.gitlab-ci.yml` job)
-  that fails a **merge request** if any changed `docs/changes` entry is missing the tag. Requires a
-  GitLab runner.
-- **Layer 3 (pre-commit hook):** appends the tag check to each repo's **existing `git-hooks/pre-commit`**
+  every changelog entry. **This is what drives the release notes** — without it the aggregator finds nothing.
+- **Layer 3 (pre-commit hook, optional):** appends a check to each repo's **existing `git-hooks/pre-commit`**
   (the repos already set `core.hooksPath git-hooks` via a *failure-safe* `postinstall`). Blocks a local
-  `git commit` when a staged `docs/changes` entry is untagged. Best-effort (per-clone; bypassable with
-  `--no-verify`). **Do NOT** add a bare `git config core.hooksPath` to `prepare` — it runs during
-  `npm install` in Docker/CI where git is absent and hard-fails the build (this happened once; see `fix.sh`).
+  `git commit` that ADDS an untagged `docs/changes` entry — **checks only newly-added entries**, so it
+  never trips on untagged historical entries. Best-effort (per-clone, activated by `npm install`;
+  bypassable with `--no-verify`).
 
-> `fix.sh <repo>` repairs a repo that got the earlier broken Layer 3 (removes the naked `prepare` and
-> stray `.githooks/`, moves the check into `git-hooks/pre-commit`). `apply.sh` now does the right thing.
+> **No GitLab CI layer.** An earlier version added a `.gitlab-ci.yml` MR check — it needed a runner,
+> put a pipeline on every MR, and its whole-file tag count failed on any file with untagged history.
+> `fix2.sh <repo>` removes it and fixes the hook. `apply.sh` now installs only Layers 1 + 3.
+> **Do NOT** add a bare `git config core.hooksPath` to `prepare` — it runs during `npm install` in
+> Docker/CI where git is absent and hard-fails the build (this happened once).
 
 ## Apply to one repo
 
