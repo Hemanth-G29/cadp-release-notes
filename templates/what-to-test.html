@@ -8,34 +8,40 @@
     </ol>
   </li>
 
-  <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong>
+  <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong> (Cavin's AI assistant — the AI launcher icon)
+    <p><em>Note: in this build AI Create and AI Ask are blocked by a known issue (see Known Issues — AI credentials not loading from Vault). Run these flows once that is resolved.</em></p>
     <ol>
       <li><strong>AI App Creation</strong>
         <ol class="alpha">
-          <li>Open the AI application builder and enter a prompt describing the application to build.</li>
-          <li>Verify the AI generates the application along with its modules and features.</li>
-          <li>Verify the generated modules and features are listed and can be opened in the workspace.</li>
-          <li>Refine/regenerate from the prompt and verify the application updates accordingly.</li>
-          <li>Publish the generated application and verify it renders correctly at runtime.</li>
-          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+          <li>From the workspace (any page other than Modules Management / Features Management / Builder Tool), open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new application from your description".</li>
+          <li>Describe the application to build and send. Verify creation progress is shown and "Application created from AI." appears on completion.</li>
+          <li>Verify the generated application, its modules and features are listed and can be opened in the workspace.</li>
+          <li>If the AI asks clarifying questions, answer them and verify creation continues (no success message is shown until something is actually created).</li>
         </ol>
       </li>
       <li><strong>AI Module Creation</strong>
         <ol class="alpha">
-          <li>From within an application, choose "Create Module with AI" and describe the module to build.</li>
-          <li>Verify the AI generates the module with the expected features and fields.</li>
-          <li>Verify the module appears in the module list and can be edited further.</li>
-          <li>Publish the module and verify it is available at runtime.</li>
-          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+          <li>Open an application's <strong>Modules Management</strong> page, open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new module here".</li>
+          <li>Describe the module to build and send. Verify "Created N module(s) from AI." appears and the module list refreshes with the new module(s).</li>
+          <li>Open the created module and verify it can be edited further.</li>
         </ol>
       </li>
       <li><strong>AI Feature Creation</strong>
         <ol class="alpha">
-          <li>Within a module, choose "Create Feature with AI" and describe the feature to build.</li>
-          <li>Verify the AI generates the feature form with the appropriate components and fields.</li>
-          <li>Verify the feature appears in the feature list and can be designed/edited further.</li>
-          <li>Publish the feature and verify records can be created, viewed, and edited.</li>
-          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+          <li>Open a module's <strong>Features Management</strong> page (or the Builder Tool), open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new feature here".</li>
+          <li>Describe the feature to build and send. Verify "Created N feature(s) from AI." appears and the feature list refreshes.</li>
+          <li>From the Builder Tool, verify you are taken to the first created feature in the builder.</li>
+          <li>Verify the generated form has appropriate components/fields, then publish it and verify records can be created, viewed and edited.</li>
+        </ol>
+      </li>
+      <li><strong>Create / Ask mode behaviour</strong>
+        <ol class="alpha">
+          <li>In the Create tab, type a question instead of a build request. Verify nothing is created and an "Ask this in Ask mode" suggestion is offered; clicking it moves the question to the Ask tab.</li>
+          <li>With a user who has only AI Builder or only AI Ask access, verify only that tab is available; with no create access, verify past conversations are read-only.</li>
+          <li>Verify conversation history can be searched and reopened for each mode.</li>
         </ol>
       </li>
       <li><strong>AI Ask FAQ</strong>
@@ -60,11 +66,11 @@
           <li>CADP Builder Tool Guide</li>
         </ul>
         <ol class="alpha">
-          <li>Open AI Ask FAQ and ask a question about platform configuration on one of the trained topics above.</li>
+          <li>Open Cavin&#39;s AI, select the <strong>Ask</strong> tab and ask a question about platform configuration on one of the trained topics above.</li>
           <li>Verify a relevant and accurate answer is returned.</li>
           <li>Ask a follow-up or ambiguous question and verify it is handled gracefully.</li>
           <li>Ask a question outside the trained topics and verify AI Ask FAQ declines or returns an appropriate out-of-scope fallback rather than a fabricated answer.</li>
-          <li>Verify the prompt and response are logged and routed through CavinGuard.</li>
+          <li>Verify Ask mode changes nothing in the workspace (it only answers).</li>
         </ol>
       </li>
     </ol>
