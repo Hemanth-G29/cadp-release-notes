@@ -17,3 +17,11 @@
 - **Files:**
   - content/known-issues.md
   - templates/what-to-test.html
+
+## 2026-10-13 — Advance the automation state to live build 22
+- **Author:** hemanth.a
+- **What:** `site/state.json` now says live build 22, last announced 21, cutoff 2026-10-13T08:35:17Z, with the bug list and narrative reset (what a rollover leaves). v20 (189 bugs) and v21 (31 bugs) were built locally, sent to QA, and their bugs moved Developed → Ready for Testing by hand, because the scheduled workflow has failed since 2026-08-01 at the GitLab fetch step (PLATFORM_GITLAB_GROUP set without PLATFORM_GITLAB_HOST / GITLAB_TOKEN).
+- **Why:** Without this, the first successful run after the workflow is fixed would rebuild v20 from the 2026-07-31 cutoff and overwrite its page with an empty draft.
+- **QA-Release-Note:** none
+- **Files:**
+  - site/state.json
