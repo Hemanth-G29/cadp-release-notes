@@ -8,3 +8,12 @@
 - **Files:**
   - templates/what-to-test.html
   - content/known-issues.md
+
+## 2026-10-13 — Remove the "AI down (Vault credentials)" known issue for build 21
+- **Author:** hemanth.a
+- **What:** Removed the Known Issue saying AI App Builder / AI Assistant Create / AI Ask FAQ do not work because the AI credentials moved to Vault, and the matching "blocked by a known issue" note in the AI What-to-Test section.
+- **Why:** Build 21 ships the fix for that problem (OpenProject #1720 — AI Builder credentials missing), so QA retests the AI flows instead of skipping them.
+- **QA-Release-Note:** none
+- **Files:**
+  - content/known-issues.md
+  - templates/what-to-test.html
