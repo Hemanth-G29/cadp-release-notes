@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (22) delivers 0 bug fixes, 7 new features, and 15 enhancements across the platform. Highlights include IS_NULL() and IS_NOT_NULL(): test whether a field is blank, Seed the new `popover` component (properties section + palette), and Every release-note template resolves completely (presets + custom). It also includes API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (22) delivers 2 bug fixes, 7 new features, and 15 enhancements across the platform. Highlights include IS_NULL() and IS_NOT_NULL(): test whether a field is blank, Seed the new `popover` component (properties section + palette), and Every release-note template resolves completely (presets + custom). It also includes API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -154,7 +154,8 @@
     <tr><th>Bug ID</th><th>Description</th></tr>
   </thead>
   <tbody>
-    <tr><td>—</td><td>No fixed bugs recorded yet for this release.</td></tr>
+    <tr><td>2024</td><td>BUG-01 — Old sessions stay listed as active long after the 60-minute session timeout</td></tr>
+    <tr><td>2025</td><td>BUG-02 — SSO Client Secret is sent to the browser in plain text in Edit Provider</td></tr>
   </tbody>
 </table>
 
@@ -176,6 +177,8 @@
     <tr><th>API Name</th><th>Type</th><th>Description</th></tr>
   </thead>
   <tbody>
+    <tr><td>Filter panel: negative operators replace the NOT toggle</td><td></td><td>Server search, export, extraction, lookup options and dashboard evaluate-table now understand the filter panel&#39;s new operators: `notEquals`, `notContains`, `notStartsWith`, `notEndsWith`, `greaterThanOrEqual`, `lessThanOrEqual`, `notBetween`, `isEmpty`, `isNotEmpty`. Each negative is evaluated as exactly &quot;not the positive&quot; (`$nor` in Mongo, `!` in memory), so it keeps the positive&#39;s multi-value (`a,b`) and numeric handling and matches records where the field is empty.</td></tr>
+    <tr><td>LLM integration as a template for form buttons (`llm-chat` with `inputs`)</td><td></td><td>`POST /integrations/llm-chat` accepts `{ integrationId, inputs }` (mapped name → form value) in addition to the existing `{ integrationId, model, content }`.; `integration.service.js`: `buildLlmTemplatePayload` (pure) treats the integration&#39;s saved `endpoints.payload` as the template — keeps `model`, extra params (temperature, max_tokens…) and system/assistant messages, and replaces the sample user message with the inputs as `Name:\nvalue` blocks; `{{Name}}` / `{{form}}` placeholders are filled instead when present. Inputs are made readable (rich-text HTML and the `{html, attachments}` envelope → text, lookup objects → display values, arrays joined, 12k chars max each). `executeLlmIntegrationTemplate` posts it with the stored key (Bearer), retries once without unsupported params, updates the integration&#39;s call counters and returns clear errors (400 no model / no form values, 504 timeout, 502 with the gateway&#39;s message).; `integration.controller.js`: `executeLLMChat` routes to the template mode when `inputs` is an object; the `content` mode is unchanged. Same route, so no RBAC/menu change.</td></tr>
     <tr><td>Service-only HTML→PDF endpoint for the Release Notes export</td><td></td><td>Added `POST /templates/render/html-pdf` ({ html, css?, defaultFont?, paperSetup?, fileName? } →; application/pdf). It wraps the existing `pdfGenerationService.generatePdf` (no binding, no; pagination) and only accepts service tokens (`x-service-auth`, `req.user.kind === &#39;service&#39;`);; browser tokens get 403. Called by cadp_client_ws_backend_nodejs for `/release/download-pdf`; and generate-pdf-with-ai. Verified over HTTP with a client-ws-signed service token.</td></tr>
   </tbody>
 </table>

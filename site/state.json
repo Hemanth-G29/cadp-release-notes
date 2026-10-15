@@ -3,7 +3,16 @@
   "latestAnnouncedVersion": 21,
   "lastProcessedMailId": null,
   "lastCutAt": "2026-10-13T08:35:17.000Z",
-  "bugs": [],
+  "bugs": [
+    {
+      "id": 2024,
+      "subject": "BUG-01 — Old sessions stay listed as active long after the 60-minute session timeout"
+    },
+    {
+      "id": 2025,
+      "subject": "BUG-02 — SSO Client Secret is sent to the browser in plain text in Edit Provider"
+    }
+  ],
   "overview": {},
   "narrative": {
     "features": [
@@ -183,6 +192,16 @@
       ]
     ],
     "apiChanges": [
+      [
+        "Filter panel: negative operators replace the NOT toggle",
+        "",
+        "Server search, export, extraction, lookup options and dashboard evaluate-table now understand the filter panel's new operators: `notEquals`, `notContains`, `notStartsWith`, `notEndsWith`, `greaterThanOrEqual`, `lessThanOrEqual`, `notBetween`, `isEmpty`, `isNotEmpty`. Each negative is evaluated as exactly \"not the positive\" (`$nor` in Mongo, `!` in memory), so it keeps the positive's multi-value (`a,b`) and numeric handling and matches records where the field is empty."
+      ],
+      [
+        "LLM integration as a template for form buttons (`llm-chat` with `inputs`)",
+        "",
+        "`POST /integrations/llm-chat` accepts `{ integrationId, inputs }` (mapped name → form value) in addition to the existing `{ integrationId, model, content }`.; `integration.service.js`: `buildLlmTemplatePayload` (pure) treats the integration's saved `endpoints.payload` as the template — keeps `model`, extra params (temperature, max_tokens…) and system/assistant messages, and replaces the sample user message with the inputs as `Name:\\nvalue` blocks; `{{Name}}` / `{{form}}` placeholders are filled instead when present. Inputs are made readable (rich-text HTML and the `{html, attachments}` envelope → text, lookup objects → display values, arrays joined, 12k chars max each). `executeLlmIntegrationTemplate` posts it with the stored key (Bearer), retries once without unsupported params, updates the integration's call counters and returns clear errors (400 no model / no form values, 504 timeout, 502 with the gateway's message).; `integration.controller.js`: `executeLLMChat` routes to the template mode when `inputs` is an object; the `content` mode is unchanged. Same route, so no RBAC/menu change."
+      ],
       [
         "Service-only HTML→PDF endpoint for the Release Notes export",
         "",
