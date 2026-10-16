@@ -5,6 +5,10 @@
   "lastCutAt": "2026-10-16T04:04:28.000Z",
   "bugs": [
     {
+      "id": 1847,
+      "subject": "Workspace Management ->New Workspace Is Automatically Created as Private Without Privacy Selection Option."
+    },
+    {
       "id": 2024,
       "subject": "BUG-01 — Old sessions stay listed as active long after the 60-minute session timeout"
     },
@@ -17,8 +21,16 @@
       "subject": "BUG-04 — Users with 8- and 9-digit phone numbers exist, and the number is shown wrongly formatted"
     },
     {
+      "id": 2028,
+      "subject": "BUG-06 — Forgot Password reveals whether an account exists (different OTP error for real vs unknown users)"
+    },
+    {
       "id": 2030,
       "subject": "BUG-09 — Organisation usage panel shows hard-coded sample data"
+    },
+    {
+      "id": 2032,
+      "subject": "Logged-in Devices shows 'unknown' or internal IP addresses"
     }
   ],
   "overview": {},
