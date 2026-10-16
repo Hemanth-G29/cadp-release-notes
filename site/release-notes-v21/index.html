@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Release Notes – CADP Workspace v1.0.0 (21)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 11pt;
+      color: #222;
+      background: #fff;
+      padding: 50px 65px;
+      line-height: 1.65;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    h1 { color: #1A6BA8; font-size: 26pt; font-weight: bold; margin-bottom: 6px; }
+    .doc-kind { color: #6b7280; font-size: 9.5pt; margin: 0 0 6px 0; text-align: left; }
+    .dl { margin: 0 0 22px 0; font-size: 9.5pt; }
+    .dl a { color: #1A6BA8; text-decoration: none; font-weight: bold; }
+    @media print { .dl, .draft-banner { display: none; } }
+    h2 {
+      color: #1A6BA8; font-size: 12.5pt; font-weight: bold;
+      margin-top: 32px; margin-bottom: 12px;
+      page-break-after: avoid; break-after: avoid;
+    }
+    p { text-align: justify; margin-bottom: 12px; line-height: 1.75; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin-bottom: 24px;
+      font-size: 10.5pt; page-break-inside: auto;
+    }
+    .std-table thead th {
+      background-color: #00B2C8; color: #fff; font-weight: bold;
+      padding: 9px 12px; border: 1px solid #009DB5; text-align: left;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .std-table tbody td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .std-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
+
+    .kv-table td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .kv-table td:first-child {
+      background-color: #00B2C8; color: #fff; font-weight: bold; width: 38%;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .kv-table td:last-child { font-weight: bold; color: #222; }
+    .kv-table tr { page-break-inside: avoid; break-inside: avoid; }
+
+    .bugfix-table td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .bugfix-table td:first-child {
+      background-color: #00B2C8; color: #fff; font-weight: bold; width: 14%;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .bugfix-table tr { page-break-inside: avoid; break-inside: avoid; }
+
+    /* Bug Fixes as an ID + Description table (v19 onward) */
+    .bugid-table thead th {
+      background-color: #00B2C8; color: #fff; font-weight: bold;
+      padding: 9px 12px; border: 1px solid #009DB5; text-align: left;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .bugid-table tbody td { padding: 9px 12px; border: 1px solid #ccc; vertical-align: top; }
+    .bugid-table tbody td:first-child { width: 14%; font-weight: bold; white-space: nowrap; }
+    .bugid-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
+
+    ul { margin: 6px 0 6px 0; padding-left: 22px; }
+    ol { margin: 4px 0 4px 0; padding-left: 24px; }
+    li { margin-bottom: 5px; line-height: 1.6; page-break-inside: avoid; break-inside: avoid; }
+    ol.alpha { list-style-type: lower-alpha; }
+    ol.roman { list-style-type: lower-roman; }
+    .expected { display: block; margin-top: 3px; padding-left: 0; }
+
+    .draft-banner {
+      background: #FFF3CD; border: 1px solid #FFE08A; color: #7A5B00;
+      padding: 10px 14px; border-radius: 4px; margin-bottom: 20px; font-weight: bold;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+
+    .pb-before { page-break-before: always; break-before: always; }
+    .pb-avoid { page-break-inside: avoid; break-inside: avoid; }
+  </style>
+</head>
+<body>
+
+<h1>Release Notes</h1>
+<p class="doc-kind">CADP internal QA build release notes — generated from OpenProject. Not the in-app Release Notes feature used by tenants.</p>
+<p class="dl"><a href="./index.pdf">⬇ Download PDF</a></p>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>1. Release Overview</h2>
+<table class="kv-table">
+  <tr><td>Field</td><td>Details</td></tr>
+  <tr><td>Product Name</td><td>CADP Workspace</td></tr>
+  <tr><td>Release Version</td><td>Release 1.0.0 (21)</td></tr>
+  <tr><td>Release Date</td><td>October 13, 2026</td></tr>
+  <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
+  <tr><td>Prepared By</td><td>Development Team</td></tr>
+  <tr><td>Approved By</td><td>Ganagavathy</td></tr>
+  <tr><td>Environment</td><td>QA</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>2. Release Summary</h2>
+<p>This release of CADP Workspace Version 1.0.0 (21) delivers 31 bug fixes, 19 new features, and 16 enhancements across the platform. Highlights include Login – Multi-Factor Authentication (MFA), Workspace Switch – Password + OTP, and Session Params (Workspace Management → Session Params). It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>3. New Features</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Feature ID</th><th>Feature Name</th><th>Description</th><th>Impact</th></tr>
+  </thead>
+  <tbody>
+    <tr><td></td><td>Login – Multi-Factor Authentication (MFA)</td><td>Organisation Details (Metadata Console → Organisation) has a new &quot;Multi-Factor Authentication (MFA)&quot; toggle. When it is on, a correct email/mobile + password login shows a &quot;Verify it&#39;s you&quot; step: choose Email or Mobile (SMS) — each shown partly hidden — click Send OTP, enter the 6-digit code and click Verify &amp; Sign In. Resend is available after 30 seconds; the code is valid for 5 minutes and 5 wrong codes end the attempt (log in again). Applies to web and mobile. SSO logins are not asked for an OTP.</td><td>Stronger sign-in security, switched on per organisation.</td></tr>
+    <tr><td></td><td>Workspace Switch – Password + OTP</td><td>When the organisation&#39;s auth policy is &quot;Workspace&quot; and MFA is on, switching workspace from the header asks for the target workspace&#39;s password and then a one-time code (Email or Mobile). With the tenant variable ALLOW_ADMIN_SWITCH_PASSWORD = true, Administrators must do the same; when false (default) Administrators switch as before.</td><td></td></tr>
+    <tr><td></td><td>Session Params (Workspace Management → Session Params)</td><td>A new Workspace Management tile where an admin picks the Login Param feature and the values to capture when a user logs in — from a field, a lookup, a linked feature, or a matching record in another feature — with a live preview for a sample login value. &quot;Use session params in other features&quot; maps a session key to a field of any feature (Equals / Starts with / Contains), so users only see that feature&#39;s matching records. Role → Data Access Control conditions can also use a session key (listed as sessionParams.&lt;key&gt;), and match both plain and lookup fields.</td><td>Record-level visibility per user (e.g. a sub-distributor sees only their distributor&#39;s data) without one rule per role.</td></tr>
+    <tr><td></td><td>Unique Combinations</td><td>Feature Information (below Corner Style) lets you define one or more Unique Combinations — a set of fields joined by AND. A record is rejected only when every field of a combination matches an existing record, with the message &quot;Duplicate combination for fields … This combination must be unique.&quot;</td><td>Business keys such as Code + Branch + Year can be kept unique.</td></tr>
+    <tr><td></td><td>Table View – Column Filter and Column Search</td><td>Transaction Settings has new Column Filter and Column Search cards. Each ticked field gets a funnel (and/or 🔍) button in its column header on the landing page&#39;s table view. The funnel offers a pick list (with value counts) for dropdown-type fields, text contains, number range or date range; active filters show as removable chips with &quot;Clear column filters&quot;, are remembered per browser, and are honoured by Export. Fields that cannot be filtered are listed disabled with the reason.</td><td></td></tr>
+    <tr><td></td><td>Formula – Evaluation Logic</td><td>A new Evaluation Logic card in Transaction Settings (shown only on features with formulas) chooses whether formulas recalculate when a page opens in Create, Edit or View mode (defaults: Create on, Edit off, View off). A fourth option, &quot;Wait for all referenced fields&quot;, keeps a formula blank until every field it reads has a value (zero counts as a value).</td><td>Saved figures stay as saved, and formulas don&#39;t show answers calculated from blank fields.</td></tr>
+    <tr><td></td><td>Print – Download as Word</td><td>Records whose print template can be shown in Word get a Download Word action beside Download PDF (⋮ actions in list, grid, table and card views, and on Kanban cards). It uses the same published template and record data as the PDF.</td><td></td></tr>
+    <tr><td></td><td>Print – Row Filter and Default Font Size</td><td>A print report table can print only matching rows (Row Filter: column, condition, value) — the canvas preview applies the same rule. The template settings modal offers the designer&#39;s 8 fonts and a new Default Font Size (8–72 px); new templates default to Arial 12 px, and the defaults also apply in the designer canvas.</td><td>Documents such as a sales-return credit note list only the relevant lines.</td></tr>
+    <tr><td></td><td>Open Document on Record Click</td><td>View Settings (Transaction Settings → Views &amp; Fields) has a per-view option &quot;Open document when a record is clicked&quot; for Grid, List, Table, Kanban and Card, with What opens: Published document else print preview (default), Published document only, or Print preview always.</td><td></td></tr>
+    <tr><td></td><td>Publish to Erudite</td><td>New Workflow node &quot;Publish to Erudite&quot; publishes an approved record&#39;s print document to Erudite Management (opens, is searchable by AI and is deleted like a manual upload). Transaction Settings → Publish to Erudite decides per feature: Publish automatically / Always ask / Don&#39;t publish. With Always ask, the record shows an amber &quot;Awaiting publish&quot; chip and users with modify permission get a publish button in the record actions.</td><td>Approved SOP-style records reach Erudite without a manual upload.</td></tr>
+    <tr><td></td><td>Workflow – In-App Notification Node</td><td>New Communication node that sends a bell/inbox notification to selected users or roles, with custom title/body (@mentions) or a published In-App template, plus type, priority, display style, expiry and dismissible settings. &quot;When Clicked&quot; can open a chosen feature (list, new entry or the triggering record), a custom URL, or do nothing.</td><td></td></tr>
+    <tr><td></td><td>Workflow – Line-Item (Table Row) Processing</td><td>Create Record has a Table Row Mapping section (writes all source table rows into ONE created record&#39;s Data Table) and a Records Field (creates one record per item). Switch/Case can route each table row by its own value (Match Table Rows). Update Record updates one record per row when its match value is a table column. Upsert can expand nested child rows (&quot;Expand nested line items&quot;) and has a new &quot;Update only&quot; option that never creates a record.</td><td>Header + line-item flows (Order → Invoice, Loadout → Delivery → Inventory) work without one record per product row by mistake.</td></tr>
+    <tr><td></td><td>Task Scheduler – Task Groups, Today Conditions and Record Actions</td><td>The Task Group tab lists the workspace&#39;s groups (name, description, task count) with + New Task Group, Edit and Delete. Date conditions in the Task modal can use Specific date / Today / Now with a ± days offset (e.g. Expiry Date ≤ Today). Tasks can run Record Actions (Update / Upsert records) on schedule, and a new Schedule Query Builder task type targets up to 2 features.</td><td>Expiry-style automation (e.g. move expired stock to an Unsellable line) without code.</td></tr>
+    <tr><td></td><td>Inventory – Committed and On-Route Stock</td><td>Stock held by confirmed orders (Committed) and dispatched orders (On Route) is now deducted from available stock when those quantity fields are wired in the inventory settings.</td><td>Available stock no longer double-counts stock already promised or in transit.</td></tr>
+    <tr><td></td><td>Listing – Formulas from Any Feature and Simple Details Layout</td><td>Listing card values are authored in Display Fields → + Add Formula, and a formula can use fields from any feature (e.g. a margin % looked up by Product Code). Listing → Details Page → Default template has a new Layout option: Standard or Simple (white page, thumbnails beside the image, lighter info column).</td><td></td></tr>
+    <tr><td></td><td>Table Columns – Maximum Limit, Read-only and Set-value Conditions</td><td>Numeric table columns can set &quot;Maximum from another column&quot; (optionally summing sibling unit columns with conversion factors) and either show an error or reject the edit, optionally opening a Modal. A column&#39;s Read-only and Set-value conditions, and a feature-sourced dropdown column&#39;s Advanced Filters, are now applied at runtime.</td><td>e.g. Sales Return can no longer accept more returned stock than was invoiced.</td></tr>
+    <tr><td></td><td>Label – Insert a Field with @</td><td>In a Label&#39;s Content Text, typing @ opens a field picker (table columns included) that inserts the field as a {Field Name} token; Enter/Tab insert, arrows move, Escape closes.</td><td></td></tr>
+    <tr><td></td><td>Auto-populate Chains</td><td>A field that fills from another field now also works when that parent was itself auto-filled — e.g. on Sales Return, picking an invoice fills Distributor, which then fills the distributor&#39;s address, city, state and GSTIN. Clearing the invoice clears the whole chain.</td><td></td></tr>
+    <tr><td></td><td>Chat – Audio Call Layout and Meeting Task List</td><td>Audio calls open in the dark gallery layout automatically, with a floating toolbar and no white bars. Meetings have a checkable task list (hosts add/remove, any participant ticks), and extra participant thumbnails collapse into an overflow cluster.</td><td></td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>4. Enhancements / Improvements</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
+  </thead>
+  <tbody>
+    <tr><td></td><td>Login – Lockout</td><td>Login uses the tenant&#39;s current MAX_LOGIN_ATTEMPTS. When the limit is reached the user is told the account is locked and to try again in N minute(s), and an automatic lock lasts the tenant&#39;s RESET_UNLOCK_EVERY (unlocking is checked every minute).</td><td>Users know why they cannot log in and when to retry, and the lock matches what the tenant configured.</td></tr>
+    <tr><td></td><td>Login – Password Reset and Change</td><td>Forgot password gives the same response whether or not the account exists, an OTP is invalidated after 5 wrong tries, and OTPs are no longer written to logs. The reset confirmation email now carries the user&#39;s details. With LOGIN TIME CHANGE PASSWORD on, the change-password screen keeps appearing until the password is actually changed.</td><td>Accounts can&#39;t be discovered or brute-forced through password reset, and the forced change can&#39;t be skipped.</td></tr>
+    <tr><td></td><td>Security – File Links</td><td>Uploaded file links (logos, portal and feature files) now carry their own read-only access for that one file instead of a key to the whole storage container.</td><td>A leaked file link can no longer be used to read, change or delete other files.</td></tr>
+    <tr><td></td><td>Credential Manager</td><td>Users created by Credential Manager get workspace roles from the record&#39;s Roles field, or a feature-level default. Administrator and inactive roles are never assigned this way.</td><td>No more assigning roles one by one in User Management after users are created.</td></tr>
+    <tr><td></td><td>Dashboard</td><td>Setting a dashboard&#39;s Status to Inactive (Templates Library → Dashboard → Edit) now hides it from every user&#39;s landing page and dashboard switcher. Admins can still open, edit and re-activate it.</td><td>A dashboard can be taken out of use without deleting it.</td></tr>
+    <tr><td></td><td>Landing Page – Badge Colors</td><td>A field with Badge Colors applied (Transaction Settings → Badge Colors) is always shown as a coloured column on the landing page for every user, even if the field is Hidden or role-restricted on the form.</td><td>Status colours stay visible in the list for everyone.</td></tr>
+    <tr><td></td><td>Data Tables – Child Rows</td><td>Data Tables with nested Child Rows keep each row&#39;s child rows when the record is saved and reopened, including tables filled by workflows.</td><td>Invoice rows keep their product lines (e.g. Loadout → Delivery) instead of losing them on save.</td></tr>
+    <tr><td></td><td>Transaction Table – Performance</td><td>Picking a product and adding it to a transaction table returns in about 1.7 seconds instead of stalling for up to 30 seconds; lookup formula columns fill a moment later. Listings with simple projection formulas no longer load entire features first.</td><td>Faster order entry and listings; visible as much shorter requests in the Network tab.</td></tr>
+    <tr><td></td><td>Formula Columns – Show As</td><td>Formula table columns follow their Show As setting: Label shows the formatted value and switches to the editor on click, Text area gives a multi-line cell (now for every column type), Input is unchanged.</td><td>Columns look and behave the way the designer configured them.</td></tr>
+    <tr><td></td><td>Builder – Duplicate Table</td><td>Duplicating a table gives every column in the copy a fresh identity and rebinds the copy&#39;s own formulas and conditions to it.</td><td>Formulas and rules on the copy no longer act on the original table.</td></tr>
+    <tr><td></td><td>Field Pickers</td><td>Field pickers (e.g. Template Library variables) now list fields that sit inside role-restricted stepper steps.</td><td>Stepper-based features show all their fields when building templates.</td></tr>
+    <tr><td></td><td>Print Templates</td><td>Each Printing card has a ⚙ Template settings button to edit name, description, category, mode, paper size, orientation, font and language after creation. Double-clicking a card opens it in design mode. Selected Modules and Features are kept when a template is reopened, and both pickers are searchable. Saved templates print blocks exactly where they are drawn.</td><td>Templates are easier to manage, and printouts match the design.</td></tr>
+    <tr><td></td><td>Print – PDF Speed</td><td>Print View / Download reuse an already generated PDF when nothing in the record or template has changed, instead of rendering it again.</td><td>Faster PDF view/download and no duplicate stored documents.</td></tr>
+    <tr><td></td><td>Workflow – Linked Features</td><td>The Linked Features picker on Create, Upsert, Communication and Utility nodes browses modules independently of the node&#39;s target module.</td><td>Picking a feature to @-mention no longer changes which feature the node writes to.</td></tr>
+    <tr><td></td><td>Workflow – Bulk Import</td><td>When a bulk import uploads header records that each carry line items, If Condition and Upsert nodes process each line (header + line fields). Upsert also reads table rows added after the workflow started (e.g. at a later approval step).</td><td>Imports and approvals create/update one record per line as expected.</td></tr>
+    <tr><td></td><td>Approvals – Notifications</td><td>Approval in-app notifications show real field values (e.g. the RCF ID) instead of raw {{…}} tokens, in custom text and templates.</td><td>Approvers can see which record a notification is about.</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>5. Bug Fixes</h2>
+<table class="bugid-table">
+  <thead>
+    <tr><th>Bug ID</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1075</td><td>Formula field--&gt;NOW() date operator does not display the correct current time, even though the organization&#39;s time zone is set to Indian Standard Time (IST).</td></tr>
+    <tr><td>1441</td><td> Formula field---&gt; The formula field output is not displayed in the list data when the same feature variable is used. It only works when a different feature variable is mapped. This issue occurs only in the Aggregate field.</td></tr>
+    <tr><td>1556</td><td>Formula Field--&gt;The calculated output value of the Formula Field is not displayed in the form after the record is submitted. However, the calculated value is correctly displayed in the List/Table View.</td></tr>
+    <tr><td>1557</td><td>Formula Field--&gt;After updating and resubmitting a record, the Formula Field does not recalculate the value. It continues to display the previously calculated value instead of the updated calculation.</td></tr>
+    <tr><td>1596</td><td>Formula--&gt;The ENDWITH() formula field does not display any output when the case-sensitive parameter (TRUE) is used, even after entering a valid value in the mapped City field.  </td></tr>
+    <tr><td>1602</td><td>Formula--&gt;The CONTAINS() formula field does not display any output when the case-sensitive (TRUE) parameter is used.</td></tr>
+    <tr><td>1623</td><td>Formula--&gt;The SUM_OF_RECORDS() formula field does not calculate or display the total sum of records when used with &amp; without filter conditions. Instead, it displays 0.00 even though valid numeric records are available.</td></tr>
+    <tr><td>1624</td><td>Formula--&gt;The COUNT_RECORDS() formula returns 0.00 instead of the correct record count when valid records are available and no filter conditions are applied.  </td></tr>
+    <tr><td>1628</td><td>Formula--&gt;The AVG_OF_RECORDS() formula returns 0.00 instead of the correct average value, both with and without applying filter conditions, even when valid numeric records are available.</td></tr>
+    <tr><td>1632</td><td>Formula--&gt;The MIN_OF_RECORDS() formula returns 0.00 instead of the correct minimum value, both with and without applying filter conditions, even when valid numeric records are available.</td></tr>
+    <tr><td>1636</td><td>Formula--&gt;The MAX_OF_RECORDS() formula returns 0.00 instead of the correct maximum value, both with and without applying filter conditions, even when valid numeric records are available.</td></tr>
+    <tr><td>1638</td><td>Formula--&gt;The UNIQUE() formula field returns a blank output even when the mapped Department field contains valid values.</td></tr>
+    <tr><td>1652</td><td>Formula--&gt;Cross-feature formula using where() returns an empty value even when the matching records and filter condition are valid.</td></tr>
+    <tr><td>1668</td><td>Formula--&gt;YEAR() function returns the year with decimal places (e.g., 2026.00) instead of an integer.</td></tr>
+    <tr><td>1670</td><td>Formula--&gt; DATEFORMAT() formula field does not display any output after entering a valid date in the mapped date field.  </td></tr>
+    <tr><td>1672</td><td>Formula--&gt;TIME_DIFF() formula accepts a Text field as an argument and incorrectly validates the expression as valid.</td></tr>
+    <tr><td>1677</td><td>Design Page → After saving a component on the Design Page, the Close button on the JSON page overlaps with the AI icon.</td></tr>
+    <tr><td>1720</td><td>AI Feature Generation Fails Due to Missing AI Builder Credentials Instead of Creating the Requested Feature.</td></tr>
+    <tr><td>1722</td><td>Ask AI Displays Raw API Error Response Instead of User-Friendly Validation Message.</td></tr>
+    <tr><td>1724</td><td>Cavin&#39;s AI-&gt;Unable to Delete Existing Chat Thread – &quot;Chat Thread Not Found&quot; Error Displayed.</td></tr>
+    <tr><td>1726</td><td>Chat history is not displayed after switching from &quot;Create&quot; to &quot;Ask&quot; tab until manually refreshed. Ask AI panel displays empty conversation after switching from Create tab.</td></tr>
+    <tr><td>1740</td><td>AI Ask FAQ icon does not display tooltip on mouse hover.</td></tr>
+    <tr><td>1764</td><td>Build with AI fails to create an application and displays &quot;Looks like something interrupted the process&quot;.</td></tr>
+    <tr><td>1795</td><td>Formula--&gt;Temp variable formula does not calculate the expected value in the Final Order Amount field.</td></tr>
+    <tr><td>1796</td><td>Formula--&gt;UI issue in the Scoped Variable dialog: Feature &amp; Fields, Operators &amp; Functions, and Variables lists are displayed in a very small area, making the options difficult to read and select.</td></tr>
+    <tr><td>1953</td><td>User Management actions are not recorded in the Audit Log</td></tr>
+    <tr><td>1955</td><td>Change Password did not show the password policy rules </td></tr>
+    <tr><td>1956</td><td>No admin &#39;Reset Password&#39; option for a user</td></tr>
+    <tr><td>1957</td><td>Non-admin user cannot change own password (403 Access denied)</td></tr>
+    <tr><td>1958</td><td>User list shows only the first 20 users; count is wrong</td></tr>
+    <tr><td>1959</td><td> Forced first-login password change can be skipped by logging in again</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>6. Configuration Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Configuration</th><th>Description</th><th>Impact</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Multi-Factor Authentication (MFA)</td><td>New organisation setting in Metadata Console → Organisation, off by default. Email OTP uses the SMTP config; Mobile (SMS) OTP needs a default SMS gateway in the workspace.</td><td>Turn on per organisation to require an OTP at login (and on workspace switch with auth policy &quot;Workspace&quot;).</td></tr>
+    <tr><td>ALLOW_ADMIN_SWITCH_PASSWORD (tenant variable)</td><td>Default false.</td><td>When true, Administrators must enter the workspace password (and OTP with MFA) when switching workspace.</td></tr>
+    <tr><td>MAX_LOGIN_ATTEMPTS, RESET_UNLOCK_EVERY, LOGIN_LOCK_DURATION_MINUTES</td><td>Login now reads MAX_LOGIN_ATTEMPTS live; automatic locks last RESET_UNLOCK_EVERY when auto-unlock is on, otherwise LOGIN_LOCK_DURATION_MINUTES (default 15).</td><td>Check these values on the test tenant before testing lockout.</td></tr>
+    <tr><td>AZURE_BLOB_ACCOUNT_KEY, AZURE_BLOB_READ_SAS_TTL_HOURS (master)</td><td>With the account key set, file URLs get per-file read-only access (default lifetime 8760 hours). Without it the old behaviour continues with a [SECURITY] warning in the logs.</td><td>Run the URL migration (resignBlobUrls.js --apply) to rewrite already-saved file URLs.</td></tr>
+    <tr><td>RBAC menu seed</td><td>New routes: Task Scheduler task groups (View/Create/Edit/Delete) and the Workspace → Session Params submenu (a migration grants it to existing roles).</td><td>Run the RBAC menu seeder and flush the Redis menu cache on the environment, otherwise these screens return 403.</td></tr>
+    <tr><td>Transaction Settings – Publish to Erudite</td><td>New parameter: Publish automatically (default) / Always ask / Don&#39;t publish.</td><td>Set per feature that uses the Publish to Erudite node.</td></tr>
+    <tr><td>Chat rate limits</td><td>All chat routes 400 requests/min per user (was 200); create meeting 20/min (was 10); join meeting 40/min (was 20).</td><td>Normal call testing no longer hits &quot;Too many requests&quot;.</td></tr>
+    <tr><td>Print templates – layout</td><td>Templates saved or published from the designer are stamped with the paper-edge layout, so blocks print where they are drawn.</td><td>Older templates keep their current print positions until re-saved in the designer.</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>7. API Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>API Name</th><th>Type</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>POST /public/users/login</td><td>Changed</td><td>When the organisation has MFA on, a correct password returns { mfaRequired: true, challengeId, methods[], otpLength } instead of a session. Too many failed attempts return 423 with &quot;Your account is locked … try again in N minute(s)&quot;.</td></tr>
+    <tr><td>POST /public/users/login/mfa/send-otp, POST /public/users/login/mfa/verify-otp</td><td>New</td><td>Send the login OTP to the chosen method; verify it and return the normal login response. An expired or over-used challenge returns code MFA_CHALLENGE_EXPIRED.</td></tr>
+    <tr><td>POST /users/workspace-switch/verify-password, POST /users/workspace-switch/mfa/send-otp, POST /users/workspace-switch/mfa/verify-otp</td><td>New</td><td>Workspace switch: check the target workspace password (returns isValid, mfaRequired, challengeId, methods), then send and verify the OTP.</td></tr>
+    <tr><td>Forgot password / verify OTP / reset (public)</td><td>Changed</td><td>Always answers 200 &quot;If an account exists…, an OTP has been sent&quot;; an unknown account behaves like an expired OTP; 5 wrong OTPs invalidate it. Rate limits (per IP / per account): login 30 per 5 min / 10 per 15 min; forgot-password and resend-OTP 10 / 3 per 15 min; OTP verify and reset 20 per 15 min per IP.</td></tr>
+    <tr><td>PUT /tenant/tenantPage, GET /tenant/:tenantId/basicinfo</td><td>Changed</td><td>Carry the organisation&#39;s mfaEnabled setting.</td></tr>
+    <tr><td>GET /public/domain, file upload responses</td><td>Changed</td><td>File URLs carry a read-only access token for that one file (no container-wide token).</td></tr>
+    <tr><td>GET / PUT /master/features/:id/session-params</td><td>New</td><td>Read / save a feature&#39;s session params and &quot;find the user&#39;s record by&quot; field ({ sessionParams, matchField }).</td></tr>
+    <tr><td>POST /session-params/preview</td><td>New</td><td>Preview the session-param values a given login value would produce (read-only).</td></tr>
+    <tr><td>Login / refresh / workspace switch (access token)</td><td>Changed</td><td>The access token carries the user&#39;s sessionParams; Data Access Control rules using $$SESSION_PARAM:&lt;key&gt;$$ are resolved from it.</td></tr>
+    <tr><td>POST /master/feature-data/:featureId/data/search, export, POST /master/extraction/:featureId</td><td>Changed</td><td>New filter operators: in (&quot;is any of&quot;, array value), greaterThanOrEqual, lessThanOrEqual — used by Column Filter. Column Filter pick lists use extraction facet counts.</td></tr>
+    <tr><td>POST /master/extraction/:featureId</td><td>Changed</td><td>Accepts lookups[] (up to 20) so listing card values can come from another feature&#39;s fields.</td></tr>
+    <tr><td>GET /master/extraction/:featureId/fields</td><td>Changed</td><td>Also lists fields inside role-restricted stepper steps.</td></tr>
+    <tr><td>POST /master/feature-data/:featureId/data/auto-id/preview</td><td>Changed</td><td>Accepts tableId and count for Auto Gen ID table columns and returns previewValues.</td></tr>
+    <tr><td>GET / POST /notification/scheduler/task-groups, PUT / DELETE /notification/scheduler/task-groups/:id</td><td>New</td><td>Task Group CRUD (list includes taskCount). 409 for a duplicate name or deleting a group still used by a task.</td></tr>
+    <tr><td>POST /template-service/templates/print-templates/:id/generate-docx</td><td>New</td><td>Download a record&#39;s print document as Word.</td></tr>
+    <tr><td>POST /template-service/templates/print-templates/:id/generate-pdf</td><td>Changed</td><td>Returns the stored PDF when nothing that shapes the document has changed, instead of rendering again.</td></tr>
+    <tr><td>Feature record save / read</td><td>Changed</td><td>Nested Child Rows tables store and return each row&#39;s child rows (under the table&#39;s Child Rows key).</td></tr>
+    <tr><td>Runtime dashboard / dashboards by role</td><td>Changed</td><td>Inactive dashboards are excluded.</td></tr>
+    <tr><td>POST /master/feature-data/:featureId/inter-service/record-operations</td><td>New (internal)</td><td>Scheduler-only endpoint for scheduled Update / Upsert record actions; user tokens get 401.</td></tr>
+    <tr><td>POST /internal/print-links (master), POST /internal/erudite/documents/publish (rbac)</td><td>New (internal)</td><td>Used by the Publish to Erudite workflow node to save the record&#39;s PDF and create the Erudite document.</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. Known Issues</h2>
+<table class="std-table">
+  <thead>
+    <tr><th>Issue ID</th><th>Description</th><th>Workaround</th></tr>
+  </thead>
+  <tbody>
+    <tr><td></td><td>Role Management Change Effect</td><td>Because some menu structures have changed, certain features may return a 403 status code. To resolve this, edit the role, select the platform feature, and save the role again.</td></tr>
+    <tr><td></td><td>Scheduler with Workflow Not Working</td><td>Use the conventional feature-wise approach wherever workflow scheduling is required.</td></tr>
+    <tr><td></td><td>Formula Builder UI – Field Insertion Through Typing</td><td>This works in current fields. For external feature fields, it won&#39;t work, as there could be fields with same names from multiple features.</td></tr>
+    <tr><td></td><td>Formula Builder – AI-Based Formula Writing/Editing Not Implemented</td><td>Use manual formula entry instead.</td></tr>
+    <tr><td>364</td><td>Organization Details → Basic Info: Website URL accepts invalid URL formats without validation.</td><td>Expected: Validate the URL format and show an error message for invalid values, such as www.example or example@123.www.example</td></tr>
+    <tr><td></td><td>Builder Tool Not Available on Mobile Web</td><td>The builder tool is not supported on mobile web. This is implemented as expected — builder functionality is restricted to desktop browsers by design. It should be available on Tab though.</td></tr>
+    <tr><td></td><td>Mobile – Formula Field Not Working in Tables &amp; Charts</td><td>Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review.</td></tr>
+    <tr><td></td><td>Newly uploaded Erudite documents are not immediately answerable by AI Ask</td><td>The badge shows &quot;Indexing…&quot; until the document is ready; wait for &quot;AI ready&quot; before asking about it.</td></tr>
+    <tr><td></td><td>MFA by Mobile (SMS) needs an SMS gateway</td><td>Mobile is offered only when the user has a mobile number and the workspace has a default SMS gateway configured; otherwise use Email.</td></tr>
+    <tr><td></td><td>New login and password-reset rate limits can block repeated test attempts</td><td>Forgot-password / resend-OTP allow 3 requests per account per 15 minutes and login 10 per account per 15 minutes. Wait for the window to pass or use another test account.</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>9. What to Test</h2>
+<ul>
+  <li>Login – Login, Sign In with Google (have to be configured in external providers in Tenants of metadata), Sign In with Microsoft (have to be configured in external providers in Tenants of metadata)</li>
+
+  <li><strong>Create Application</strong>
+    <ol>
+      <li>Start from Scratch</li>
+      <li>Choose/Create Vertical Template</li>
+    </ol>
+  </li>
+
+  <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong> (Cavin's AI assistant — the AI launcher icon)
+    <ol>
+      <li><strong>AI App Creation</strong>
+        <ol class="alpha">
+          <li>From the workspace (any page other than Modules Management / Features Management / Builder Tool), open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new application from your description".</li>
+          <li>Describe the application to build and send. Verify creation progress is shown and "Application created from AI." appears on completion.</li>
+          <li>Verify the generated application, its modules and features are listed and can be opened in the workspace.</li>
+          <li>If the AI asks clarifying questions, answer them and verify creation continues (no success message is shown until something is actually created).</li>
+        </ol>
+      </li>
+      <li><strong>AI Module Creation</strong>
+        <ol class="alpha">
+          <li>Open an application's <strong>Modules Management</strong> page, open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new module here".</li>
+          <li>Describe the module to build and send. Verify "Created N module(s) from AI." appears and the module list refreshes with the new module(s).</li>
+          <li>Open the created module and verify it can be edited further.</li>
+        </ol>
+      </li>
+      <li><strong>AI Feature Creation</strong>
+        <ol class="alpha">
+          <li>Open a module's <strong>Features Management</strong> page (or the Builder Tool), open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new feature here".</li>
+          <li>Describe the feature to build and send. Verify "Created N feature(s) from AI." appears and the feature list refreshes.</li>
+          <li>From the Builder Tool, verify you are taken to the first created feature in the builder.</li>
+          <li>Verify the generated form has appropriate components/fields, then publish it and verify records can be created, viewed and edited.</li>
+        </ol>
+      </li>
+      <li><strong>Create / Ask mode behaviour</strong>
+        <ol class="alpha">
+          <li>In the Create tab, type a question instead of a build request. Verify nothing is created and an "Ask this in Ask mode" suggestion is offered; clicking it moves the question to the Ask tab.</li>
+          <li>With a user who has only AI Builder or only AI Ask access, verify only that tab is available; with no create access, verify past conversations are read-only.</li>
+          <li>Verify conversation history can be searched and reopened for each mode.</li>
+        </ol>
+      </li>
+      <li><strong>AI Ask FAQ</strong>
+        <p><strong>Scope:</strong> AI Ask FAQ is trained only on the following platform documentation.
+           Questions must be asked on these topics only:</p>
+        <ul>
+          <li>CADP User Login Guide</li>
+          <li>CADP Functional Specifications</li>
+          <li>CADP Erudite Management Complete</li>
+          <li>CADP Workspace Guide</li>
+          <li>CADP User Preferences Guide</li>
+          <li>CADP Role Management</li>
+          <li>AI FAQ Guide Transactions Runtime</li>
+          <li>CADP Login Complete</li>
+          <li>CADP Erudite Management Complete Guide</li>
+          <li>CADP Features Guide</li>
+          <li>CADP Modules Guide</li>
+          <li>CADP Platform Architecture Report</li>
+          <li>CADP Templates Integrations Workflows Basics Guide</li>
+          <li>CADP Features And Submodules Guide</li>
+          <li>CADP Organization Guide</li>
+          <li>CADP Builder Tool Guide</li>
+        </ul>
+        <ol class="alpha">
+          <li>Open Cavin&#39;s AI, select the <strong>Ask</strong> tab and ask a question about platform configuration on one of the trained topics above.</li>
+          <li>Verify a relevant and accurate answer is returned.</li>
+          <li>Ask a follow-up or ambiguous question and verify it is handled gracefully.</li>
+          <li>Ask a question outside the trained topics and verify AI Ask FAQ declines or returns an appropriate out-of-scope fallback rather than a fabricated answer.</li>
+          <li>Verify Ask mode changes nothing in the workspace (it only answers).</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li><strong>User Management</strong>
+    <ol>
+      <li>Create/Manage Users</li>
+      <li>Create/Manage Groups</li>
+      <li>Import/Export Users</li>
+      <li>Archive/Unarchive Users</li>
+      <li>Locked Users</li>
+      <li>Waiting Approval</li>
+      <li>Please update existing users in each workspace.</li>
+      <li>In the Users tab, when creating a new user, the Approval Type default is No Approval.</li>
+    </ol>
+  </li>
+
+  <li><strong>User Preferences</strong>
+    <ol>
+      <li>Profile update – first name, last name updating, profile picture updating.</li>
+      <li>Change password</li>
+      <li>Locale and Date-time updating</li>
+      <li>Interface
+        <ol class="roman">
+          <li>Theme change, color change. Color change here will override the brand color for that specific user of that workspace only.</li>
+          <li>Records per page is reflecting.</li>
+          <li>Language (currently only English accepted)</li>
+        </ol>
+      </li>
+      <li>Customization – module and features are visible based on visibility setting, quick access for that enabled feature is redirecting to feature transactions (records) page.</li>
+      <li>Privacy &amp; Security</li>
+      <li>Miscellaneous – Default landing page, preferred currency, auto-save drafts, save interval</li>
+      <li>Preferred user workspace</li>
+      <li>Reset Preferences</li>
+    </ol>
+  </li>
+
+  <li><strong>Groups</strong>
+    <ol>
+      <li>Archive/Unarchive</li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Roles</strong>
+    <ol>
+      <li>Platform Roles</li>
+      <li>Archive/Unarchive</li>
+      <li>Workspace Role</li>
+      <li>Feature Access Level</li>
+      <li>Data Access Level</li>
+      <li>User or Group Role Mapping</li>
+    </ol>
+  </li>
+
+  <li><strong>Workspace Management</strong>
+    <ol>
+      <li>Create Workspace</li>
+      <li>Clone Workspace</li>
+      <li>Archive Workspace</li>
+      <li>Workspace Settings</li>
+    </ol>
+  </li>
+
+  <li><strong>Organization Management</strong>
+    <ol>
+      <li>Organization Details</li>
+      <li>Organization Address</li>
+      <li>Branding Details</li>
+    </ol>
+  </li>
+
+  <li><strong>Module/Feature Management</strong>
+    <ol>
+      <li>Create/Manage Module</li>
+      <li>Create/Manage Features</li>
+      <li>Design components for features</li>
+      <li>Features and Modules can be published</li>
+      <li>Audit Logs (Platform &amp; Workspace)</li>
+      <li>Version Logs (Workspace &amp; Workflow)</li>
+      <li>Staging</li>
+      <li>Feature Card and Module Card Customization</li>
+    </ol>
+  </li>
+
+  <li><strong>Notification &amp; Alerts</strong>
+    <ol>
+      <li>Email Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>SMS Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>WhatsApp Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>In-App Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>Push Notification &amp; Templates – Create template and use template to send notification</li>
+    </ol>
+  </li>
+
+  <li><strong>Erudite Management</strong>
+    <ol>
+      <li><strong>Configuration (prerequisite)</strong>
+        <ol class="alpha">
+          <li>Enable Erudite Management in Role Management before testing.</li>
+          <li>Verify users without the role cannot access the Erudite Management module.</li>
+        </ol>
+      </li>
+      <li><strong>FAQs</strong>
+        <ol class="alpha">
+          <li>Create a new FAQ with a question, answer, and category (Account, Billing, General, Technical).</li>
+          <li>Verify the FAQ appears in the FAQ list after saving.</li>
+          <li>Enable "Display this on the dashboard" and verify the FAQ is visible on the dashboard.</li>
+          <li>Edit an existing FAQ and verify changes are saved correctly.</li>
+          <li>Delete a FAQ and verify it is removed from the list.</li>
+          <li>Search for a FAQ by keyword and verify correct results are returned.</li>
+        </ol>
+      </li>
+      <li><strong>Documentation</strong>
+        <ol class="alpha">
+          <li>Upload a document (PDF or DOC, max 5 MB) with a name, description, and category.</li>
+          <li>Verify the document appears in the Documentation list after saving.</li>
+          <li>Attempt to upload a file exceeding 5 MB and verify a validation error is shown.</li>
+          <li>Attempt to upload an unsupported file format and verify it is rejected.</li>
+          <li>Enable "Display this on the dashboard" and verify the document is visible on the dashboard.</li>
+          <li>Edit document details and verify changes are saved correctly.</li>
+          <li>Delete a document and verify it is removed from the list.</li>
+        </ol>
+      </li>
+      <li><strong>Tutorial Videos</strong>
+        <ol class="alpha">
+          <li>Upload a video (MP4, MOV, or MKV, max 50 MB) with a name, description, and category.</li>
+          <li>Verify the video appears in the Tutorial Videos list after saving.</li>
+          <li>Attempt to upload a file exceeding 50 MB and verify a validation error is shown.</li>
+          <li>Attempt to upload an unsupported file format and verify it is rejected.</li>
+          <li>Enable "Display this on the dashboard" and verify the video is visible on the dashboard.</li>
+          <li>Edit video details and verify changes are saved correctly.</li>
+          <li>Delete a video and verify it is removed from the list.</li>
+        </ol>
+      </li>
+      <li><strong>End User Access</strong>
+        <ol class="alpha">
+          <li>Verify end users can browse and read FAQs, documentation, and tutorial videos.</li>
+          <li>Verify items marked "Display on dashboard" appear on the user's dashboard.</li>
+          <li>Verify items not marked for dashboard display do not appear on the dashboard.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Components</strong>
+    <ol>
+      <li>Layouts
+        <ol>
+          <li>Column</li>
+          <li>Section (various nested scenarios)</li>
+        </ol>
+      </li>
+      <li>Data Management (API Integration, Device Integration)</li>
+      <li>Input Components (Phone Number, Password, Dropdown with Feature as Field Value)</li>
+      <li>Specialized Input &amp; Display</li>
+      <li>Display and Interaction</li>
+      <li>Media and Files</li>
+      <li>Forms and Validation</li>
+      <li>Utility Components</li>
+      <li>Data Config Component</li>
+      <li>Hyper Link Component</li>
+      <li>Favorite Component</li>
+      <li>OCR Component
+        <ol class="alpha">
+          <li>Add the OCR component to a feature form and upload an image or document.</li>
+          <li>General text extraction &#8594; verify the text is extracted from the uploaded image/document and displayed within the selected output textarea</li>
+          <li>Verify the extracted text is saved correctly with the record and is visible on View/Edit.</li>
+        </ol>
+      </li>
+      <li>Analytics &amp; Report Components
+        <ol>
+          <li>Chart Component</li>
+          <li>Gantt Chart Component</li>
+          <li>KPI Card Component</li>
+        </ol>
+      </li>
+      <li>Form UI
+        <ol>
+          <li>Table component and Table level formulas, Summary row formulas</li>
+        </ol>
+      </li>
+      <li>Reusable Component</li>
+    </ol>
+  </li>
+
+  <li><strong>Page Builder</strong>
+    <ol>
+      <li>Create a new page and verify it is saved and listed.</li>
+      <li>Drag-and-drop layouts (columns, sections) and reusable components onto the page canvas.</li>
+      <li>Configure component properties and verify changes reflect on the page.</li>
+      <li>Reorder, move, and delete components on the canvas.</li>
+      <li>Edit an existing page and verify changes are persisted.</li>
+      <li>Delete a page and verify it is removed from the list.</li>
+      <li>Publish the page and verify it renders correctly at runtime.</li>
+      <li>Verify the page is responsive across mobile, tablet, and desktop.</li>
+      <li>Verify role-based access — only authorized users can build/edit pages.</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Management</strong>
+    <ol>
+      <li>Visual canvas for creating workflows</li>
+      <li>Drag-and-drop node placement</li>
+      <li>Node connection with visual links</li>
+      <li>Canvas zoom and pan controls</li>
+      <li>Grid snap for alignment</li>
+      <li>Create new workflows</li>
+      <li>Edit existing workflows</li>
+      <li>Delete workflows</li>
+      <li>List/view all workflows</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Control Flow</strong>
+    <ol>
+      <li>Start Node (workflow trigger point)</li>
+      <li>End Node (workflow termination)</li>
+      <li>Condition/Decision Node (if-else logic)</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Communication</strong>
+    <ol>
+      <li>Email Notification Node</li>
+      <li>SMS Notification Node</li>
+      <li>User Task/Approval Node</li>
+      <li>System Notification Node</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Monitoring</strong>
+    <ol>
+      <li>Execution history logs</li>
+      <li>Workflow instance status tracking</li>
+      <li>Node-level execution details</li>
+      <li>Error logs and stack traces</li>
+      <li>Approval node changes for user selection</li>
+      <li>Added SLA and escalation reminder for approvals</li>
+      <li>Added parallel workflow approval node</li>
+    </ol>
+  </li>
+
+  <li><strong>Printing Templates</strong>
+    <ol>
+      <li>QR Code – Generate and Print</li>
+      <li>Barcode – Generate and Print</li>
+      <li>Invoice – Generate and Print</li>
+    </ol>
+  </li>
+
+  <li><strong>Role-Based Dashboards</strong>
+    <ol>
+      <li>Role-based dashboard template creation</li>
+      <li>Dashboard rendering based on created template</li>
+    </ol>
+  </li>
+
+  <li><strong>Scheduler &amp; Task Scheduler</strong>
+    <ol>
+      <li>Create and use Schedule</li>
+      <li>Create and use Task Schedule</li>
+      <li>Event-based task schedule</li>
+      <li>Schedule-based task schedule</li>
+      <li>Schedule a notification</li>
+      <li>SMS</li>
+      <li>Mail</li>
+      <li>WhatsApp</li>
+      <li>Push</li>
+      <li>In-App</li>
+      <li>Schedule a report send (PDF) through mail from a configured email template.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder Functionality</strong>
+    <ol>
+      <li>Same Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Cross Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Incompatible datatype operations, for example, arithmetic on a text input field, should show a
+          validation error.</li>
+      <li>Unrecognized fields, functions, or operators should show a validation error.</li>
+      <li>If external fields are called without where() conditions, it should show MULTIPLE RECORDS FOUND
+          ERROR in preview for non-aggregate functions/operations.</li>
+      <li>Variables are not working. Review which variables should be displayed in the modal.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder UI</strong>
+    <ol>
+      <li>On clicking a feature from the feature list, fields in the selected feature should be displayed,
+          except for the current field, to prevent self-call loops.</li>
+      <li>On selecting external feature fields, where() should appear in the modal.</li>
+      <li>On selecting where(), the modal should automatically switch to the Feature and Fields tab.</li>
+      <li>On hovering over a field, field information such as module name and feature name should be
+          displayed.</li>
+      <li>The Clear button or backspace should work as follows:
+        <ol class="roman">
+          <li>First click of clear/backspace will select the token.</li>
+          <li>Next click of clear/backspace will clear that token.</li>
+        </ol>
+      </li>
+      <li>Empty formulas should not be saved.</li>
+      <li>Formulas should not be saved without validation.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder – Helper Tools</strong>
+    <ol>
+      <li><strong>Cheat Sheet</strong> (<strong>?</strong> icon)
+        <ol class="alpha">
+          <li>Open the Cheat Sheet and verify functions are grouped by category (Lookup, Nested Lookup, Aggregation, Conditional, Math, String, Date).</li>
+          <li>Search for a function and verify the list filters correctly.</li>
+          <li>Click the copy icon on an example and verify it is copied to the clipboard.</li>
+          <li>Press Esc and verify the modal closes.</li>
+        </ol>
+      </li>
+      <li><strong>Examples</strong>
+        <ol class="alpha">
+          <li>Open the Examples drawer and verify 50 scenarios across all categories are listed.</li>
+          <li>Filter by a category and search; verify results update.</li>
+          <li>Click "Use This Pattern" and verify the formula is inserted into the editor.</li>
+        </ol>
+      </li>
+      <li><strong>Test Formula (Playground)</strong>
+        <ol class="alpha">
+          <li>For a current-feature calculation (e.g. <em>{number_field} * 5</em>), open Test Formula, verify a type-aware input appears per field (number/date/true-false/text), enter values, run, and verify the correct result, type, and (where relevant) matched-record count.</li>
+          <li>For a lookup formula (uses <em>.where()</em> / external feature fields), verify NO value-input form is shown and a "Lookup formula – test against a real record" message appears instead.</li>
+          <li>For an aggregate formula (SUM/COUNT/AVG/MIN/MAX of records), verify the "Aggregate formula – test against a real record" message is shown and the form is not available.</li>
+          <li>Verify the Test Formula button is disabled when the formula is empty.</li>
+        </ol>
+      </li>
+      <li><strong>Template Library</strong>
+        <ol class="alpha">
+          <li>Open the Template Library and verify the <strong>Most Used</strong> tab lists the 20 platform built-in templates (e.g. GST, TDS, net salary, lookups, aggregations).</li>
+          <li>Search and filter by category; verify results update.</li>
+          <li>Click "Use This Template" and verify the formula is inserted into the editor.</li>
+          <li>With a formula in the editor, click "Save current formula as template", fill title/category/description, save, and verify it appears under <strong>My Templates</strong>.</li>
+          <li>Delete a saved (non built-in) template and verify it is removed. Verify built-in templates cannot be deleted.</li>
+        </ol>
+      </li>
+      <li><strong>Formula Wizard</strong>
+        <ol class="alpha">
+          <li><strong>Lookup mode:</strong> choose "Lookup a value", select a source feature, select the field to return, add a match condition (verify the "Right side is a field reference" option shows a dropdown of the current feature's fields), check the live preview, and Insert.</li>
+          <li><strong>Aggregate mode:</strong> choose "Aggregate records", select feature/field, optionally add one filter condition, choose the function (SUM/COUNT/AVG/MIN/MAX), and Insert.</li>
+          <li>Verify the formula preview only appears after a return field is chosen, and that going Back keeps your previous selections.</li>
+          <li>After inserting, hover over the tokens in the editor and verify the correct Module name and Feature name are shown for each (including the source feature for the looked-up field).</li>
+        </ol>
+      </li>
+      <li><strong>Smart Validation Messages</strong>
+        <ol class="alpha">
+          <li>Enter an invalid formula (e.g. unknown function, missing where(), wrong argument count) and click Validate Expression; verify the error includes a helpful suggestion and an example, not just a generic message.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li><strong>Integrations</strong>
+    <ol>
+      <li>Step 1: Go to the Integration Type field and select "Third-Party Software".<br>
+        <span class="expected">Expected Result: A new dropdown field called Select Type should appear.</span>
+      </li>
+      <li>Step 2: Check the options inside the Select Type dropdown.<br>
+        <span class="expected">Expected Result: It should contain options including "Third-Party API" and "Google Drive".</span>
+      </li>
+      <li>Step 3: Choose "Third-Party API" from the dropdown.<br>
+        <span class="expected">Expected Result: The configuration fields specific to the Third-Party API should be displayed.</span>
+      </li>
+      <li>Step 4: Change the selection to "Google Drive".<br>
+        <span class="expected">Expected Result: The system should dynamically display the Google Drive configuration fields: Client ID, Client Secret, and Refresh Token.</span>
+      </li>
+    </ol>
+  </li>
+</ul>
+<p><strong>This build — additional test focus:</strong></p>
+<ul>
+  <li>MFA — turn the organisation MFA toggle on; log in with Email and with Mobile (SMS) OTP, resend after 30 s, expired code, 5 wrong codes; confirm SSO login is not asked for an OTP; turn it off and confirm normal login.</li>
+  <li>Workspace switch — with auth policy &quot;Workspace&quot; + MFA, switch workspace (password then OTP); repeat as Administrator with ALLOW_ADMIN_SWITCH_PASSWORD true and false.</li>
+  <li>Lockout &amp; password reset — exceed MAX_LOGIN_ATTEMPTS and check the &quot;locked, try again in N minute(s)&quot; message and unlock after RESET_UNLOCK_EVERY; forgot password for an existing and a non-existing account gives the same message; 5 wrong OTPs invalidate it; LOGIN TIME CHANGE PASSWORD can&#39;t be skipped by logging in again.</li>
+  <li>Session Params — configure the tile with a field, a lookup, a linked feature and a match-in feature; check Preview; log in as a mapped user and verify Role DAC rules and &quot;Use session params in other features&quot; show only matching records (plain and lookup fields).</li>
+  <li>Unique Combinations — create records that match one field vs. every field of a combination.</li>
+  <li>Column Filter / Column Search — pick list, text, number and date range filters, chips, Clear, Export with filters, and per-column search.</li>
+  <li>Evaluation Logic — each Create/Edit/View option and &quot;Wait for all referenced fields&quot; (a zero still calculates).</li>
+  <li>Print — Download Word vs PDF, Row Filter on a report table, Default Font Size, ⚙ template settings, double-click to open, blocks print where drawn.</li>
+  <li>Open document on record click — each view type and each &quot;What opens&quot; option.</li>
+  <li>Publish to Erudite — node with Publish automatically / Always ask (Awaiting publish chip + publish button) / Don&#39;t publish.</li>
+  <li>Workflows — In-App Notification node (template and custom, When Clicked targets); Create Record Table Row Mapping and Records Field; Switch Match Table Rows; Upsert Expand nested line items and Update only; Update Record per table row.</li>
+  <li>Workflow runs — a rejection that loops back starts a clean new approval round (old tasks closed); an End node on one parallel branch doesn&#39;t stop the others and the run ends Completed.</li>
+  <li>Task Scheduler — create/edit/delete task groups (can&#39;t delete one in use); Today/Now conditions with offsets; scheduled Update/Upsert record actions; Schedule Query Builder with 2 features.</li>
+  <li>Auto Gen ID — an Auto Gen ID column in a transaction table shows real sequential ids (e.g. TSK-26-27-1), continues from earlier records, and the preview matches the saved id for every format.</li>
+  <li>Forms — a Default Value on a field inside an Accordion is applied on a new record; a dropdown With States in its Final state can&#39;t move back.</li>
+  <li>Sales Return — invoice selection fills the product table and the distributor chain; Return Qty can&#39;t exceed the invoiced quantity.</li>
+  <li>AI — retest AI App / Module / Feature creation and AI Ask (the AI Builder credential fix is in this build).</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 class="pb-before">10. What to Test on Mobile</h2>
+<ul>
+  <li>Login – Normal Login</li>
+  <li>Login – SSO (Sign In with Google, Sign In with Microsoft)</li>
+  <li>Workspace Switch</li>
+  <li>Module List</li>
+  <li>Feature List</li>
+  <li>Components</li>
+  <li>Feature Data – Create, View, Edit, Clone, Delete</li>
+  <li>Dashboard</li>
+  <li>Integration – Weighing Machine, Third-Party API (Budgie, SAP), and Payment Gateways (Stripe, Razorpay, and PayU)</li>
+  <li>Theme</li>
+  <li>Push Notification</li>
+  <li>Workflow – Approve and Reject</li>
+  <li>Charts – Feature Data</li>
+  <li>Data Table – Feature Data</li>
+  <li>Security – Prevent copy, paste, cut, and text selection</li>
+</ul>
+
+</body>
+</html>

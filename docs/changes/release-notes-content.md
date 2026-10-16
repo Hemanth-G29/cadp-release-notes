@@ -47,3 +47,15 @@
   - scripts/tick.js
   - test/unit.test.js
   - site/index.html
+
+## 2026-10-16 — Publish the v20 and v21 notes that were actually mailed to QA
+- **Author:** hemanth.a
+- **What:** `site/release-notes-v20/` now holds the curated v20 mailed on 2026-09-25 (189 bugs), replacing the 2026-08-01 automatic draft that was there, and `site/release-notes-v21/` is new with the curated v21 mailed on 2026-10-13 (31 bugs) — page and PDF for both, copied unchanged from the local builds. The history page now lists v19–v22 as Published.
+- **Why:** Both builds were produced locally while the scheduled workflow was failing, so the site never had the versions QA received.
+- **QA-Release-Note:** none
+- **Files:**
+  - site/release-notes-v20/index.html
+  - site/release-notes-v20/index.pdf
+  - site/release-notes-v21/index.html (new)
+  - site/release-notes-v21/index.pdf (new)
+  - site/index.html

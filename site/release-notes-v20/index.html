@@ -87,14 +87,14 @@
 <h1>Release Notes</h1>
 <p class="doc-kind">CADP internal QA build release notes — generated from OpenProject. Not the in-app Release Notes feature used by tenants.</p>
 <p class="dl"><a href="./index.pdf">⬇ Download PDF</a></p>
-<div class="draft-banner">DRAFT — live release notes for BUILD 20. Bug fixes update automatically; New Features / Enhancements / Known Issues are pending review before this build is cut.</div>
+
 <!-- ═══════════════════════════════════════════════ -->
 <h2>1. Release Overview</h2>
 <table class="kv-table">
   <tr><td>Field</td><td>Details</td></tr>
   <tr><td>Product Name</td><td>CADP Workspace</td></tr>
   <tr><td>Release Version</td><td>Release 1.0.0 (20)</td></tr>
-  <tr><td>Release Date</td><td>August 1, 2026</td></tr>
+  <tr><td>Release Date</td><td>September 25, 2026</td></tr>
   <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
   <tr><td>Prepared By</td><td>Development Team</td></tr>
   <tr><td>Approved By</td><td>Ganagavathy</td></tr>
@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (20) delivers 0 bug fixes across the platform. Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (20) delivers 189 bug fixes, 26 new features, and 23 enhancements across the platform. Highlights include Feature Design Lock (concurrent design safety), Stepper – Role-Based Access per Step, and Workflow – Approval Gate Node. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -112,7 +112,32 @@
     <tr><th>Feature ID</th><th>Feature Name</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No new features recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>Feature Design Lock (concurrent design safety)</td><td>Only one user can open a feature in the Builder at a time. A second designer opening the same feature sees it read-only with a &quot;being designed by &lt;user&gt;&quot; message. The lock is released when the first designer leaves, or taken over after about 90 seconds of inactivity.</td><td>Prevents two designers overwriting each other&#39;s changes.</td></tr>
+    <tr><td></td><td>Stepper – Role-Based Access per Step</td><td>Each stepper step can be restricted to specific roles (&quot;Who can access this step&quot;). A later-step role sees earlier steps as read-only for context. Each step has an override: Stepper default / Show disabled / Hide / Editable.</td><td>Supports approval-chain style forms (requester → reviewer → approver).</td></tr>
+    <tr><td></td><td>Workflow – Approval Gate Node</td><td>New workflow node that maps the buttons of a linked feature&#39;s stepper to step routing, so a button click moves the record to the configured step.</td><td>Stepper approvals can be driven from the Workflow Builder.</td></tr>
+    <tr><td></td><td>Workflow – Approval Request &quot;By Field&quot; Approver</td><td>Approval Request / Chat Approval nodes gain a third approver mode, &quot;By field&quot;: the approver is taken from a field on the record, alongside Specific users/roles and Reporting hierarchy.</td><td>Dynamic approvers without a separate workflow per approver.</td></tr>
+    <tr><td></td><td>Workflow – Trigger on Bulk Import (onUpload)</td><td>A workflow can now be bound to the onUpload trigger of a feature. Importing records (Import modal, any import mode) fires the workflow once per batch, and Upsert / Create Record nodes process every imported row. Large imports are processed in chunks.</td><td>Imports can update related masters (e.g. stock) automatically.</td></tr>
+    <tr><td></td><td>Workflow – Filter, Match Combine and Table Row Mapping on Record Nodes</td><td>Upsert / Update / Create Record nodes get a Filter section (AND/OR conditions) that decides whether the node runs. Upsert adds a Match Combine AND/OR toggle when two or more Match Key fields are tagged, and Table Row Mapping can append a new table row or find and update an existing row by Match Key.</td><td>More precise record updates from workflows.</td></tr>
+    <tr><td></td><td>Scheduler – DB-Sync Schedule Mode</td><td>The Task modal&#39;s Schedule Mode now offers DB-Sync (next to Expression Builder / Integrations / Workflow). Pick a Module and Feature to schedule its Database Sync.</td><td>Database Sync can run on a schedule.</td></tr>
+    <tr><td></td><td>Database Sync – Query Variables and Group By</td><td>The query builder&#39;s Feature fields reference picker can add multiple reference rows and feed the picked values into the query as named variables (including IN-lists). Field mapping&#39;s Group By merges source rows that share the grouped column into one record.</td><td>Parameterised sync queries and line-item grouping.</td></tr>
+    <tr><td></td><td>External Database – Amazon Redshift</td><td>Amazon Redshift is available as a database engine for integrations, alongside MySQL/MariaDB/PostgreSQL/MS SQL/Oracle.</td><td></td></tr>
+    <tr><td></td><td>Role Management – Data Sources Tab</td><td>Role Edit has a new Data Sources tab to choose which external data sources a role may use and to add row rules (e.g. Region = &lt;value&gt;, picked from a value list). Dashboards and explorers only return rows allowed by the rule.</td><td>Row-level access control on external databases.</td></tr>
+    <tr><td></td><td>Dashboard – Filters, Refresh and Period Comparison</td><td>The Date and Filters buttons now work on dashboards whose widgets use an external database. Each dashboard tab has a real hard refresh. KPI cards gain a &quot;Same period last year&quot; comparison. Fourteen new financial and calendar period presets (e.g. Q1–Q4, H1/H2, FY, last year) are available in all filter surfaces.</td><td></td></tr>
+    <tr><td></td><td>Date / Datetime Picker – Default Date</td><td>Advanced → Datepicker / Datetimepicker (and date columns in tables) has a Default Date block, so a field can open with a date already selected.</td><td></td></tr>
+    <tr><td></td><td>Dropdown – &quot;With States&quot; (State Transitions)</td><td>A manual-options dropdown can enable With States and define State Transitions, so the options offered depend on the field&#39;s current value.</td><td>Status fields that only allow valid next states.</td></tr>
+    <tr><td></td><td>Radio Button – Show as Chips</td><td>Radio / radio-group fields have a &quot;Show as&quot; option: Default (radio list) or Chips (selectable pills).</td><td></td></tr>
+    <tr><td></td><td>Formula – sortBy(), limit(), DATE_DIFF weeks, Textarea display</td><td>The formula builder offers sortBy() and limit() after a .where() lookup to pick one record when several match. DATE_DIFF supports &quot;weeks&quot; (it previously returned days). Formula fields gain a third Show As mode, Textarea.</td><td></td></tr>
+    <tr><td></td><td>Table – Show Column Label on Hover</td><td>Table Settings → Column Header has a &quot;Show Column Label on Hover&quot; toggle for data, report and transaction tables.</td><td></td></tr>
+    <tr><td></td><td>Listing – Group Cards by Field with Variant Chips</td><td>Listing Data Source can group records by any field and show attribute chips (e.g. size, shape). Only combinations that exist can be selected (others are disabled), card fields show the selected variant&#39;s values, and the cart saves the chosen SKU. &quot;Groups to show&quot; and Variant Fields are configurable.</td><td></td></tr>
+    <tr><td></td><td>Listing – Offers, Pricing and Stock</td><td>Offer values (badge, savings) can be mapped into listing card fields, with a per-listing offer Behaviour section. Pricing supports batch-wise prices, per-UOM prices and price revisions (e.g. increase by %). An out-of-stock item can be replaced by an in-stock equivalent (Transaction Settings → Replace Out-of-Stock Products), and stock shows a UOM breakdown.</td><td>Configured through Transaction Settings.</td></tr>
+    <tr><td></td><td>Workspace Hierarchy Engine</td><td>Sales / Geo / Product hierarchies can be configured per workspace. The Product mapping can use the Product Level Master to show level names next to level codes.</td><td></td></tr>
+    <tr><td></td><td>Login – Login Param, Login Identifiers and Password Policy</td><td>Users can log in with the value of a chosen workspace feature field (Login Param, e.g. Employee ID). A tenant setting LOGIN_IDENTIFIERS restricts login to User ID / Mobile / Email / Any, with a specific error message. Password history and maximum password age are enforced, and change-password-at-login follows the tenant&#39;s setting.</td><td></td></tr>
+    <tr><td></td><td>Auto Gen ID – Financial Year [YYYY]</td><td>The Auto Gen ID field&#39;s Advanced → Financial Year dropdown offers Financial Year[YYYY] (e.g. PAY-2026-0001). Workflow Create / Upsert Record nodes support it too.</td><td></td></tr>
+    <tr><td></td><td>Chat – Calling Improvements</td><td>Refreshing the browser during a call reconnects instead of ending the call for everyone. Group/community calls respect a call permission and show a &quot;call in progress&quot; banner.</td><td></td></tr>
+    <tr><td></td><td>Data Management – Backup Count and Safety Backups</td><td>The Backup page&#39;s Total Backups card shows the real total. Automatic pre-restore backups carry a purple &quot;Safety&quot; badge. &quot;Go to Schedules&quot; opens the Scheduler tab and the create form when there are no schedules.</td><td></td></tr>
+    <tr><td></td><td>Erudite Documents – AI Search Status</td><td>Documentation cards show an AI-search status badge (AI ready / Indexing… / PDF only / Not indexed + Retry) that updates on its own. Uploading a non-PDF shows a warning.</td><td></td></tr>
+    <tr><td></td><td>Release Notes (in-app) – Scan Workspace and Templates</td><td>Scan Workspace lets you pick modules, features and workflows before scanning, and clicking a detected change opens its field-level version history. New default templates, including QA Build Release Notes and Complete Release Outline, are in Browse Templates. The Release Notes card is replaced by a Documentation Hub (Release Note Generator / User Manual Generator / SOP Management), shown per role permission.</td><td></td></tr>
+    <tr><td></td><td>Workflow – OCR Extract Tesseract Provider</td><td>The OCR Extract node has an OCR Provider option, Tesseract (runs locally, no API key).</td><td></td></tr>
   </tbody>
 </table>
 
@@ -123,7 +148,29 @@
     <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No enhancements recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>AI Assistant</td><td>Create and Ask tabs explain what each does. Create asks clarifying questions (answerable with chips) instead of building an app from a greeting such as &quot;hi&quot;, and offers &quot;Ask this in Ask mode&quot; for questions. The assistant warns when AI can&#39;t be reached. Controls follow the role&#39;s AI Builder / AI Ask Create/Edit/Delete permissions. Build with AI runs on the server, so a page reload no longer abandons a build. (Blocked in this build — see Known Issues.)</td><td>Users know which tab to use, don&#39;t create unwanted applications by accident, and can only do what their role allows. Long builds survive a page refresh.</td></tr>
+    <tr><td></td><td>Forms / Records</td><td>Unique Key is enforced when editing a record too. &quot;Duplication Allowed&quot; no longer forces uniqueness. A duplicate value shows a clear message instead of a raw database error.</td><td>Duplicate data can&#39;t slip in through editing, and users see an error they can understand and act on.</td></tr>
+    <tr><td></td><td>Forms / Records</td><td>Opening a saved record no longer recalculates its formulas until a value is actually changed.</td><td>Figures on saved records stay as they were saved and aren&#39;t silently replaced with values from today&#39;s master data.</td></tr>
+    <tr><td></td><td>Import</td><td>The Import button is in the modal footer. File type and size are checked up front, and the size limit is now 100 MB. Every failure in a row is listed, not just the first. The sample template&#39;s transaction-table sheet offers the referred feature&#39;s values, and create-mode imports are much faster.</td><td>Large files can be imported. Users see every problem with a row in one go and can fix the file in one pass. Imports finish much faster.</td></tr>
+    <tr><td></td><td>Builder</td><td>Dropping a component into a column-grid column no longer scrolls the canvas to the bottom. The ⋮ menu on module and feature cards no longer flickers and closes on outside click. The OCR Scanner component has the Duplicate / Delete toolbar.</td><td>Designers keep their place on long forms and card menus behave predictably, which makes form design faster and less error-prone.</td></tr>
+    <tr><td></td><td>Builder</td><td>The Publish button and the feature card / Transaction Management header now show the same publish status (e.g. for cloned features).</td><td>Everyone sees the same, correct publish status, and a feature that is ready can actually be published.</td></tr>
+    <tr><td></td><td>Listing / Carousel</td><td>Data Source Module / Feature / grouping field pickers are searchable dropdowns and now list nested features.</td><td>Features are quicker to find in large workspaces, and nested features are no longer missing from the list.</td></tr>
+    <tr><td></td><td>Dashboard</td><td>The Financial Year dropdown lists the years the data actually covers. The dashboard runtime is responsive (2 widgets per row on tablet, 1 on mobile), and data tables use the chart-tile style.</td><td>Users only see financial years that have data. Dashboards are usable on tablets and phones, and tables look consistent with charts.</td></tr>
+    <tr><td></td><td>Definition / Transaction Table</td><td>A Number or Formula field whose label contains &quot;qty&quot;/&quot;quantity&quot; is no longer turned into a +/- stepper. Read-only columns are not editable in preview. Deleting one row no longer clears the others. Formula columns can be overridden Excel-style, and label-mode cells are click-to-edit.</td><td>Tables show the component the designer configured. Read-only data stays protected, and deleting one row can&#39;t wipe out the other rows&#39; data.</td></tr>
+    <tr><td></td><td>Formula Builder</td><td>It opens and searches fields without freezing. The Cheat Sheet can copy the syntax line. Tab headers are no longer offered as fields. The Aggregate Wizard builds COUNT_RECORDS correctly. The table column Decimals setting is honoured. Filter conditions support {Field} == null / != null. The Template Library search returns results. Label-mode values follow the field&#39;s text colour and gain a Value Sign option.</td><td>Formulas are faster and easier to build, and more formulas give correct results without workarounds.</td></tr>
+    <tr><td></td><td>Formula Builder</td><td>Squaring a negative value (e.g. {x} ^ 2 with x = -5) returns a positive result, and table lookups are faster.</td><td>Calculations match standard maths and Excel behaviour, and tables with lookups load faster.</td></tr>
+    <tr><td></td><td>Data Grid</td><td>Submitting a data-grid config field saves one record with child rows instead of one duplicate record per grid row.</td><td>No duplicated header records. Each submission is one clean record, which keeps reports and record counts accurate.</td></tr>
+    <tr><td></td><td>Workflow – Upsert / Update / Create Record</td><td>Field Mappings use a two-column Target / Source layout, and the panel is resizable. Auto-Map is a toggle. The Update operation offers Set / + / - / * and is shown only for number fields. Tagging a Match Key that isn&#39;t a Unique Key shows a warning with a &quot;map on both sides&quot; note.</td><td>Field mappings are easier to read and set up, and the new warnings help avoid mistakes such as matching on a non-unique field.</td></tr>
+    <tr><td></td><td>Workflow – AI</td><td>AI workflow generation shows a clear message when the AI cannot read workspace data.</td><td>Users understand why AI workflow generation failed instead of seeing a technical error.</td></tr>
+    <tr><td></td><td>Role Management</td><td>Saved role permissions apply immediately without a page reload. Menu Access Control has a single scrollbar, and its heading stays in place.</td><td>Permission changes apply straight away without a re-login or page reload, and large permission trees are easier to navigate.</td></tr>
+    <tr><td></td><td>Erudite Management</td><td>Add / Edit / Delete buttons on Documentation, FAQs and Tutorial Videos follow the role&#39;s permissions.</td><td>Users only see actions they are allowed to perform, so there are no surprise permission errors.</td></tr>
+    <tr><td></td><td>Credential Manager</td><td>Users added through bulk import now get RBAC logins, and newly created users trigger the user-creation email.</td><td>Users created through bulk import can log in straight away and receive their login email, the same as users created one by one.</td></tr>
+    <tr><td></td><td>Print Templates</td><td>The New Print Template modal has Mode and Paper Size dropdowns (A3 / A4 / A5 / Letter / Custom, plus thermal receipt sizes). A template can be renamed from the editor header.</td><td>Templates can be set up for any paper size, including thermal receipt printers, and renamed without leaving the editor.</td></tr>
+    <tr><td></td><td>Transaction Preview</td><td>The ⋮ menu (Import / Hold / Recall) shows only for transaction features, and the duplicate &quot;Back to Builder&quot; button is removed.</td><td>A cleaner toolbar that only shows actions relevant to the feature type.</td></tr>
+    <tr><td></td><td>Footer / Number Format / Templates</td><td>The footer shows the logo and brand name together. The phone format&#39;s Default Country dropdown shows readable flags and dial codes. Templates can use the organization.loginUrl variable.</td><td>Branding and phone numbers display correctly, and emails can link users straight to their login page.</td></tr>
+    <tr><td></td><td>Performance / Network</td><td>Fewer and smaller requests. The feature list response no longer duplicates field data. The formula picker makes two requests (feature list + selected feature&#39;s fields). Field lists a user can&#39;t read are not re-requested for 60 s. Formula batch / evaluate-table payloads carry only what each formula needs. Table formula lookups fetch only matching records instead of scanning the referenced feature. One fewer metadata request per local formula.</td><td>Pages and the formula builder load faster, with less data sent over the network.</td></tr>
+    <tr><td></td><td>Performance / Caching</td><td>A row rule saved on a role takes effect immediately (it could take up to 24 hours because of a stale cache). Database Sync Test Query previews are capped to a small number of rows when the query has no LIMIT. Create-mode imports insert a chunk at once instead of row by row.</td><td>Access rule changes apply immediately. Test queries return quickly, and big imports finish faster.</td></tr>
+    <tr><td></td><td>Security (Network tab)</td><td>Database passwords and payment secret keys no longer appear in any browser response. External-DB widgets send only the data source id.</td><td>Sensitive credentials can no longer be seen in the browser, which reduces the risk of data leaks.</td></tr>
   </tbody>
 </table>
 
@@ -134,7 +181,195 @@
     <tr><th>Bug ID</th><th>Description</th></tr>
   </thead>
   <tbody>
-    <tr><td>—</td><td>No fixed bugs recorded yet for this release.</td></tr>
+    <tr><td>623</td><td>Components --&gt; Quantity→ Number Stepper properties (value, min, max, and step) are not reflected in the form field when custom values are set.</td></tr>
+    <tr><td>700</td><td>In-App Notification → OnClick Trigger--&gt;In-app notifications are not received when triggered via onClick event.</td></tr>
+    <tr><td>785</td><td>Components--&gt;We added Few tabs in the Tab View and assigned a specific feature for each tab. After filling the form in each tab and submitting it, no data is shown in the index table list.</td></tr>
+    <tr><td>835</td><td>Required Field Indicator Component → Text field value saves successfully but cannot be edited in preview mode.</td></tr>
+    <tr><td>859</td><td>Signature field is received as encrypted/base64 text in email instead of displaying the actual signature image.</td></tr>
+    <tr><td>870</td><td>Component → Stepper View → When trying to add a stepper, the stepper properties overlap with each other and become misaligned.</td></tr>
+    <tr><td>889</td><td>Taskscheduler--&gt; In the Task Scheduler review page, the displayed details are not shown properly.</td></tr>
+    <tr><td>920</td><td>Audio Player component loses its configured audio source and player controls in Builder mode after Preview/Publish navigation.</td></tr>
+    <tr><td>929</td><td>Video Player displays generic &quot;Network Error&quot; message when uploading oversized video files instead of showing proper file size validation.</td></tr>
+    <tr><td>947</td><td>Existing Task Scheduler does not pick up updated Scheduler time changes.</td></tr>
+    <tr><td>1019</td><td>Feature→ Report Template →Report Template allows input fields, resulting in data errors after publishing.</td></tr>
+    <tr><td>1064</td><td>Components → Dropdown → Feature Data as Option→ Unwanted &quot;Others&quot; option is displayed in Feature Data as Option.</td></tr>
+    <tr><td>1066</td><td>Components → Dropdown → Field Properties → Select Value Source → Import (Excel/CSV/JSON) →Uploaded file name is not retained after reopening the feature.</td></tr>
+    <tr><td>1141</td><td>Data Table → When the user clicks the View action, no data is displayed.</td></tr>
+    <tr><td>1150</td><td>Components → Radio Button Group→ Radio Button Group naming is unclear for single-selection behavior.</td></tr>
+    <tr><td>1162</td><td>Bullet List and Numbered List actions remove selected text instead of applying formatting.</td></tr>
+    <tr><td>1171</td><td>Database list is not loaded after selecting a Database Integration.</td></tr>
+    <tr><td>1173</td><td>Components → Color Picker → Color Picker Properties→ Configured palette colors are not reflected on the Create page.</td></tr>
+    <tr><td>1178</td><td>Components → Data Table → Data Table Properties → File Upload (Excel/CSV)→ System shows Create page instead of imported file data after publishing.</td></tr>
+    <tr><td>1197</td><td>Components → Charts → Chart Properties → Scatter Chart→ Scatter chart selection tools are missing and non-functional.</td></tr>
+    <tr><td>1201</td><td>Create Page → After creating a field and deleting it, refreshing the Create page causes the previously deleted field to be displayed repeatedly.</td></tr>
+    <tr><td>1209</td><td>Component → Container → After configuring fields inside the Container component, the fields overlap with each other.</td></tr>
+    <tr><td>1210</td><td>Erudite Management → Documentation : File type validation is missing for Document and Thumbnail uploads.</td></tr>
+    <tr><td>1211</td><td>Erudite Management → Tutorial Videos : Video upload fails for files well below the configured 50 MB limit.</td></tr>
+    <tr><td>1221</td><td>Default Landing Page preference is not applied after selection.</td></tr>
+    <tr><td>1233</td><td>Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted.</td></tr>
+    <tr><td>1238</td><td>Components → Table → Data Table Properties → Data Source → Platform Feature→ Current feature is listed in Platform Feature selection.</td></tr>
+    <tr><td>1255</td><td>Components → Table → Data Table Properties → Data Source → Platform Feature→ Rows Per Page count is incorrect on the Create page.</td></tr>
+    <tr><td>1257</td><td>Components → Table → Data Table Properties → Data Source → File Upload→ Apply Filter button disappears after adding multiple filters.</td></tr>
+    <tr><td>1283</td><td>Components--&gt;Users Can Proceed to Payment Without Filling the Product Name Field. The payment gateway without displaying any validation message.</td></tr>
+    <tr><td>1287</td><td>Workflow → Create Record Node →country Code is not populated in the created record</td></tr>
+    <tr><td>1292</td><td>Component → Text Input → When the Text Input component is dragged onto the Design page, the label text should appear in a dark color and the placeholder text should appear in a lighter color. However, both are displayed with the same style.</td></tr>
+    <tr><td>1294</td><td>Component → Accordion → When the Accordion component is dragged onto the Design page and configured with two columns, the hover effect overlaps with the adjacent column.</td></tr>
+    <tr><td>1299</td><td>Component → Accordion → The phone number dropdown icon overlaps with the country code field.</td></tr>
+    <tr><td>1300</td><td>Component → Accordion → The phone number field is misaligned.</td></tr>
+    <tr><td>1301</td><td>Component → Accordion → After configuring the components on the Design page and saving successfully, the information icon is displayed for every field on the Create page.</td></tr>
+    <tr><td>1302</td><td>Component → Accordion → After configuring the components on the Design page and saving successfully, the Preview page is displayed after submitting data on the Create page.</td></tr>
+    <tr><td>1305</td><td>Components → Data Table → Data Table Properties→ Selected Data Table theme colors are not reflected on the Create page.</td></tr>
+    <tr><td>1307</td><td>Component → Tab View → On the Preview page, when entering data into the fields, one field displays the text in bold, while another field displays the text in a lighter font style,</td></tr>
+    <tr><td>1310</td><td>Components → Data Table → Data Table Properties→ Grand Total Row Style colors are not reflected on the Create page.</td></tr>
+    <tr><td>1315</td><td>Feature--&gt; Unable to save the form after adding components. The Feature page initially displays no components, and after adding the required components, clicking Save results in an error</td></tr>
+    <tr><td>1319</td><td>Component → Progress Bar → Properties panel is empty on the Design page</td></tr>
+    <tr><td>1320</td><td>Components → Data Table → Data Table Properties → Table Type → Pivot Table → Data Source→ Static Data (Manual) option does not allow data creation in Pivot Table.</td></tr>
+    <tr><td>1322</td><td>Component → Design Page → The list of components overlaps with other components on the Design page.</td></tr>
+    <tr><td>1323</td><td>Components → Data Table → Data Table Properties → Table Type → Pivot Table→ Question mark icon is displayed instead of a cancel/remove icon for Pivot Table filter fields.</td></tr>
+    <tr><td>1325</td><td>Components → Data Table → Data Table Properties → Table Type → Pivot Table→ Previous filter fields are retained after changing the Pivot Table data source.</td></tr>
+    <tr><td>1327</td><td>Component → Comment Thread → Comment Thread component is displayed twice in the Components list</td></tr>
+    <tr><td>1328</td><td>Components → Data Table → Data Table Properties → Table Type → Pivot Table→ Sort dropdown is displayed incorrectly, and Subtotal fields overlap in Pivot Table.</td></tr>
+    <tr><td>1329</td><td>Component → Comment Thread → Reply limit restriction is not enforced</td></tr>
+    <tr><td>1330</td><td>Components → Data Table → Data Table Properties → Table Type → Pivot Table→ Pivot Table color settings are not reflected on the Create page.</td></tr>
+    <tr><td>1331</td><td>Component → Comment Thread → User profile changes after posting a comment</td></tr>
+    <tr><td>1332</td><td>Component → Comment Thread → The Send Comment button overlaps with the AI logo.</td></tr>
+    <tr><td>1334</td><td>Component → Comment Thread → Upon refreshing the tab, the profile picture changes automatically.</td></tr>
+    <tr><td>1337</td><td>Components → Stepper View → Stepper Properties→ Selected Stepper icon is not displayed on the Create page.</td></tr>
+    <tr><td>1338</td><td>Component → Comment Thread → After selecting one emoji while replying to a comment, the emoji picker is disabled, preventing the user from selecting another emoji.</td></tr>
+    <tr><td>1342</td><td>Components → Stepper View → Stepper Properties→ View mode allows editing in Step 1 of the Stepper View.</td></tr>
+    <tr><td>1343</td><td>Components → Stepper View → Stepper Properties→ Stepper View saves only Step 1 data, Step 2 data is missing in Table View.</td></tr>
+    <tr><td>1344</td><td>Component → Comment Thread → Toolbar icons are not highlighted when selected  Description:</td></tr>
+    <tr><td>1345</td><td>Components → Stepper View → Stepper Properties→ Content not linked&quot; message is displayed for Step 1 with manual fields.</td></tr>
+    <tr><td>1348</td><td>Dashboard--&gt;On the Data Entry page, selecting a value from the Dropdown or Date Picker causes the lower half of the page to become blank (white space). The content is displayed only after scrolling.</td></tr>
+    <tr><td>1349</td><td>Component → Comment Thread → The maximum comment length is configured to 100 characters, but the system accepts comments exceeding the configured limit.</td></tr>
+    <tr><td>1350</td><td>Components → Stepper View → Stepper Properties→ Newly added Step 3 overlaps with existing steps in Stepper View.</td></tr>
+    <tr><td>1351</td><td>Component → Comment Thread → Comments cannot be deleted after they are created.</td></tr>
+    <tr><td>1355</td><td>Print Template--&gt;The Report Table displays only the linked feature column headers, but the corresponding feature data is not loaded and the table rows remain empty.  </td></tr>
+    <tr><td>1358</td><td>Task Scheduler--&gt;Users created during the email server outage remain in Pending status and do not receive the invitation email after the server is restored. Only newly created users receive the email.</td></tr>
+    <tr><td>1368</td><td>Component → Document Viewer → Uploaded document is not displayed in Preview after Publish, and maximum file size limit is not specified in properties</td></tr>
+    <tr><td>1401</td><td>Changing a feature template from Page Template to Masters Template is not applied after saving.</td></tr>
+    <tr><td>1406</td><td>Component → List → Import Button Colour Is Not Updating on the Design Page</td></tr>
+    <tr><td>1418</td><td>Task Scheduler--&gt;The notification email is received successfully, but the attached PDF/file is not included. Instead, the email displays [object Object] instead of the actual attachment.  </td></tr>
+    <tr><td>1422</td><td>Workflow modifications are not reflected in the Publish Workspace changes list.</td></tr>
+    <tr><td>1434</td><td>Auto-generated ID is duplicated for new records.</td></tr>
+    <tr><td>1452</td><td>Components--&gt;The Quick Layout, Grid, and Columns properties are not displayed in the Components section.</td></tr>
+    <tr><td>1497</td><td>Components → Text Block → Text Block Properties → Text Block content is not visible until the feature is reopened.</td></tr>
+    <tr><td>1498</td><td>Components → Text Block → Text Block Properties → Content Format→ Content Format changes are not applied in the Text Block component.</td></tr>
+    <tr><td>1499</td><td>Components--&gt;When Duplication Allowed is enabled, clicking the Add Duplicate button on the data entry page creates a duplicate row where the Remove button overlaps with other UI elements.</td></tr>
+    <tr><td>1500</td><td>Components → Text Block→ Submitted Text Block data is not displayed in the Table List.</td></tr>
+    <tr><td>1501</td><td>Components--&gt;Unable to save a newly added component in an existing unpublished feature. Clicking Save displays the error &quot;Error saving component: Object Object.&quot;</td></tr>
+    <tr><td>1504</td><td>Components → Text Block → Text Block Properties → Font Weight→ Font Weight options do not apply distinct styles in the Text Block component.</td></tr>
+    <tr><td>1506</td><td>Component → Image Viewer → After changing the label name, the configured label is displayed in a lighter font instead of bold.</td></tr>
+    <tr><td>1509</td><td>Component → Number Input → OTP field accepts more than the configured digit limit and converts the input to a decimal value.</td></tr>
+    <tr><td>1511</td><td>Component → Tab View → Feature Data configuration does not redirect to the configured page in Preview mode after publishing.</td></tr>
+    <tr><td>1516</td><td>User Management → Login fails with &quot;Invalid Credentials&quot; after creating the same email ID in more than 10 different workspaces and using the latest password.</td></tr>
+    <tr><td>1524</td><td>Component → Form Page → The dropdown icons in the configured required fields are overlapping.</td></tr>
+    <tr><td>1527</td><td>Components → Divider → Divider Properties → Orientation→ Vertical divider is not displayed on the Design and Create/View pages.</td></tr>
+    <tr><td>1528</td><td>Component → Tags Input → The Copy and Clear All options are missing from the right corner of the Tags Input field.</td></tr>
+    <tr><td>1530</td><td>Components → Divider → Divider Properties→ Dashed divider style is not reflected on the Create/View page.</td></tr>
+    <tr><td>1531</td><td>Component → Tags Input → Configured tag color is not retained on the Create page</td></tr>
+    <tr><td>1532</td><td>Component → Tags Input → The minimum tag limit is configured, but the system allows fewer tags than the configured minimum.</td></tr>
+    <tr><td>1534</td><td>Configuration--&gt;The Show/Hide Password (eye) icon for the Firebase Server Key (Secret) field is misaligned and displayed at the edge of the input field.</td></tr>
+    <tr><td>1538</td><td>Components → Data Grid Config → Data Grid Config Properties→ Select Feature dropdown overlaps with other UI elements in Data Grid Config.</td></tr>
+    <tr><td>1540</td><td>Component → Phone Number → The phone number field is configured to accept 10 digits, but it accepts a 9-digit number without displaying a validation message.</td></tr>
+    <tr><td>1541</td><td>Component → Phone Number → When searching for a country code, the search field becomes hidden.</td></tr>
+    <tr><td>1542</td><td>Components → Data Grid Config → Data Grid Config Properties→ Data is not displayed after clicking Generate in Data Grid Config.</td></tr>
+    <tr><td>1543</td><td>Component → Password → The password field is configured to require a minimum of 8 characters, but it accepts a 7-character password.</td></tr>
+    <tr><td>1547</td><td>Components → Section → Section Properties→ Submit and Cancel buttons are displayed when loading a feature into a Section.</td></tr>
+    <tr><td>1549</td><td>Components → Section → Section Properties→ Background image overlaps text input fields in the Section component.</td></tr>
+    <tr><td>1550</td><td>User Preferences → Miscellaneous →Save Interval Value(seconds) Is Not Persisted After Saving User Preferences.</td></tr>
+    <tr><td>1551</td><td>Components → Section → Section Properties → Icon Set→ Discount icon overlaps with other icons in the Material icon set.</td></tr>
+    <tr><td>1552</td><td>Components → Section → Section Properties → Icon Set→ Custom icon URL is not rendered in the Section component.</td></tr>
+    <tr><td>1553</td><td>Component →DateTime Picker calendar is hidden on the Create page.</td></tr>
+    <tr><td>1555</td><td>Component → Section → The fields configured in the Section component on the Form Page are overlapping.</td></tr>
+    <tr><td>1558</td><td>Selected Default Workspace Is Not Automatically Loaded After User Logs Back Into the Application</td></tr>
+    <tr><td>1564</td><td>Components → Calculator→ Duplicate and Delete buttons are missing in the Calculator component.</td></tr>
+    <tr><td>1565</td><td>Component → Tab View → The field configured on the Form Page is saved successfully, but after publishing, the field data is missing.</td></tr>
+    <tr><td>1566</td><td>Components → Calculator → Calculator Properties→ Calculator mode changes are not applied immediately on the Design page.</td></tr>
+    <tr><td>1569</td><td>Components → Calculator→ Submitted Calculator data is not displayed in the Table View.</td></tr>
+    <tr><td>1570</td><td>Components → Calendar → Calendar Properties → Default View→ Selected Default View is not reflected in the Calendar component.</td></tr>
+    <tr><td>1571</td><td>Components → Calendar → Calendar Properties→ Calendar property settings are not reflected after Save and Publish.</td></tr>
+    <tr><td>1573</td><td>Components → Calendar → Advanced → Layout → Display→ Duplicate Gap (Spacing) option is displayed when Flex layout is selected.</td></tr>
+    <tr><td>1574</td><td>Components → Tagging System→ Tagging System Properties section is missing.</td></tr>
+    <tr><td>1575</td><td>Component → Lookup → Filter → Advanced Filter Properties → The selected field is overlapping.</td></tr>
+    <tr><td>1576</td><td>Components → List Block → List Block Properties→ Text Color option overlaps with other UI elements in List Block Properties.</td></tr>
+    <tr><td>1580</td><td>Components → List Block → List Block Properties→ Divider color is not reflected or retained in the List Block component.</td></tr>
+    <tr><td>1587</td><td>Component → Dropdown → Select Value Fields → Organization field properties are missing</td></tr>
+    <tr><td>1593</td><td>Component → Drawer → Placeholders display incorrect characters (â†).</td></tr>
+    <tr><td>1594</td><td>Components → Modal→ Modal does not provide scrolling when content exceeds the visible area.</td></tr>
+    <tr><td>1595</td><td>Component → Drawer → Component properties are not working as expected</td></tr>
+    <tr><td>1597</td><td>Components → Modal → Modal Properties→ Modal title is not retained in Modal Properties after reopening the feature.</td></tr>
+    <tr><td>1598</td><td>Erudite Management → Tutorial Videos → Tutorial Videos action menu is clipped, hiding Edit and Delete options after adding a video</td></tr>
+    <tr><td>1599</td><td>Erudite Management → Documentation→ Clicking a DOCX document downloads the file automatically instead of opening or previewing the document.</td></tr>
+    <tr><td>1600</td><td>Components → Modal → Modal Properties → Icon Set→ Discount icon overlaps with other icons in the Material icon set.</td></tr>
+    <tr><td>1601</td><td>Erudite Management → Tutorial Videos → Video upload allows MP3 audio files instead of restricting uploads to supported video formats</td></tr>
+    <tr><td>1634</td><td>Components → Footer → Footer Properties → Brand→ Logo overlaps and hides the Brand Name in the Footer component.</td></tr>
+    <tr><td>1642</td><td>Feature Management → Transaction Settings : Validation message is displayed in an alert popup on Save Settings.</td></tr>
+    <tr><td>1644</td><td>Notification &amp; Alerts → Task Scheduler→ Deleting a Task Scheduler displays the browser&#39;s default confirmation dialog instead of the application&#39;s custom confirmation modal</td></tr>
+    <tr><td>1645</td><td>Components → Number → Number Format → Format Type → Phone→ Country dialing codes display special characters in the Default Country dropdown.</td></tr>
+    <tr><td>1651</td><td>Components → Currency → Advanced → Currency Properties → Decimal Separator→ Currency component ignores the configured decimal separator and formats the value incorrectly.</td></tr>
+    <tr><td>1654</td><td>Components → Address → Address Properties→ Address component allows form submission without validating required fields.</td></tr>
+    <tr><td>1655</td><td>Components → Address→ PIN Code field accepts invalid characters and exceeds the allowed length.</td></tr>
+    <tr><td>1664</td><td>Components → DateTime Picker→ Create page→ Month dropdown arrow overlaps in the DateTime Picker.</td></tr>
+    <tr><td>1665</td><td>Create Page → Actions → View→ Data fields are editable on the View page without clicking Edit.</td></tr>
+    <tr><td>1667</td><td>Components → Color Picker → Advanced → Advanced Color Properties→ Color Picker does not support RGB and other color formats in the Palette field.</td></tr>
+    <tr><td>1671</td><td>Components → Text Block → Text Block Properties→ Copy button overlaps with other elements in the Text Block.</td></tr>
+    <tr><td>1674</td><td>Components → Text Block→ Text Block border overlaps with other elements on the Create page.</td></tr>
+    <tr><td>1678</td><td>Vertical Template → Created Public and Private templates are not displayed in the &quot;Choose Vertical Template&quot; list</td></tr>
+    <tr><td>1680</td><td>Preview--&gt;The Preview shows &quot;No component is found in this feature&quot; for E-commerce components before publishing. The components appear only after publishing and reopening the Design page.</td></tr>
+    <tr><td>1685</td><td>Non-default dashboard template is displayed as the landing page.</td></tr>
+    <tr><td>1688</td><td>Removed default dashboard is still used as the landing page.</td></tr>
+    <tr><td>1689</td><td>Dashboard displays Role ID instead of Role Name.</td></tr>
+    <tr><td>1690</td><td>Unpublished features are promoted to Production during environment publish.</td></tr>
+    <tr><td>1693</td><td>Components → Icon → Icon Properties → Icon Set→ Feather, Font Awesome, and Custom (URL) icon sets are not working.</td></tr>
+    <tr><td>1696</td><td>Components → Link → Link Properties → Icon Size→ Icon Size dropdown displays corrupted characters in Link Properties.</td></tr>
+    <tr><td>1697</td><td>Workspace Management → Templates Library→ No Success Validation Message Displayed After Deleting Templates from Templates Library (SMS, Email, WhatsApp, In-App, and Push)</td></tr>
+    <tr><td>1698</td><td>Components → Link→ Link color and functionality are not reflected on the Create page.</td></tr>
+    <tr><td>1699</td><td>Components → Tooltip→ Tooltip is not working on the Create page.</td></tr>
+    <tr><td>1701</td><td>Components → Tooltip → Field Properties → Text→ Tooltip text field allows unlimited character input.</td></tr>
+    <tr><td>1728</td><td>Task Scheduler--&gt;Email template rendering fails with a &quot;Missing helper: &#39;Emp&#39;&quot; error when the Submit (onClick) event triggers the email notification.</td></tr>
+    <tr><td>1730</td><td>Components → Spacer→ Spacer field accepts invalid input values.</td></tr>
+    <tr><td>1738</td><td>Components → Footer → Footer Properties → Social Links→ Social Links dropdown icon overlaps with UI elements.</td></tr>
+    <tr><td>1743</td><td>Components → Multi Select Dropdown→ Multi Select Dropdown options are hidden below the screen.</td></tr>
+    <tr><td>1753</td><td>Component → Container → The fields in the Container component do not work as expected. Data entered on the Create page is not saved or displayed.</td></tr>
+    <tr><td>1771</td><td>Component → Periodic Feature → When I change the label name, only the first letter of the second word is displayed, while the remaining text is hidden.</td></tr>
+    <tr><td>1776</td><td>Components → Image Viewer → Image Properties→ Uploaded image is not displayed on the Create page.</td></tr>
+    <tr><td>1777</td><td>Components → Image Upload→ Uploaded image is not displayed on the Create page and Table View.</td></tr>
+    <tr><td>1782</td><td>Components → Hyperlink → Field Properties→ Hyperlink field shows a required field validation message after valid data is entered.</td></tr>
+    <tr><td>1789</td><td>Component → List → After configuring the data in the feature, it does not redirect to the Design Page and displays a 403 error.</td></tr>
+    <tr><td>1791</td><td>Component → List → Listing Properties → Filter → The Field Properties dropdown button icon is overlapping.</td></tr>
+    <tr><td>1792</td><td>Component → List → Layout → Horizontal and Carousel have the same functionality.</td></tr>
+    <tr><td>1793</td><td>Component → List → Listing Properties → Layout → The field buttons are overlapping.</td></tr>
+    <tr><td>1799</td><td>Component → List → Fields → The configured dropdown field data is not displayed correctly, especially the Rating field.</td></tr>
+    <tr><td>1804</td><td>List Component : Applied card template is not visually indicated as selected.</td></tr>
+    <tr><td>1806</td><td>List Component : Hover Background color is not applied to the complete List card. On hover, the configured color is visible only along the card border/bottom edge while the card content area remains unchanged.</td></tr>
+    <tr><td>1808</td><td>Table View → Record count is displayed twice in Table View.</td></tr>
+    <tr><td>1809</td><td>List Component : Saved outbound API integration is not available in the List component&#39;s API Integration dropdown.</td></tr>
+    <tr><td>1810</td><td>Components → Navbar → Logo Properties→ Logo Radius option is not working in the Navbar.</td></tr>
+    <tr><td>1814</td><td>List Component – Data Source / DB Integration : Saved database integration is not available in the List component&#39;s DB Connection dropdown.</td></tr>
+    <tr><td>1816</td><td>Components → Navbar → Logo Properties→ Desktop, Tablet, and Mobile options are displayed twice.</td></tr>
+    <tr><td>1818</td><td>Components → Navbar → Buttons Properties→ Navbar buttons overlap when more than two buttons are added.</td></tr>
+    <tr><td>1820</td><td>Components → Navbar → Buttons Properties → Add New Button → Shape→ Pill and Circle shape options perform the same function.</td></tr>
+    <tr><td>1823</td><td>Components → Navbar → Buttons Properties → Add New Button → Icon Color→ Configured button icon is not displayed properly.</td></tr>
+    <tr><td>1825</td><td>Components → Navbar → Links Style → Normal→ Navbar link Text Color option is not working and Padding option is duplicated in Normal and Hover link styles.</td></tr>
+    <tr><td>1826</td><td>Form Builder--&gt;Transaction Template buttons overlap when mapped to the Add Cart address-filling option.</td></tr>
+    <tr><td>1828</td><td>Components → Navbar → Links Style → Hover→ Hover properties are not working.</td></tr>
+    <tr><td>1830</td><td>Components → Navbar → Links Style → Active→ Padding option is duplicated in Active link style.</td></tr>
+    <tr><td>1839</td><td>Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties.</td></tr>
+    <tr><td>1848</td><td>Metadata→ User Management &amp; Security →Visibility Value “Tenant Only” Is Improperly Wrapped in User Management &amp; Security Variables</td></tr>
+    <tr><td>1850</td><td>Bulk Import allows a new user to be imported with a mobile number that is already registered to another user in the portal.</td></tr>
+    <tr><td>1852</td><td>Components → Time Picker→ Time Picker options are hidden on the Create page.</td></tr>
+    <tr><td>1861</td><td>Components → Dropdown → Field Properties → Select Value Source → Feature Data as Options→ Disabled Others option is still displayed in the Dropdown.</td></tr>
+    <tr><td>1863</td><td>Components → Dropdown → Field Properties → Select Value Source → Feature Data as Options→ Unexpected options are displayed in Feature Data Dropdown configuration.</td></tr>
+    <tr><td>1864</td><td>Components → Dropdown → Field Properties → Select Value Source →Others option is displayed for User and Roles dropdowns.</td></tr>
+    <tr><td>1865</td><td>Components→ Radio Button component name changes to Radio group.</td></tr>
+    <tr><td>1869</td><td>Components → Multi-Select Dropdown → Field Properties → Select Value Source → Feature Data as Options→ Disabled Others option is still displayed in Multi-Select Dropdown.</td></tr>
+    <tr><td>1874</td><td>Workspace Search Does Not Provide Filter Options for Workspace Type.</td></tr>
+    <tr><td>1883</td><td>Components → Dynamic Field→ Dynamic Field Properties are missing.</td></tr>
+    <tr><td>1890</td><td>DMS LITE--&gt;The Edit, Clone, and View options are not working in Offline mode.</td></tr>
+    <tr><td>1900</td><td>Component → Number Input → Advanced → Validation→ Invalid number value is submitted despite minimum value validation.</td></tr>
+    <tr><td>1913</td><td>DMS Lite → The mobile app displays both the Column Grid Name and Column Count, while the website displays only the configured Component Name.</td></tr>
+    <tr><td>1915</td><td>DMS Lite → Unidentified symbols are displayed on the form-filling page in the mobile app.</td></tr>
   </tbody>
 </table>
 
@@ -145,7 +380,20 @@
     <tr><th>Configuration</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td>None</td><td>No configuration changes are required for this release.</td><td>N/A</td></tr>
+    <tr><td>AI credentials → Vault</td><td>AI App Builder / AI Assistant / AI Ask credentials moved from environment variables to Vault.</td><td>Values are not yet fetched from Vault, so AI features are down (see Known Issues).</td></tr>
+    <tr><td>RBAC route map / menu seed</td><td>New and re-registered routes: AI Builder and AI Ask as separately licensable submenus (Build-with-AI card, ai-chat/status), design-lock, backups/count, role data-sources, WhatsApp media upload.</td><td>Run the RBAC seeder on the environment. Roles may need AI Builder / AI Ask and the new routes granted and re-saved, otherwise the UI shows 403.</td></tr>
+    <tr><td>Component properties seed</td><td>New builder properties: Auto Gen ID Financial Year[YYYY], Stepper Properties section, Dropdown With States / State Transitions.</td><td>Run the component-properties seeder, otherwise these options do not appear in the Builder.</td></tr>
+    <tr><td>LOGIN_IDENTIFIERS (tenant variable)</td><td>Group &quot;Tenant Security &amp; Authentication&quot;: USER_ID / MOBILE_NUMBER / EMAIL_ID / ANY (default ANY).</td><td>Restricts which identifier users log in with.</td></tr>
+    <tr><td>FEATURE_DESIGN_LOCK_TTL_MS (master)</td><td>Default 90000 (90 s).</td><td>How long a design lock survives without a heartbeat before another designer can take over.</td></tr>
+    <tr><td>EXTDB_REJECT_CREDENTIALS = true (master)</td><td>External-DB requests carrying raw connection credentials are rejected.</td><td>Widgets must use saved data sources.</td></tr>
+    <tr><td>EXTDB_CUSTOM_COLUMNS_ENABLED (master)</td><td>Off by default.</td><td>/external-db/select returns 501 until enabled.</td></tr>
+    <tr><td>ONUPLOAD_EVENT_MAX_ROWS (master)</td><td>Now the chunk size for the onUpload import trigger (it used to skip larger imports).</td><td>Large imports fire the workflow in chunks.</td></tr>
+    <tr><td>VITE_IMPORT_MAX_FILE_MB = 100 (frontend)</td><td>Import file size limit raised from 5 MB to 100 MB.</td><td></td></tr>
+    <tr><td>METADATA_SERVICE_URL (client ws)</td><td>Required for the in-app Release Notes per-version change rows.</td><td>Without it the version expansion does nothing.</td></tr>
+    <tr><td>AI_BUILDER_* (workflow, UAT)</td><td>AI workflow generation settings added to UAT.</td><td>Subject to the Vault issue above.</td></tr>
+    <tr><td>Transaction Settings</td><td>offerTypeMap removed from Transaction Settings (it is now derived automatically). Order to Billing pricing uses product code + batch code.</td><td></td></tr>
+    <tr><td>Frontend build (UAT / Production)</td><td>Debug console logs are stripped from UAT and Production builds, and sensitive values are removed from error logs.</td><td>The browser console no longer shows app debug logs; use network requests for verification.</td></tr>
+    <tr><td>Formula engine version 1.1.0</td><td>Text values are no longer read as numbers. The mobile app carries the same engine version.</td><td></td></tr>
   </tbody>
 </table>
 
@@ -156,7 +404,31 @@
     <tr><th>API Name</th><th>Type</th><th>Description</th></tr>
   </thead>
   <tbody>
-    <tr><td>None</td><td>N/A</td><td>No API changes are included in this release.</td></tr>
+    <tr><td>GET /master/ai-chat/status</td><td>New</td><td>Returns { available: true|false }. Called when the AI assistant opens, to show a warning if AI can&#39;t be reached.</td></tr>
+    <tr><td>GET / DELETE /master/ai-chat/jobs/:jobId</td><td>Changed</td><td>AI job status and cancel now work only for the user who started the job. Other users are refused.</td></tr>
+    <tr><td>POST · GET · DELETE /master/builder/features/:featureId/design-lock, POST …/design-lock/heartbeat</td><td>New</td><td>Feature design lock: acquire, read, release and keep-alive while the Builder is open. Returns 409 (designLockConflict + lock holder) when another user holds the lock.</td></tr>
+    <tr><td>DELETE /master/feature-data/:featureId/data/delete-all</td><td>New</td><td>Delete All — permanently deletes all records of a feature (hard delete, not restorable, unlike single/bulk delete).</td></tr>
+    <tr><td>GET /master/features/:id/components/authoring</td><td>New</td><td>Returns every stepper step (no role filtering), for configuring the Approval Gate node in the Workflow Builder.</td></tr>
+    <tr><td>GET /master/features, feature and module list APIs</td><td>Changed</td><td>Feature list no longer returns the field registry twice (much smaller response). Feature list returns a single effective isOfflineSupport flag; module list returns isOffline.</td></tr>
+    <tr><td>Publish / Unpublish feature</td><td>Changed</td><td>Unpublishing now takes the live version offline.</td></tr>
+    <tr><td>GET /master/extraction/:featureId/fields</td><td>Changed</td><td>ownOnly=true also returns summary rows, list columns and cascading levels, and keeps feature-backed dropdowns. New includeReferenceFields=true. Tab headers are no longer returned as fields.</td></tr>
+    <tr><td>POST /master/extraction/:featureId</td><td>Changed</td><td>Optional pricingContext / inventoryContext / productContext return price, pricing (basePrice, rateCardPrice, revisionPrice, byUom), stock with UOM breakdown and offers.* on each item. Grouped items carry the real attribute combinations. Extracting the wrong feature returns an explicit error instead of an empty result.</td></tr>
+    <tr><td>/master/external-db/explore, /query, /aggregate, /export, /bulkdataFetch, /test-query</td><td>Changed</td><td>Requests name a saved data source by integrationId (+ database, schema, table). Requests carrying host / username / password / connection string are rejected. Role data-source grants and row rules are applied.</td></tr>
+    <tr><td>POST /master/external-db/test-connection</td><td>New</td><td>Tests a saved data source&#39;s connection on the server.</td></tr>
+    <tr><td>GET /master/external-db/distinct-values</td><td>New</td><td>Value list for the row-rule editor in Role → Data Sources (administrators only).</td></tr>
+    <tr><td>POST /master/external-db/select</td><td>New</td><td>Custom-column SQL select. Disabled by default: returns 501 until EXTDB_CUSTOM_COLUMNS_ENABLED is set.</td></tr>
+    <tr><td>GET getconfigIntegrationsList/:id (integration details)</td><td>Changed</td><td>No longer returns decrypted database credentials. Payment gateway reads return hasPaymentSecretKey (true/false) instead of the secret key; saving with a blank secret keeps the existing one.</td></tr>
+    <tr><td>GET /rbac/client/ws/role/data-sources (+ related)</td><td>New</td><td>Role Edit → Data Sources tab: read and save a role&#39;s allowed data sources and row rules.</td></tr>
+    <tr><td>POST /master/database-sync/run/:featureId</td><td>Changed</td><td>The method is now POST (it was registered as GET).</td></tr>
+    <tr><td>/master/formula/validate, /formula/evaluate-form-batch, /formula/evaluate-table</td><td>Changed</td><td>Stricter request contract: fields the formula can&#39;t use are rejected with 400. Requests are slimmer: evaluate-table no longer sends context, and batches send only what each formula needs.</td></tr>
+    <tr><td>POST /master/hierarchy-engine/resolve</td><td>New</td><td>Resolves the Sales / Geo / Product hierarchy chain for a code, including levelName.</td></tr>
+    <tr><td>GET /master/transaction-settings/parameter-metadata; PUT /:featureId/closed-config</td><td>Changed</td><td>Metadata now returns dynamicFields and the property/type registry. Saving Transaction Parameters now writes rows the pricing/stock engines use.</td></tr>
+    <tr><td>GET /backup-service/backups/count</td><td>New</td><td>Total number of backups for the workspace (Backup page stat card).</td></tr>
+    <tr><td>GET /client/ws/release/workspace-tree</td><td>New</td><td>Module / feature / workflow tree for the in-app Release Notes Scan Workspace picker.</td></tr>
+    <tr><td>Erudite document create / update / delete</td><td>Changed</td><td>Documents are synced to the AI search index in the background. Records carry ragIngestStatus (drives the AI ready / Indexing… badge). Ask is scoped to the workspace.</td></tr>
+    <tr><td>GET /bulk-ops/export?type=users</td><td>Changed</td><td>New optional filters: status, roleIds, q (username search).</td></tr>
+    <tr><td>Login</td><td>Changed</td><td>A login blocked by the tenant&#39;s LOGIN_IDENTIFIERS setting returns the error code LOGIN_IDENTIFIER_MISMATCH with a specific message. When a password change is required or the password has expired, login returns no full session until the password is changed.</td></tr>
+    <tr><td>POST /workflows/ai-generate</td><td>Changed</td><td>Returns a clear message instead of the raw &quot;Unauthorized token sent&quot; when AI cannot read workspace data.</td></tr>
   </tbody>
 </table>
 
@@ -174,7 +446,8 @@
     <tr><td>364</td><td>Organization Details → Basic Info: Website URL accepts invalid URL formats without validation.</td><td>Expected: Validate the URL format and show an error message for invalid values, such as www.example or example@123.www.example</td></tr>
     <tr><td></td><td>Builder Tool Not Available on Mobile Web</td><td>The builder tool is not supported on mobile web. This is implemented as expected — builder functionality is restricted to desktop browsers by design. It should be available on Tab though.</td></tr>
     <tr><td></td><td>Mobile – Formula Field Not Working in Tables &amp; Charts</td><td>Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review.</td></tr>
-    <tr><td></td><td>AI Components — the AI Text Generator, OCR Extraction (Field Extraction), and Doc Summarizer currently do not work, because the LLM Gateway API is blocking the domains (CORS).</td><td>Use OCR Extraction (General Extraction), which works as expected.</td></tr>
+    <tr><td></td><td>AI App Builder, AI Assistant (Create — application / module / feature) and AI Ask FAQ are not working. The AI credentials were moved from environment variables to Vault, but the values are not yet being fetched from Vault.</td><td>None at present — AI Create and AI Ask flows cannot be tested in this build. Fix in progress; retest once the Vault credential fetch is resolved.</td></tr>
+    <tr><td></td><td>Newly uploaded Erudite documents are not immediately answerable by AI Ask</td><td>The badge shows &quot;Indexing…&quot; until the document is ready; wait for &quot;AI ready&quot; before asking about it.</td></tr>
   </tbody>
 </table>
 
@@ -190,34 +463,40 @@
     </ol>
   </li>
 
-  <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong>
+  <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong> (Cavin's AI assistant — the AI launcher icon)
+    <p><em>Note: in this build AI Create and AI Ask are blocked by a known issue (see Known Issues — AI credentials not loading from Vault). Run these flows once that is resolved.</em></p>
     <ol>
       <li><strong>AI App Creation</strong>
         <ol class="alpha">
-          <li>Open the AI application builder and enter a prompt describing the application to build.</li>
-          <li>Verify the AI generates the application along with its modules and features.</li>
-          <li>Verify the generated modules and features are listed and can be opened in the workspace.</li>
-          <li>Refine/regenerate from the prompt and verify the application updates accordingly.</li>
-          <li>Publish the generated application and verify it renders correctly at runtime.</li>
-          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+          <li>From the workspace (any page other than Modules Management / Features Management / Builder Tool), open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new application from your description".</li>
+          <li>Describe the application to build and send. Verify creation progress is shown and "Application created from AI." appears on completion.</li>
+          <li>Verify the generated application, its modules and features are listed and can be opened in the workspace.</li>
+          <li>If the AI asks clarifying questions, answer them and verify creation continues (no success message is shown until something is actually created).</li>
         </ol>
       </li>
       <li><strong>AI Module Creation</strong>
         <ol class="alpha">
-          <li>From within an application, choose "Create Module with AI" and describe the module to build.</li>
-          <li>Verify the AI generates the module with the expected features and fields.</li>
-          <li>Verify the module appears in the module list and can be edited further.</li>
-          <li>Publish the module and verify it is available at runtime.</li>
-          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+          <li>Open an application's <strong>Modules Management</strong> page, open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new module here".</li>
+          <li>Describe the module to build and send. Verify "Created N module(s) from AI." appears and the module list refreshes with the new module(s).</li>
+          <li>Open the created module and verify it can be edited further.</li>
         </ol>
       </li>
       <li><strong>AI Feature Creation</strong>
         <ol class="alpha">
-          <li>Within a module, choose "Create Feature with AI" and describe the feature to build.</li>
-          <li>Verify the AI generates the feature form with the appropriate components and fields.</li>
-          <li>Verify the feature appears in the feature list and can be designed/edited further.</li>
-          <li>Publish the feature and verify records can be created, viewed, and edited.</li>
-          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+          <li>Open a module's <strong>Features Management</strong> page (or the Builder Tool), open Cavin's AI and select the <strong>Create</strong> tab.</li>
+          <li>Verify the helper line reads "Create builds a new feature here".</li>
+          <li>Describe the feature to build and send. Verify "Created N feature(s) from AI." appears and the feature list refreshes.</li>
+          <li>From the Builder Tool, verify you are taken to the first created feature in the builder.</li>
+          <li>Verify the generated form has appropriate components/fields, then publish it and verify records can be created, viewed and edited.</li>
+        </ol>
+      </li>
+      <li><strong>Create / Ask mode behaviour</strong>
+        <ol class="alpha">
+          <li>In the Create tab, type a question instead of a build request. Verify nothing is created and an "Ask this in Ask mode" suggestion is offered; clicking it moves the question to the Ask tab.</li>
+          <li>With a user who has only AI Builder or only AI Ask access, verify only that tab is available; with no create access, verify past conversations are read-only.</li>
+          <li>Verify conversation history can be searched and reopened for each mode.</li>
         </ol>
       </li>
       <li><strong>AI Ask FAQ</strong>
@@ -242,11 +521,11 @@
           <li>CADP Builder Tool Guide</li>
         </ul>
         <ol class="alpha">
-          <li>Open AI Ask FAQ and ask a question about platform configuration on one of the trained topics above.</li>
+          <li>Open Cavin&#39;s AI, select the <strong>Ask</strong> tab and ask a question about platform configuration on one of the trained topics above.</li>
           <li>Verify a relevant and accurate answer is returned.</li>
           <li>Ask a follow-up or ambiguous question and verify it is handled gracefully.</li>
           <li>Ask a question outside the trained topics and verify AI Ask FAQ declines or returns an appropriate out-of-scope fallback rather than a fabricated answer.</li>
-          <li>Verify the prompt and response are logged and routed through CavinGuard.</li>
+          <li>Verify Ask mode changes nothing in the workspace (it only answers).</li>
         </ol>
       </li>
     </ol>
@@ -643,6 +922,26 @@
       </li>
     </ol>
   </li>
+</ul>
+<p><strong>This build — additional test focus:</strong></p>
+<ul>
+  <li>Feature Design Lock — open the same feature in the Builder as two users; verify the second is read-only with the &quot;being designed by&quot; message and can take over after the first leaves.</li>
+  <li>Stepper per-step access — configure role-restricted steps; verify each role sees only its steps, earlier steps read-only, and each override (Show disabled / Hide / Editable).</li>
+  <li>Approval Gate &amp; &quot;By field&quot; approver — build a workflow with both and verify routing and approver selection.</li>
+  <li>Import → workflow (onUpload) — bind a workflow to onUpload, import a file with several rows (including a large file), and verify every row is processed.</li>
+  <li>Workflow record nodes — Filter conditions, Match Combine AND/OR, Table Row Mapping append/update, and the Set/+/-/* operators.</li>
+  <li>Import modal — footer Import button, 100 MB limit, wrong file type rejected, and all errors per row listed.</li>
+  <li>Unique Key — verify duplicates are blocked on create and edit with a readable message, and that Duplication Allowed permits duplicates.</li>
+  <li>Login — Login Param, LOGIN_IDENTIFIERS restriction message, password history and expiry, and change password at login.</li>
+  <li>Role Management Data Sources tab — grant/deny a data source and add a row rule; verify dashboards show only allowed rows.</li>
+  <li>Holding two roles over the same module — verify feature permissions from both roles apply.</li>
+  <li>Dashboard — Date/Filters on external-DB widgets, per-tab refresh, KPI &quot;Same period last year&quot;, new period presets, and tablet/mobile layout.</li>
+  <li>Form components — Default Date, Dropdown With States, Radio as Chips, Formula sortBy()/limit(), DATE_DIFF weeks, Textarea Show As, and the table formula Decimals setting.</li>
+  <li>Listing — grouped cards with variant chips (unavailable combinations disabled, cart saves the chosen SKU), offers, pricing and out-of-stock replacement.</li>
+  <li>Publish status — the builder Publish button, feature card and Transaction Management header agree (including cloned features).</li>
+  <li>Transaction preview ⋮ menu — shown only for transaction features, with no duplicate Back to Builder button.</li>
+  <li>Chat calling — refresh mid-call reconnects; group call permission and banner.</li>
+  <li>Backup — Total Backups count, Safety badge on pre-restore backups, and Go to Schedules.</li>
 </ul>
 
 <!-- ═══════════════════════════════════════════════ -->
