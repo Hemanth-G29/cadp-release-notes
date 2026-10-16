@@ -1,25 +1,859 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Release Notes – CADP Workspace v1.0.0 (18)</title>
-<style>
-body{margin:0;padding:24px 16px;font-family:"Segoe UI",Arial,sans-serif;color:#182c41;background:#fff}
-h1{color:#1a68a8;font-size:28px;margin:0 0 12px}
-table{border-collapse:collapse;margin:0 0 14px;font-size:14px}td{border:1px solid #ccc;padding:8px 12px}
-td:first-child{background:#00acc1;color:#fff;font-weight:700}
-a{color:#0f5f97;font-weight:700}
-.pdf{width:100%;height:1200px;border:1px solid #dce5ee;margin-top:14px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Release Notes – CADP Workspace v1.0.0 (18)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 11pt;
+      color: #222;
+      background: #fff;
+      padding: 50px 65px;
+      line-height: 1.65;
+      /* Force background colours to print in all browsers */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    h1 {
+      color: #1A6BA8;
+      font-size: 26pt;
+      font-weight: bold;
+      margin-bottom: 32px;
+    }
+    h2 {
+      color: #1A6BA8;
+      font-size: 12.5pt;
+      font-weight: bold;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+      line-height: 1.75;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 10.5pt;
+      page-break-inside: auto;
+    }
+
+    /* Standard tables (feature/enhancement/config/API/known-issues) */
+    .std-table thead th {
+      background-color: #00B2C8;
+      color: #fff;
+      font-weight: bold;
+      padding: 9px 12px;
+      border: 1px solid #009DB5;
+      text-align: left;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .std-table tbody td {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+    .std-table tbody tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Key-value tables (overview) */
+    .kv-table td {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+    .kv-table td:first-child {
+      background-color: #00B2C8;
+      color: #fff;
+      font-weight: bold;
+      width: 38%;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .kv-table td:last-child {
+      font-weight: bold;
+      color: #222;
+    }
+    .kv-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Bug Fixes table */
+    .bugfix-table td {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+    .bugfix-table td:first-child {
+      background-color: #00B2C8;
+      color: #fff;
+      font-weight: bold;
+      width: 14%;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .bugfix-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* ── Lists ── */
+    ul {
+      margin: 6px 0 6px 0;
+      padding-left: 22px;
+    }
+    ol {
+      margin: 4px 0 4px 0;
+      padding-left: 24px;
+    }
+    li {
+      margin-bottom: 5px;
+      line-height: 1.6;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    ol.alpha { list-style-type: lower-alpha; }
+    ol.roman { list-style-type: lower-roman; }
+
+    .expected {
+      display: block;
+      margin-top: 3px;
+      padding-left: 0;
+    }
+
+    /* ── Page breaks ── */
+    .pb-before {
+      page-break-before: always;
+      break-before: always;
+    }
+    .pb-avoid {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+  </style>
 </head>
 <body>
+
 <h1>Release Notes</h1>
-<table><tbody>
-<tr><td>Release Version</td><td>Release 1.0.0 (18)</td></tr>
-<tr><td>Release Date</td><td>July 15, 2026</td></tr>
-</tbody></table>
-<p>This build's release notes are kept as a PDF. <a href="./index.pdf">⬇ Download PDF</a></p>
-<iframe class="pdf" src="./index.pdf" title="Release notes v18 (PDF)"></iframe>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>1. Release Overview</h2>
+<table class="kv-table">
+  <tr><td>Field</td><td>Details</td></tr>
+  <tr><td>Product Name</td><td>CADP Workspace</td></tr>
+  <tr><td>Release Version</td><td>Release 1.0.0 (18)</td></tr>
+  <tr><td>Release Date</td><td>July 15, 2026</td></tr>
+  <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
+  <tr><td>Prepared By</td><td>Development Team</td></tr>
+  <tr><td>Approved By</td><td>Ganagavathy</td></tr>
+  <tr><td>Environment</td><td>QA</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>2. Release Summary</h2>
+<p>
+  This release of CADP Workspace Version 1.0.0 (18) introduces AI-assisted creation of applications,
+  modules, features, and workflows, an AI Ask FAQ assistant, and a new &ldquo;LLM Integration&rdquo;
+  source for the AI Text Generator and AI Doc Summarizer components. It also adds Canvas Import and a
+  batch formula-evaluation optimization, along with multiple bug fixes across the platform.
+</p>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>3. New Features</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Feature ID</th>
+      <th>Feature Name</th>
+      <th>Description</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>Canvas Import</td>
+      <td>Canvas configurations can now be imported directly into the builder page from an
+          Excel (.xlsx) or JSON file. Users can upload a canvas config file and have the
+          components and layout populated on the builder canvas automatically, instead of
+          configuring each component manually.</td>
+      <td>Accelerates page/feature building and enables canvas configurations to be authored,
+          shared, and reused across features, workspaces, and environments via Excel/JSON files.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>AI-Assisted Creation</td>
+      <td>Applications can now be created with AI, generating both modules and features. In addition,
+          individual module creation, feature creation, and workflow creation can each be performed
+          with AI. Users describe what they need and the platform builds the corresponding modules,
+          features, and workflows.</td>
+      <td>Dramatically speeds up application setup and lowers the effort for non-developers to build
+          apps, modules, features, and workflows without manual configuration.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>AI Ask FAQ</td>
+      <td>An AI-powered Ask FAQ assistant that answers user doubts and frequently asked questions
+          about platform configuration. The assistant is trained only on a defined set of platform
+          documentation (listed under &ldquo;What to Test&rdquo;), so questions should be limited to
+          those topics only.</td>
+      <td>Gives users instant, self-service guidance on how to configure the platform, reducing
+          dependency on support and documentation lookups.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>AI Components &ndash; LLM Integration Source</td>
+      <td>A new &ldquo;LLM Integration&rdquo; source has been added for AI components. Users can now
+          add a third-party LLM integration &mdash; an OpenAI-compatible chat/completions gateway
+          (currently <em>https://llmgateway.ckdigital.in/chat/completions</em>) &mdash; and select it
+          as the source for the AI Text Generator and AI Doc Summarizer components.</td>
+      <td>Lets users bring their own/third-party LLM provider to power AI text generation and document
+          summarization, instead of being limited to a fixed built-in source.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>4. Enhancements / Improvements</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Enhancement ID</th>
+      <th>Module</th>
+      <th>Description</th>
+      <th>Benefit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>Formula Engine</td>
+      <td>Optimized the formula evaluation endpoint. Instead of calling multiple evaluate
+          endpoints (one per formula field), the form now calls a single
+          <em>evaluate-form-batch</em> endpoint that evaluates all formula fields in one request.</td>
+      <td>Fewer network round trips and reduced server load, resulting in faster form load,
+          save, and formula recalculation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>5. Bug Fixes</h2>
+<table class="bugfix-table">
+  <tr>
+    <td>Bug IDs</td>
+    <td>656, 857, 866, 923, 933, 996, 1022, 1026, 1060, 1075,
+        1113, 1121, 1141, 1145, 1146, 1149, 1150, 1153, 1154, 1162,
+        1168, 1170, 1171, 1189, 1194, 1195, 1196, 1197, 1199, 1200,
+        1201, 1204, 1205, 1206, 1207, 1208, 1210, 1211, 1212, 1213,
+        1214, 1215, 1216, 1217, 1220, 1221, 1222, 1224, 1227, 1228,
+        1229, 1230, 1232, 1233, 1234, 1236, 1239, 1240, 1241, 1243,
+        1244, 1246, 1248, 1250, 1251, 1255, 1257, 1259, 1261, 1262,
+        1263, 1264, 1265, 1267, 1268, 1272, 1273, 1279, 1280, 1284,
+        1296, 1297, 1302, 1304, 1307, 1315, 1316, 1317, 1321, 1333,
+        1335, 1336, 1339, 1340, 1341, 1346, 1347, 1352, 1353, 1354,
+        1355, 1357, 1361, 1362, 1363, 1364, 1365, 1366, 1367, 1369,
+        1370, 1371, 1372, 1373, 1374, 1375, 1377, 1378, 1379, 1380,
+        1381, 1382, 1384, 1387, 1388, 1391, 1392, 1394, 1396, 1397,
+        1398, 1400, 1405, 1407, 1409, 1411, 1413, 1414, 1419, 1441</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>6. Configuration Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Configuration</th>
+      <th>Description</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>None</td>
+      <td>No configuration changes are required for this release.</td>
+      <td>N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>7. API Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>API Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>None</td>
+      <td>N/A</td>
+      <td>No API changes are included in this release.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. Known Issues</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Issue ID</th>
+      <th>Description</th>
+      <th>Workaround</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>Role Management Change Effect</td>
+      <td>Because some menu structures have changed, certain features may return a 403 status code.
+          To resolve this, edit the role, select the platform feature, and save the role again.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Scheduler with Workflow Not Working</td>
+      <td>Use the conventional feature-wise approach wherever workflow scheduling is required.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Formula Builder UI – Field Insertion Through Typing</td>
+      <td>This works in current fields. For external feature fields, it won't work, as there could be fields with same names from multiple features </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Formula Builder – AI-Based Formula Writing/Editing Not Implemented</td>
+      <td>Use manual formula entry instead.</td>
+    </tr>
+    <tr>
+      <td>364</td>
+      <td>Organization Details &#8594; Basic Info: Website URL accepts invalid URL formats without
+          validation.</td>
+      <td>Expected: Validate the URL format and show an error message for invalid values, such as
+          www.example or example@123.www.example</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>OCR component &#8594; Field Extraction:  Field-level extraction (structured data extraction into specific fields) requires a paid API access token for OpenAI or Gemini, configured in the platform integrations settings.</td>
+      <td>Use General Extraction for now</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Builder Tool Not Available on Mobile Web</td>
+      <td>The builder tool is not supported on mobile web. This is implemented as expected — builder
+          functionality is restricted to desktop browsers by design. It should be available on Tab though.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Mobile – Formula Field Not Working in Tables &amp; Charts</td>
+      <td>Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>9. What to Test</h2>
+<ul>
+  <li>Login – Login, Sign In with Google (have to be configured in external providers in Tenants of metadata), Sign In with Microsoft (have to be configured in external providers in Tenants of metadata)</li>
+
+  <li><strong>Create Application</strong>
+    <ol>
+      <li>Start from Scratch</li>
+      <li>Choose/Create Vertical Template</li>
+    </ol>
+  </li>
+
+  <li><strong>AI-Assisted Creation &amp; Ask FAQ</strong>
+    <ol>
+      <li><strong>AI App Creation</strong>
+        <ol class="alpha">
+          <li>Open the AI application builder and enter a prompt describing the application to build.</li>
+          <li>Verify the AI generates the application along with its modules and features.</li>
+          <li>Verify the generated modules and features are listed and can be opened in the workspace.</li>
+          <li>Refine/regenerate from the prompt and verify the application updates accordingly.</li>
+          <li>Publish the generated application and verify it renders correctly at runtime.</li>
+          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+        </ol>
+      </li>
+      <li><strong>AI Module Creation</strong>
+        <ol class="alpha">
+          <li>From within an application, choose "Create Module with AI" and describe the module to build.</li>
+          <li>Verify the AI generates the module with the expected features and fields.</li>
+          <li>Verify the module appears in the module list and can be edited further.</li>
+          <li>Publish the module and verify it is available at runtime.</li>
+          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+        </ol>
+      </li>
+      <li><strong>AI Feature Creation</strong>
+        <ol class="alpha">
+          <li>Within a module, choose "Create Feature with AI" and describe the feature to build.</li>
+          <li>Verify the AI generates the feature form with the appropriate components and fields.</li>
+          <li>Verify the feature appears in the feature list and can be designed/edited further.</li>
+          <li>Publish the feature and verify records can be created, viewed, and edited.</li>
+          <li>Verify the AI request and response are routed through CavinGuard and logged.</li>
+        </ol>
+      </li>
+      <li><strong>AI Ask FAQ</strong>
+        <p><strong>Scope:</strong> AI Ask FAQ is trained only on the following platform documentation.
+           Questions must be asked on these topics only:</p>
+        <ul>
+          <li>CADP User Login Guide</li>
+          <li>CADP Functional Specifications</li>
+          <li>CADP Erudite Management Complete</li>
+          <li>CADP Workspace Guide</li>
+          <li>CADP User Preferences Guide</li>
+          <li>CADP Role Management</li>
+          <li>AI FAQ Guide Transactions Runtime</li>
+          <li>CADP Login Complete</li>
+          <li>CADP Erudite Management Complete Guide</li>
+          <li>CADP Features Guide</li>
+          <li>CADP Modules Guide</li>
+          <li>CADP Platform Architecture Report</li>
+          <li>CADP Templates Integrations Workflows Basics Guide</li>
+          <li>CADP Features And Submodules Guide</li>
+          <li>CADP Organization Guide</li>
+          <li>CADP Builder Tool Guide</li>
+        </ul>
+        <ol class="alpha">
+          <li>Open AI Ask FAQ and ask a question about platform configuration on one of the trained topics above.</li>
+          <li>Verify a relevant and accurate answer is returned.</li>
+          <li>Ask a follow-up or ambiguous question and verify it is handled gracefully.</li>
+          <li>Ask a question outside the trained topics and verify AI Ask FAQ declines or returns an appropriate out-of-scope fallback rather than a fabricated answer.</li>
+          <li>Verify the prompt and response are logged and routed through CavinGuard.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li><strong>User Management</strong>
+    <ol>
+      <li>Create/Manage Users</li>
+      <li>Create/Manage Groups</li>
+      <li>Import/Export Users</li>
+      <li>Archive/Unarchive Users</li>
+      <li>Locked Users</li>
+      <li>Waiting Approval</li>
+      <li>Please update existing users in each workspace.</li>
+      <li>In the Users tab, when creating a new user, the Approval Type default is No Approval.</li>
+    </ol>
+  </li>
+
+  <li><strong>User Preferences</strong>
+    <ol>
+      <li>Profile update – first name, last name updating, profile picture updating.</li>
+      <li>Change password</li>
+      <li>Locale and Date-time updating</li>
+      <li>Interface
+        <ol class="roman">
+          <li>Theme change, color change. Color change here will override the brand color for that specific user of that workspace only.</li>
+          <li>Records per page is reflecting.</li>
+          <li>Language (currently only English accepted)</li>
+        </ol>
+      </li>
+      <li>Customization – module and features are visible based on visibility setting, quick access for that enabled feature is redirecting to feature transactions (records) page.</li>
+      <li>Privacy &amp; Security</li>
+      <li>Miscellaneous – Default landing page, preferred currency, auto-save drafts, save interval</li>
+      <li>Preferred user workspace</li>
+      <li>Reset Preferences</li>
+    </ol>
+  </li>
+
+  <li><strong>Groups</strong>
+    <ol>
+      <li>Archive/Unarchive</li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Roles</strong>
+    <ol>
+      <li>Platform Roles</li>
+      <li>Archive/Unarchive</li>
+      <li>Workspace Role</li>
+      <li>Feature Access Level</li>
+      <li>Data Access Level</li>
+      <li>User or Group Role Mapping</li>
+    </ol>
+  </li>
+
+  <li><strong>Workspace Management</strong>
+    <ol>
+      <li>Create Workspace</li>
+      <li>Clone Workspace</li>
+      <li>Archive Workspace</li>
+      <li>Workspace Settings</li>
+    </ol>
+  </li>
+
+  <li><strong>Organization Management</strong>
+    <ol>
+      <li>Organization Details</li>
+      <li>Organization Address</li>
+      <li>Branding Details</li>
+    </ol>
+  </li>
+
+  <li><strong>Module/Feature Management</strong>
+    <ol>
+      <li>Create/Manage Module</li>
+      <li>Create/Manage Features</li>
+      <li>Design components for features</li>
+      <li>Features and Modules can be published</li>
+      <li>Audit Logs (Platform &amp; Workspace)</li>
+      <li>Version Logs (Workspace &amp; Workflow)</li>
+      <li>Staging</li>
+      <li>Feature Card and Module Card Customization</li>
+    </ol>
+  </li>
+
+  <li><strong>Notification &amp; Alerts</strong>
+    <ol>
+      <li>Email Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>SMS Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>WhatsApp Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>In-App Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>Push Notification &amp; Templates – Create template and use template to send notification</li>
+    </ol>
+  </li>
+
+  <li><strong>Erudite Management</strong>
+    <ol>
+      <li><strong>Configuration (prerequisite)</strong>
+        <ol class="alpha">
+          <li>Enable Erudite Management in Role Management before testing.</li>
+          <li>Verify users without the role cannot access the Erudite Management module.</li>
+        </ol>
+      </li>
+      <li><strong>FAQs</strong>
+        <ol class="alpha">
+          <li>Create a new FAQ with a question, answer, and category (Account, Billing, General, Technical).</li>
+          <li>Verify the FAQ appears in the FAQ list after saving.</li>
+          <li>Enable "Display this on the dashboard" and verify the FAQ is visible on the dashboard.</li>
+          <li>Edit an existing FAQ and verify changes are saved correctly.</li>
+          <li>Delete a FAQ and verify it is removed from the list.</li>
+          <li>Search for a FAQ by keyword and verify correct results are returned.</li>
+        </ol>
+      </li>
+      <li><strong>Documentation</strong>
+        <ol class="alpha">
+          <li>Upload a document (PDF or DOC, max 5 MB) with a name, description, and category.</li>
+          <li>Verify the document appears in the Documentation list after saving.</li>
+          <li>Attempt to upload a file exceeding 5 MB and verify a validation error is shown.</li>
+          <li>Attempt to upload an unsupported file format and verify it is rejected.</li>
+          <li>Enable "Display this on the dashboard" and verify the document is visible on the dashboard.</li>
+          <li>Edit document details and verify changes are saved correctly.</li>
+          <li>Delete a document and verify it is removed from the list.</li>
+        </ol>
+      </li>
+      <li><strong>Tutorial Videos</strong>
+        <ol class="alpha">
+          <li>Upload a video (MP4, MOV, or MKV, max 50 MB) with a name, description, and category.</li>
+          <li>Verify the video appears in the Tutorial Videos list after saving.</li>
+          <li>Attempt to upload a file exceeding 50 MB and verify a validation error is shown.</li>
+          <li>Attempt to upload an unsupported file format and verify it is rejected.</li>
+          <li>Enable "Display this on the dashboard" and verify the video is visible on the dashboard.</li>
+          <li>Edit video details and verify changes are saved correctly.</li>
+          <li>Delete a video and verify it is removed from the list.</li>
+        </ol>
+      </li>
+      <li><strong>End User Access</strong>
+        <ol class="alpha">
+          <li>Verify end users can browse and read FAQs, documentation, and tutorial videos.</li>
+          <li>Verify items marked "Display on dashboard" appear on the user's dashboard.</li>
+          <li>Verify items not marked for dashboard display do not appear on the dashboard.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Components</strong>
+    <ol>
+      <li>Layouts
+        <ol>
+          <li>Column</li>
+          <li>Section (various nested scenarios)</li>
+        </ol>
+      </li>
+      <li>Data Management (API Integration, Device Integration)</li>
+      <li>Input Components (Phone Number, Password, Dropdown with Feature as Field Value)</li>
+      <li>Specialized Input &amp; Display</li>
+      <li>Display and Interaction</li>
+      <li>Media and Files</li>
+      <li>Forms and Validation</li>
+      <li>Utility Components</li>
+      <li>Data Config Component</li>
+      <li>Hyper Link Component</li>
+      <li>Favorite Component</li>
+      <li>OCR Component
+        <ol class="alpha">
+          <li>Add the OCR component to a feature form and upload an image or document.</li>
+          <li>General text extraction &#8594; verify the text is extracted from the uploaded image/document and displayed within the selected output textarea</li>
+          <li>Verify the extracted text is saved correctly with the record and is visible on View/Edit.</li>
+        </ol>
+      </li>
+      <li>Analytics &amp; Report Components
+        <ol>
+          <li>Chart Component</li>
+          <li>Gantt Chart Component</li>
+          <li>KPI Card Component</li>
+        </ol>
+      </li>
+      <li>Form UI
+        <ol>
+          <li>Table component and Table level formulas, Summary row formulas</li>
+        </ol>
+      </li>
+      <li>Reusable Component</li>
+    </ol>
+  </li>
+
+  <li><strong>Page Builder</strong>
+    <ol>
+      <li>Create a new page and verify it is saved and listed.</li>
+      <li>Drag-and-drop layouts (columns, sections) and reusable components onto the page canvas.</li>
+      <li>Configure component properties and verify changes reflect on the page.</li>
+      <li>Reorder, move, and delete components on the canvas.</li>
+      <li>Edit an existing page and verify changes are persisted.</li>
+      <li>Delete a page and verify it is removed from the list.</li>
+      <li>Publish the page and verify it renders correctly at runtime.</li>
+      <li>Verify the page is responsive across mobile, tablet, and desktop.</li>
+      <li>Verify role-based access — only authorized users can build/edit pages.</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Management</strong>
+    <ol>
+      <li>Visual canvas for creating workflows</li>
+      <li>Drag-and-drop node placement</li>
+      <li>Node connection with visual links</li>
+      <li>Canvas zoom and pan controls</li>
+      <li>Grid snap for alignment</li>
+      <li>Create new workflows</li>
+      <li>Edit existing workflows</li>
+      <li>Delete workflows</li>
+      <li>List/view all workflows</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Control Flow</strong>
+    <ol>
+      <li>Start Node (workflow trigger point)</li>
+      <li>End Node (workflow termination)</li>
+      <li>Condition/Decision Node (if-else logic)</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Communication</strong>
+    <ol>
+      <li>Email Notification Node</li>
+      <li>SMS Notification Node</li>
+      <li>User Task/Approval Node</li>
+      <li>System Notification Node</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Monitoring</strong>
+    <ol>
+      <li>Execution history logs</li>
+      <li>Workflow instance status tracking</li>
+      <li>Node-level execution details</li>
+      <li>Error logs and stack traces</li>
+      <li>Approval node changes for user selection</li>
+      <li>Added SLA and escalation reminder for approvals</li>
+      <li>Added parallel workflow approval node</li>
+    </ol>
+  </li>
+
+  <li><strong>Printing Templates</strong>
+    <ol>
+      <li>QR Code – Generate and Print</li>
+      <li>Barcode – Generate and Print</li>
+      <li>Invoice – Generate and Print</li>
+    </ol>
+  </li>
+
+  <li><strong>Role-Based Dashboards</strong>
+    <ol>
+      <li>Role-based dashboard template creation</li>
+      <li>Dashboard rendering based on created template</li>
+    </ol>
+  </li>
+
+  <li><strong>Scheduler &amp; Task Scheduler</strong>
+    <ol>
+      <li>Create and use Schedule</li>
+      <li>Create and use Task Schedule</li>
+      <li>Event-based task schedule</li>
+      <li>Schedule-based task schedule</li>
+      <li>Schedule a notification</li>
+      <li>SMS</li>
+      <li>Mail</li>
+      <li>WhatsApp</li>
+      <li>Push</li>
+      <li>In-App</li>
+      <li>Schedule a report send (PDF) through mail from a configured email template.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder Functionality</strong>
+    <ol>
+      <li>Same Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Cross Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Incompatible datatype operations, for example, arithmetic on a text input field, should show a
+          validation error.</li>
+      <li>Unrecognized fields, functions, or operators should show a validation error.</li>
+      <li>If external fields are called without where() conditions, it should show MULTIPLE RECORDS FOUND
+          ERROR in preview for non-aggregate functions/operations.</li>
+      <li>Variables are not working. Review which variables should be displayed in the modal.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder UI</strong>
+    <ol>
+      <li>On clicking a feature from the feature list, fields in the selected feature should be displayed,
+          except for the current field, to prevent self-call loops.</li>
+      <li>On selecting external feature fields, where() should appear in the modal.</li>
+      <li>On selecting where(), the modal should automatically switch to the Feature and Fields tab.</li>
+      <li>On hovering over a field, field information such as module name and feature name should be
+          displayed.</li>
+      <li>The Clear button or backspace should work as follows:
+        <ol class="roman">
+          <li>First click of clear/backspace will select the token.</li>
+          <li>Next click of clear/backspace will clear that token.</li>
+        </ol>
+      </li>
+      <li>Empty formulas should not be saved.</li>
+      <li>Formulas should not be saved without validation.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder – Helper Tools</strong>
+    <ol>
+      <li><strong>Cheat Sheet</strong> (<strong>?</strong> icon)
+        <ol class="alpha">
+          <li>Open the Cheat Sheet and verify functions are grouped by category (Lookup, Nested Lookup, Aggregation, Conditional, Math, String, Date).</li>
+          <li>Search for a function and verify the list filters correctly.</li>
+          <li>Click the copy icon on an example and verify it is copied to the clipboard.</li>
+          <li>Press Esc and verify the modal closes.</li>
+        </ol>
+      </li>
+      <li><strong>Examples</strong>
+        <ol class="alpha">
+          <li>Open the Examples drawer and verify 50 scenarios across all categories are listed.</li>
+          <li>Filter by a category and search; verify results update.</li>
+          <li>Click "Use This Pattern" and verify the formula is inserted into the editor.</li>
+        </ol>
+      </li>
+      <li><strong>Test Formula (Playground)</strong>
+        <ol class="alpha">
+          <li>For a current-feature calculation (e.g. <em>{number_field} * 5</em>), open Test Formula, verify a type-aware input appears per field (number/date/true-false/text), enter values, run, and verify the correct result, type, and (where relevant) matched-record count.</li>
+          <li>For a lookup formula (uses <em>.where()</em> / external feature fields), verify NO value-input form is shown and a "Lookup formula – test against a real record" message appears instead.</li>
+          <li>For an aggregate formula (SUM/COUNT/AVG/MIN/MAX of records), verify the "Aggregate formula – test against a real record" message is shown and the form is not available.</li>
+          <li>Verify the Test Formula button is disabled when the formula is empty.</li>
+        </ol>
+      </li>
+      <li><strong>Template Library</strong>
+        <ol class="alpha">
+          <li>Open the Template Library and verify the <strong>Most Used</strong> tab lists the 20 platform built-in templates (e.g. GST, TDS, net salary, lookups, aggregations).</li>
+          <li>Search and filter by category; verify results update.</li>
+          <li>Click "Use This Template" and verify the formula is inserted into the editor.</li>
+          <li>With a formula in the editor, click "Save current formula as template", fill title/category/description, save, and verify it appears under <strong>My Templates</strong>.</li>
+          <li>Delete a saved (non built-in) template and verify it is removed. Verify built-in templates cannot be deleted.</li>
+        </ol>
+      </li>
+      <li><strong>Formula Wizard</strong>
+        <ol class="alpha">
+          <li><strong>Lookup mode:</strong> choose "Lookup a value", select a source feature, select the field to return, add a match condition (verify the "Right side is a field reference" option shows a dropdown of the current feature's fields), check the live preview, and Insert.</li>
+          <li><strong>Aggregate mode:</strong> choose "Aggregate records", select feature/field, optionally add one filter condition, choose the function (SUM/COUNT/AVG/MIN/MAX), and Insert.</li>
+          <li>Verify the formula preview only appears after a return field is chosen, and that going Back keeps your previous selections.</li>
+          <li>After inserting, hover over the tokens in the editor and verify the correct Module name and Feature name are shown for each (including the source feature for the looked-up field).</li>
+        </ol>
+      </li>
+      <li><strong>Smart Validation Messages</strong>
+        <ol class="alpha">
+          <li>Enter an invalid formula (e.g. unknown function, missing where(), wrong argument count) and click Validate Expression; verify the error includes a helpful suggestion and an example, not just a generic message.</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+
+  <li><strong>Integrations</strong>
+    <ol>
+      <li>Step 1: Go to the Integration Type field and select "Third-Party Software".<br>
+        <span class="expected">Expected Result: A new dropdown field called Select Type should appear.</span>
+      </li>
+      <li>Step 2: Check the options inside the Select Type dropdown.<br>
+        <span class="expected">Expected Result: It should contain options including "Third-Party API" and "Google Drive".</span>
+      </li>
+      <li>Step 3: Choose "Third-Party API" from the dropdown.<br>
+        <span class="expected">Expected Result: The configuration fields specific to the Third-Party API should be displayed.</span>
+      </li>
+      <li>Step 4: Change the selection to "Google Drive".<br>
+        <span class="expected">Expected Result: The system should dynamically display the Google Drive configuration fields: Client ID, Client Secret, and Refresh Token.</span>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2 class="pb-before">10. What to Test on Mobile</h2>
+<ul>
+  <li>Login – Normal Login</li>
+  <li>Login – SSO (Sign In with Google, Sign In with Microsoft)</li>
+  <li>Workspace Switch</li>
+  <li>Module List</li>
+  <li>Feature List</li>
+  <li>Components</li>
+  <li>Feature Data – Create, View, Edit, Clone, Delete</li>
+  <li>Dashboard</li>
+  <li>Integration – Weighing Machine, Third-Party API (Budgie, SAP), and Payment Gateways (Stripe, Razorpay, and PayU)</li>
+  <li>Theme</li>
+  <li>Push Notification</li>
+  <li>Workflow – Approve and Reject</li>
+  <li>Charts – Feature Data</li>
+  <li>Data Table – Feature Data</li>
+  <li>Security – Prevent copy, paste, cut, and text selection</li>
+</ul>
+
 </body>
 </html>

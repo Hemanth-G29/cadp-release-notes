@@ -158,3 +158,10 @@ test('renderPdfOnlyPage: a PDF-only build is listed with its date and Published'
   assert.deepStrictEqual(describeBuild(6, page, 23), { version: 6, releaseDate: 'March 25, 2026', status: 'Published', current: false });
   assert.ok(renderPdfOnlyPage({ version: 7, releaseDate: '<x>' }).includes('&lt;x&gt;'));
 });
+
+test('renderPdfOnlyPage: extra PDFs of the same build are linked', () => {
+  const { renderPdfOnlyPage } = require('../src/history');
+  const page = renderPdfOnlyPage({ version: 12, releaseDate: 'May 19, 2026', extras: [{ file: 'also.pdf', label: 'Web-only version (May 18, 2026)' }] });
+  assert.ok(page.includes('href="./also.pdf"') && page.includes('Web-only version (May 18, 2026)'));
+  assert.ok(!renderPdfOnlyPage({ version: 13, releaseDate: 'x' }).includes('Also issued'));
+});

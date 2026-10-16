@@ -5,6 +5,7 @@
  *
  *   node scripts/add-build.js --version 14 --html "<path>.html" [--pdf "<path>.pdf"]
  *   node scripts/add-build.js --version 18 --pdf "<path>.pdf" --date "July 15, 2026"
+ *     [--also-pdf "<path>.pdf" --also-label "Web-only version"]   (another PDF of the same build)
  *
  * With only a PDF, a small page that shows the PDF inline is generated (--date required).
  * With only a page, the next workflow run renders its PDF (ensurePdfs backfills missing PDFs).
@@ -15,6 +16,7 @@ process.env.STORE_BACKEND = 'pages';
 process.env.SITE_DIR = process.env.SITE_DIR || 'site';
 
 const fs = require('node:fs');
+const path = require('node:path');
 const { createStore } = require('../src/store');
 const { renderPdfOnlyPage } = require('../src/history');
 
@@ -35,6 +37,7 @@ function validate(args, state, exists) {
   if (args.html && !fs.existsSync(args.html)) return `--html not found: ${args.html}`;
   if (args.pdf && !fs.existsSync(args.pdf)) return `--pdf not found: ${args.pdf}`;
   if (!args.html && !args.date) return '--date is required when there is no --html page';
+  if (args['also-pdf'] && (!fs.existsSync(args['also-pdf']) || !args['also-label'] || args.html)) return '--also-pdf needs an existing file, --also-label, and no --html';
   if (args.version >= state.liveVersion && !args.force) return `v${args.version} is not older than the live v${state.liveVersion}`;
   if (exists && !args.force) return `v${args.version} is already on the site (use --force to replace it)`;
   return null;
@@ -47,11 +50,13 @@ async function main() {
   const error = validate(args, state, Boolean(await store.readBuild(args.version)));
   if (error) { console.error(`add-build: ${error}`); process.exit(1); }
 
+  const extras = args['also-pdf'] ? [{ file: 'also.pdf', label: args['also-label'] }] : [];
   const html = args.html
     ? fs.readFileSync(args.html, 'utf8')
-    : renderPdfOnlyPage({ version: args.version, releaseDate: args.date });
+    : renderPdfOnlyPage({ version: args.version, releaseDate: args.date, extras });
   await store.writeBuild(args.version, html);
   if (args.pdf) await store.writePdf(args.version, fs.readFileSync(args.pdf));
+  if (extras.length) fs.copyFileSync(args['also-pdf'], path.join(process.env.SITE_DIR, `release-notes-v${args.version}`, 'also.pdf'));
   await store.writeLatestIndex(state.liveVersion);
   console.log(`added v${args.version}: page ${args.html ? 'copied' : 'generated (PDF view)'}` +
     `, PDF ${args.pdf ? 'copied' : 'rendered by the next workflow run'}`);

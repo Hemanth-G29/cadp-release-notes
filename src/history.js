@@ -104,10 +104,14 @@ function renderHistoryPage(builds) {
 
 /**
  * Page for an old build that only survives as a PDF. Carries the same "Release Date" row as a
- * rendered build so describeBuild() reads it, and shows the PDF inline.
+ * rendered build so describeBuild() reads it, and shows the PDF inline. `extras` = [{ file, label }]
+ * links further PDFs issued for the same build (e.g. a web-only and a with-mobile edition).
  */
-function renderPdfOnlyPage({ version, releaseDate }) {
+function renderPdfOnlyPage({ version, releaseDate, extras = [] }) {
   const v = esc(String(version));
+  const more = extras
+    .map(x => `<p>Also issued for this build: <a href="./${esc(x.file)}">⬇ ${esc(x.label)}</a></p>\n`)
+    .join('');
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,7 +134,7 @@ a{color:#0f5f97;font-weight:700}
 <tr><td>Release Date</td><td>${esc(releaseDate)}</td></tr>
 </tbody></table>
 <p>This build's release notes are kept as a PDF. <a href="./index.pdf">⬇ Download PDF</a></p>
-<iframe class="pdf" src="./index.pdf" title="Release notes v${v} (PDF)"></iframe>
+${more}<iframe class="pdf" src="./index.pdf" title="Release notes v${v} (PDF)"></iframe>
 </body>
 </html>
 `;

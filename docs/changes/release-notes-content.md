@@ -74,3 +74,20 @@
   - site/release-notes-v17/index.html
   - site/release-notes-v18/ (index.html generated, index.pdf)
   - site/index.html
+
+## 2026-10-16 — More old builds on the Release History page (v12–v16, v18 page)
+- **Author:** hemanth.a
+- **What:** Added v12 (May 19, 2026 — the "with mobile release" edition, with a link to the May 18 web-only edition), v13 (May 26, PDF), v15 (June 9) and v16 (June 19) with their pages and PDFs, the sent PDF for v14 (replacing the pending re-render), and v18's own page (replacing the PDF view). `add-build.js --also-pdf/--also-label` links a second PDF of the same build. The history now lists v6 and v12–v23.
+- **Why:** The remaining sent builds found in C:\ADP, so the history is complete from v12 on.
+- **QA-Release-Note:** none
+- **Files:**
+  - scripts/add-build.js
+  - src/history.js
+  - test/unit.test.js
+  - site/release-notes-v12/ (index.html generated, index.pdf, also.pdf)
+  - site/release-notes-v13/ (index.html generated, index.pdf)
+  - site/release-notes-v14/index.pdf
+  - site/release-notes-v15/ (index.html, index.pdf)
+  - site/release-notes-v16/ (index.html, index.pdf)
+  - site/release-notes-v18/index.html
+  - site/index.html
