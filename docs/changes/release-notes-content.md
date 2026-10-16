@@ -91,3 +91,16 @@
   - site/release-notes-v16/ (index.html, index.pdf)
   - site/release-notes-v18/index.html
   - site/index.html
+
+## 2026-10-16 — PDF-only builds show the document as-is (no viewer toolbar, no duplicate header)
+- **Author:** hemanth.a
+- **What:** Builds kept only as a PDF (v6, v12, v13) now draw every PDF page directly on the page (PDF.js 4.10.38 from jsDelivr), so they look like the document itself — no browser PDF-viewer toolbar, no inner scrollbar, and no extra "Release Notes" heading/table above it (the release date is kept hidden for the version list). If PDF.js can't load, the browser's viewer is used with its toolbar hidden. The history page now resizes its panel as the pages appear. v12's "Web-only version" link is kept.
+- **Why:** The embedded browser viewer showed annotation/print/zoom controls and a duplicated header, which QA and devs don't need for reading.
+- **QA-Release-Note:** none
+- **Files:**
+  - src/history.js (renderPdfOnlyPage, panel auto-resize)
+  - test/unit.test.js
+  - site/release-notes-v6/index.html
+  - site/release-notes-v12/index.html
+  - site/release-notes-v13/index.html
+  - site/index.html

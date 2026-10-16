@@ -154,7 +154,9 @@ test('pages store: site root becomes the history page listing every stored build
 test('renderPdfOnlyPage: a PDF-only build is listed with its date and Published', () => {
   const { renderPdfOnlyPage } = require('../src/history');
   const page = renderPdfOnlyPage({ version: 6, releaseDate: 'March 25, 2026' });
-  assert.ok(page.includes('src="./index.pdf"') && page.includes('Release 1.0.0 (6)'));
+  assert.ok(page.includes("getDocument('./index.pdf')") && page.includes('pdfjs-dist@4.10.38'));
+  assert.ok(page.includes('./index.pdf#toolbar=0&navpanes=0'), 'fallback viewer hides its toolbar');
+  assert.ok(page.includes('<table hidden>') && !page.includes('<h1>'), 'no visible duplicate header');
   assert.deepStrictEqual(describeBuild(6, page, 23), { version: 6, releaseDate: 'March 25, 2026', status: 'Published', current: false });
   assert.ok(renderPdfOnlyPage({ version: 7, releaseDate: '<x>' }).includes('&lt;x&gt;'));
 });

@@ -61,7 +61,7 @@ function show(){if(sel==null){$('title').textContent='No release notes published
  const dir='./release-notes-v'+sel+'/';$('title').textContent='Release Notes — v'+sel;
  $('frame').title='Release notes for version '+sel;$('frame').src=dir;$('open').href=dir;$('pdf').href=dir+'index.pdf';document.title='CADP Release Notes — v'+sel;list();}
 function choose(n){sel=n;history.replaceState(null,'','?version='+n);show();window.scrollTo({top:0,behavior:'smooth'});}
-$('frame').addEventListener('load',fit);window.addEventListener('resize',fit);$('search').addEventListener('input',list);
+$('frame').addEventListener('load',()=>{fit();try{new ResizeObserver(fit).observe($('frame').contentDocument.body);}catch(e){}});window.addEventListener('resize',fit);$('search').addEventListener('input',list);
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);$('copy').textContent='✓ Link copied';setTimeout(()=>{$('copy').textContent='Copy version link'},1600);}catch(e){prompt('Copy this link',location.href);}});
 show();</script>
 </body>
