@@ -7,7 +7,7 @@
  *   1. Reconcile the live bug set from OpenProject and (re)render the live draft doc.
  *   2. Check the "CADP - QA Release" Outlook thread; if a newer version was announced,
  *      roll over (freeze vN, move its bugs Developed→Ready-for-Testing, reply in thread, open v(N+1)).
- *   3. Write the site root redirect → latest.
+ *   3. Write the site root release-history page (all builds, opens on the latest).
  *
  * Runs to completion and exits; the workflow then commits `site/` and deploys it to Pages.
  * No long-running server — GitHub Actions is the scheduler, GitHub Pages is the host.
@@ -87,7 +87,7 @@ async function main() {
 
   const latest = await svc.latestVersion(store);
   if (store.writeLatestIndex) await store.writeLatestIndex(latest);
-  console.log(`latest version: ${latest} (site root redirects here)`);
+  console.log(`latest version: ${latest} (site root history page opens here)`);
 
   const pdf = await ensurePdfs(store, latest);
   console.log('pdf:', JSON.stringify(pdf));

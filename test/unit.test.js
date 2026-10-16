@@ -102,3 +102,51 @@ test('render: Config/API sections show data rows or fall back to None', () => {
   assert.ok(none.includes('No API changes are included in this release.'));
   assert.ok(none.includes('No configuration changes are required for this release.'));
 });
+
+const { describeBuild, renderHistoryPage } = require('../src/history');
+
+test('describeBuild: release date from the overview row, Draft only when the page has the banner', () => {
+  const live = render({ version: 23, releaseDate: 'October 16, 2026', bugs: [], draft: true });
+  const frozen = render({ version: 22, releaseDate: 'October 16, 2026', bugs: [], draft: false });
+  assert.deepStrictEqual(describeBuild(23, live, 23), { version: 23, releaseDate: 'October 16, 2026', status: 'Draft', current: true });
+  assert.deepStrictEqual(describeBuild(22, frozen, 23), { version: 22, releaseDate: 'October 16, 2026', status: 'Published', current: false });
+  assert.deepStrictEqual(describeBuild(5, '', 23), { version: 5, releaseDate: '', status: 'Published', current: false });
+});
+
+test('renderHistoryPage: newest first, data embedded safely, empty list still renders', () => {
+  const page = renderHistoryPage([
+    { version: 19, releaseDate: 'a', status: 'Published', current: false },
+    { version: 23, releaseDate: '</script><b>', status: 'Draft', current: true },
+    { version: 22, releaseDate: 'c', status: 'Published', current: false },
+  ]);
+  const data = JSON.parse(/window\.BUILDS=(.*?);<\/script>/.exec(page)[1]);
+  assert.deepStrictEqual(data.map(b => b.version), [23, 22, 19]);
+  assert.strictEqual(data[0].releaseDate, '</script><b>');
+  assert.ok(!page.includes('</script><b>'), 'a release date must not be able to close the script tag');
+  assert.ok(page.includes('./release-notes-v') && page.includes('index.pdf'));
+  const empty = renderHistoryPage([]);
+  assert.ok(empty.includes('window.BUILDS=[]') && empty.includes('No release notes published yet'));
+});
+
+test('pages store: site root becomes the history page listing every stored build', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rn-site-'));
+  const prev = { b: process.env.STORE_BACKEND, s: process.env.SITE_DIR };
+  try {
+    process.env.STORE_BACKEND = 'pages'; process.env.SITE_DIR = dir;
+    delete require.cache[require.resolve('../src/config')]; delete require.cache[require.resolve('../src/store')];
+    const store = require('../src/store').createStore();
+    await store.writeBuild(21, render({ version: 21, releaseDate: 'Oct 13, 2026', bugs: [], draft: false }));
+    await store.writeBuild(22, render({ version: 22, releaseDate: 'Oct 16, 2026', bugs: [], draft: true }));
+    await store.writeLatestIndex(22);
+    const page = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
+    const data = JSON.parse(/window\.BUILDS=(.*?);<\/script>/.exec(page)[1]);
+    assert.deepStrictEqual(data.map(b => [b.version, b.status, b.current]), [[22, 'Draft', true], [21, 'Published', false]]);
+    assert.ok(fs.existsSync(path.join(dir, '.nojekyll')));
+  } finally {
+    process.env.STORE_BACKEND = prev.b; process.env.SITE_DIR = prev.s;
+    if (prev.b === undefined) delete process.env.STORE_BACKEND;
+    if (prev.s === undefined) delete process.env.SITE_DIR;
+    delete require.cache[require.resolve('../src/config')]; delete require.cache[require.resolve('../src/store')];
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

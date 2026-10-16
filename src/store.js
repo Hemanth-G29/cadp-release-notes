@@ -6,6 +6,7 @@ const path = require('node:path');
 const https = require('node:https');
 const http = require('node:http');
 const { store, release } = require('./config');
+const { describeBuild, renderHistoryPage } = require('./history');
 
 /**
  * Persistence for the state doc + per-version HTML snapshots.
@@ -179,7 +180,7 @@ function gcsStore(bucket) {
  * Publishes a static site consumable by GitHub Pages:
  *   <base>/state.json
  *   <base>/release-notes-v<N>/index.html   (each build; URL → /release-notes-v<N>/)
- *   <base>/index.html                      (redirects to the latest build)
+ *   <base>/index.html                      (release-history page; opens on the latest build)
  * The workflow commits <base> back to the repo (durable archive + state) and deploys it to Pages.
  */
 function pagesStore(baseDir) {
@@ -219,16 +220,16 @@ function pagesStore(baseDir) {
       await fsp.mkdir(baseDir, { recursive: true });
       await fsp.writeFile(path.join(baseDir, 'latest.pdf'), buffer);
     },
-    // Redirect page at the site root → newest build. Relative href so it works under /<repo>/.
+    // Site root = release-history page (every stored build, newest first, opens on `version`).
+    // Links are relative so it works under /<repo>/.
     async writeLatestIndex(version) {
       await fsp.mkdir(baseDir, { recursive: true });
-      const target = `./release-notes-v${version}/`;
-      const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">` +
-        `<title>CADP QA Build Release Notes</title>` +
-        `<meta http-equiv="refresh" content="0; url=${target}">` +
-        `<link rel="canonical" href="${target}"></head>` +
-        `<body>Redirecting to the latest release notes → <a href="${target}">${target}</a></body></html>\n`;
-      await fsp.writeFile(path.join(baseDir, 'index.html'), html);
+      const builds = [];
+      for (const v of await this.listVersions()) {
+        const html = await this.readBuild(v);
+        if (html) builds.push(describeBuild(v, html, version));
+      }
+      await fsp.writeFile(path.join(baseDir, 'index.html'), renderHistoryPage(builds));
       // .nojekyll so GitHub Pages serves the folders verbatim (no Jekyll processing).
       await fsp.writeFile(path.join(baseDir, '.nojekyll'), '');
     },
