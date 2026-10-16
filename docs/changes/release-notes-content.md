@@ -59,3 +59,18 @@
   - site/release-notes-v21/index.html (new)
   - site/release-notes-v21/index.pdf (new)
   - site/index.html
+
+## 2026-10-16 — Older builds on the Release History page (v6, v14, v17, v18)
+- **Author:** hemanth.a
+- **What:** Added four earlier builds that were sent before the automation existed: v6 (March 25, 2026, PDF), v14 (May 30, 2026, page), v17 (June 30, 2026, page) and v18 (July 15, 2026, PDF). A build kept only as a PDF gets a small page that shows the PDF inline; a build kept only as a page gets its PDF rendered by the next workflow run. New `scripts/add-build.js` does this for any old build (refuses to overwrite an existing or live build without --force).
+- **Why:** Users asked for the earlier release notes to be browsable alongside the current ones.
+- **QA-Release-Note:** none
+- **Files:**
+  - scripts/add-build.js (new)
+  - src/history.js (renderPdfOnlyPage)
+  - test/unit.test.js
+  - site/release-notes-v6/ (index.html generated, index.pdf)
+  - site/release-notes-v14/index.html
+  - site/release-notes-v17/index.html
+  - site/release-notes-v18/ (index.html generated, index.pdf)
+  - site/index.html

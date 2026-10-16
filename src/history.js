@@ -102,4 +102,38 @@ function renderHistoryPage(builds) {
 `;
 }
 
-module.exports = { describeBuild, renderHistoryPage };
+/**
+ * Page for an old build that only survives as a PDF. Carries the same "Release Date" row as a
+ * rendered build so describeBuild() reads it, and shows the PDF inline.
+ */
+function renderPdfOnlyPage({ version, releaseDate }) {
+  const v = esc(String(version));
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Release Notes – CADP Workspace v1.0.0 (${v})</title>
+<style>
+body{margin:0;padding:24px 16px;font-family:"Segoe UI",Arial,sans-serif;color:#182c41;background:#fff}
+h1{color:#1a68a8;font-size:28px;margin:0 0 12px}
+table{border-collapse:collapse;margin:0 0 14px;font-size:14px}td{border:1px solid #ccc;padding:8px 12px}
+td:first-child{background:#00acc1;color:#fff;font-weight:700}
+a{color:#0f5f97;font-weight:700}
+.pdf{width:100%;height:1200px;border:1px solid #dce5ee;margin-top:14px}
+</style>
+</head>
+<body>
+<h1>Release Notes</h1>
+<table><tbody>
+<tr><td>Release Version</td><td>Release 1.0.0 (${v})</td></tr>
+<tr><td>Release Date</td><td>${esc(releaseDate)}</td></tr>
+</tbody></table>
+<p>This build's release notes are kept as a PDF. <a href="./index.pdf">⬇ Download PDF</a></p>
+<iframe class="pdf" src="./index.pdf" title="Release notes v${v} (PDF)"></iframe>
+</body>
+</html>
+`;
+}
+
+module.exports = { describeBuild, renderHistoryPage, renderPdfOnlyPage };

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Release Notes – CADP Workspace v1.0.0 (14)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 11pt;
+      color: #222;
+      background: #fff;
+      padding: 50px 65px;
+      line-height: 1.65;
+      /* Force background colours to print in all browsers */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    h1 {
+      color: #1A6BA8;
+      font-size: 26pt;
+      font-weight: bold;
+      margin-bottom: 32px;
+    }
+    h2 {
+      color: #1A6BA8;
+      font-size: 12.5pt;
+      font-weight: bold;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+      line-height: 1.75;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 10.5pt;
+      page-break-inside: auto;
+    }
+
+    /* Standard tables (feature/enhancement/config/API/known-issues) */
+    .std-table thead th {
+      background-color: #00B2C8;
+      color: #fff;
+      font-weight: bold;
+      padding: 9px 12px;
+      border: 1px solid #009DB5;
+      text-align: left;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .std-table tbody td {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+    .std-table tbody tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Key-value tables (overview) */
+    .kv-table td {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+    .kv-table td:first-child {
+      background-color: #00B2C8;
+      color: #fff;
+      font-weight: bold;
+      width: 38%;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .kv-table td:last-child {
+      font-weight: bold;
+      color: #222;
+    }
+    .kv-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Bug Fixes table */
+    .bugfix-table td {
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+    .bugfix-table td:first-child {
+      background-color: #00B2C8;
+      color: #fff;
+      font-weight: bold;
+      width: 14%;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .bugfix-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* ── Lists ── */
+    ul {
+      margin: 6px 0 6px 0;
+      padding-left: 22px;
+    }
+    ol {
+      margin: 4px 0 4px 0;
+      padding-left: 24px;
+    }
+    li {
+      margin-bottom: 5px;
+      line-height: 1.6;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    ol.alpha { list-style-type: lower-alpha; }
+    ol.roman { list-style-type: lower-roman; }
+
+    .expected {
+      display: block;
+      margin-top: 3px;
+      padding-left: 0;
+    }
+
+    /* ── Page breaks ── */
+    .pb-before {
+      page-break-before: always;
+      break-before: always;
+    }
+    .pb-avoid {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Release Notes</h1>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>1. Release Overview</h2>
+<table class="kv-table">
+  <tr><td>Field</td><td>Details</td></tr>
+  <tr><td>Product Name</td><td>CADP Workspace</td></tr>
+  <tr><td>Release Version</td><td>Release 1.0.0 (14)</td></tr>
+  <tr><td>Release Date</td><td>May 30, 2026</td></tr>
+  <tr><td>Release Type</td><td>Patch / Bug Fixes</td></tr>
+  <tr><td>Prepared By</td><td>Development Team</td></tr>
+  <tr><td>Approved By</td><td>Ganagavathy</td></tr>
+  <tr><td>Environment</td><td>QA</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>2. Release Summary</h2>
+<p>
+  This release of CADP Workspace Version 1.0.0 (14) focuses on platform performance and stability.
+  Key highlights include optimized platform loading time, optimized feature design page loading time,
+  and multiple bug fixes across the platform.
+</p>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>3. New Features</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Feature ID</th>
+      <th>Feature Name</th>
+      <th>Description</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>–</td>
+      <td>Archive Protection – Feature &amp; Module</td>
+      <td>When you archive a feature or module, the system checks if any other features are using its fields in formulas, dropdowns, or lookups. If yes, a warning popup appears showing which fields are affected. You can either cancel the archive or click <strong>Force &amp; Reset</strong> to clear those linked fields and proceed.</td>
+      <td>Prevents other features from breaking silently when a feature or module is archived.</td>
+    </tr>
+    <tr>
+      <td>–</td>
+      <td>Field Delete Protection in Builder</td>
+      <td>When you delete a field from the builder and save, the system checks if that field is used in formulas, dropdowns, or lookups in other features. If yes, a popup appears letting you cancel or click <strong>Force &amp; Reset</strong> to clear those links and save.</td>
+      <td>Stops broken formulas and empty dropdowns from appearing in other features when a shared field is deleted.</td>
+    </tr>
+    <tr>
+      <td>–</td>
+      <td>Cascading Formula Clear on Reset</td>
+      <td>When a formula field is cleared by Force &amp; Reset, any other formulas in the same feature that depend on it are also automatically cleared. This works across any chain — for example, if Formula C uses Formula B which uses the deleted Field A, all three are cleared together in one go.</td>
+      <td>No partial or broken formulas are left behind after a reset — all dependent formulas in the chain are cleaned up automatically.</td>
+    </tr>
+    <tr>
+      <td>–</td>
+      <td>Formula &amp; Lookup Links Kept When Cloning</td>
+      <td>When you clone a feature or module, all formula, dropdown, and lookup links to other features are copied over correctly. The cloned feature is also protected — if a referenced feature is later archived, the warning popup will appear for the clone too, just like the original.</td>
+      <td>Cloned features work exactly like the original — no missing links or broken references after cloning.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>4. Enhancements / Improvements</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Enhancement ID</th>
+      <th>Module</th>
+      <th>Description</th>
+      <th>Benefit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>Platform</td>
+      <td>Optimized loading time across the platform.</td>
+      <td>Faster page loads and improved overall platform responsiveness.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Feature Builder</td>
+      <td>Optimized feature design page loading time.</td>
+      <td>Faster rendering of the feature design page, improving the builder experience.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>5. Bug Fixes</h2>
+<table class="bugfix-table">
+  <tr>
+    <td>Bug IDs</td>
+    <td>383, 551, 599, 604, 610, 613, 622, 624, 625, 630, 778, 796, 808, 814, 827, 828, 834, 837, 838, 839,
+        840, 841, 842, 843, 844, 846, 847, 848, 851, 852, 854, 855, 856, 857, 860, 864, 865, 867, 868, 869,
+        871, 873, 875, 876, 877, 878, 879, 880, 881, 882, 883, 886, 888, 890, 892, 895, 896, 904, 906, 915,
+        929, 930, 932</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>6. Configuration Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Configuration</th>
+      <th>Description</th>
+      <th>Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>None</td>
+      <td>No configuration changes are required for this release.</td>
+      <td>N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>7. API Changes</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>API Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>None</td>
+      <td>N/A</td>
+      <td>No API changes are included in this release.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. Known Issues</h2>
+<table class="std-table">
+  <thead>
+    <tr>
+      <th>Issue ID</th>
+      <th>Description</th>
+      <th>Workaround</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>Role Management Change Effect</td>
+      <td>Because some menu structures have changed, certain features may return a 403 status code.
+          To resolve this, edit the role, select the platform feature, and save the role again.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Scheduler with Integration Not Working</td>
+      <td>Use manual integrations wherever scheduled integration is required.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Scheduler with Workflow Not Working</td>
+      <td>Use the conventional feature-wise approach wherever workflow scheduling is required.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Formula Builder UI – Field Insertion Through Typing</td>
+      <td>This issue is currently under review. Use manual field insertion by navigating through the
+          Features, Fields, and Operators tabs.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Formula Builder – AI-Based Formula Writing/Editing Not Implemented</td>
+      <td>Use manual formula entry instead.</td>
+    </tr>
+    <tr>
+      <td>364</td>
+      <td>Organization Details &#8594; Basic Info: Website URL accepts invalid URL formats without
+          validation.</td>
+      <td>Expected: Validate the URL format and show an error message for invalid values, such as
+          www.example or example@123.www.example</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>9. What to Test</h2>
+<ul>
+  <li>Login – Login, Sign In with Google (have to be configured in external providers in Tenants of metadata), Sign In with Microsoft (have to be configured in external providers in Tenants of metadata)</li>
+
+  <li><strong>Create Application</strong>
+    <ol>
+      <li>Start from Scratch</li>
+      <li>Choose/Create Vertical Template</li>
+    </ol>
+  </li>
+
+  <li><strong>User Management</strong>
+    <ol>
+      <li>Create/Manage Users</li>
+      <li>Create/Manage Groups</li>
+      <li>Import/Export Users</li>
+      <li>Archive/Unarchive Users</li>
+      <li>Locked Users</li>
+      <li>Waiting Approval</li>
+      <li>Please update existing users in each workspace.</li>
+      <li>In the Users tab, when creating a new user, the Approval Type default is No Approval.</li>
+    </ol>
+  </li>
+
+  <li><strong>User Preferences</strong>
+    <ol>
+      <li>Profile update – first name, last name updating, profile picture updating.</li>
+      <li>Change password</li>
+      <li>Locale and Date-time updating</li>
+      <li>Interface
+        <ol class="roman">
+          <li>Theme change, color change. Color change here will override the brand color for that specific user of that workspace only.</li>
+          <li>Records per page is reflecting.</li>
+          <li>Language (currently only English accepted)</li>
+        </ol>
+      </li>
+      <li>Customization – module and features are visible based on visibility setting, quick access for that enabled feature is redirecting to feature transactions (records) page.</li>
+      <li>Privacy &amp; Security</li>
+      <li>Miscellaneous – Default landing page, preferred currency, auto-save drafts, save interval</li>
+      <li>Preferred user workspace</li>
+    </ol>
+  </li>
+
+  <li><strong>Groups</strong>
+    <ol>
+      <li>Archive/Unarchive</li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Roles</strong>
+    <ol>
+      <li>Platform Roles</li>
+      <li>Archive/Unarchive</li>
+      <li>Workspace Role</li>
+      <li>Feature Access Level</li>
+      <li>Data Access Level</li>
+      <li>User or Group Role Mapping</li>
+    </ol>
+  </li>
+
+  <li><strong>Workspace Management</strong>
+    <ol>
+      <li>Create Workspace</li>
+      <li>Clone Workspace</li>
+      <li>Archive Workspace</li>
+      <li>Workspace Settings</li>
+    </ol>
+  </li>
+
+  <li><strong>Organization Management</strong>
+    <ol>
+      <li>Organization Details</li>
+      <li>Organization Address</li>
+      <li>Branding Details</li>
+    </ol>
+  </li>
+
+  <li><strong>Module/Feature Management</strong>
+    <ol>
+      <li>Create/Manage Module</li>
+      <li>Create/Manage Features</li>
+      <li>Design components for features</li>
+      <li>Features and Modules can be published</li>
+      <li>Audit Logs (Platform &amp; Workspace)</li>
+      <li>Version Logs (Workspace &amp; Workflow)</li>
+      <li>Staging</li>
+      <li>Feature Card and Module Card Customization</li>
+    </ol>
+  </li>
+
+  <li><strong>Notification &amp; Alerts</strong>
+    <ol>
+      <li>Email Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>SMS Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>WhatsApp Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>In-App Notification &amp; Templates – Create template and use template to send notification</li>
+      <li>Push Notification &amp; Templates – Create template and use template to send notification</li>
+    </ol>
+  </li>
+
+  <li class="pb-before"><strong>Components</strong>
+    <ol>
+      <li>Layouts
+        <ol>
+          <li>Column</li>
+          <li>Section (various nested scenarios)</li>
+        </ol>
+      </li>
+      <li>Data Management (API Integration, Device Integration)</li>
+      <li>Input Components (Phone Number, Password, Dropdown with Feature as Field Value)</li>
+      <li>Specialized Input &amp; Display</li>
+      <li>Display and Interaction</li>
+      <li>Media and Files</li>
+      <li>Forms and Validation</li>
+      <li>Utility Components</li>
+      <li>Data Config Component</li>
+      <li>Hyper Link Component</li>
+      <li>Favorite Component</li>
+      <li>Analytics &amp; Report Components
+        <ol>
+          <li>Chart Component</li>
+          <li>Gantt Chart Component</li>
+          <li>KPI Card Component</li>
+        </ol>
+      </li>
+      <li>Form UI
+        <ol>
+          <li>Table component and Table level formulas, Summary row formulas</li>
+        </ol>
+      </li>
+      <li>Reusable Component</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Management</strong>
+    <ol>
+      <li>Visual canvas for creating workflows</li>
+      <li>Drag-and-drop node placement</li>
+      <li>Node connection with visual links</li>
+      <li>Canvas zoom and pan controls</li>
+      <li>Grid snap for alignment</li>
+      <li>Create new workflows</li>
+      <li>Edit existing workflows</li>
+      <li>Delete workflows</li>
+      <li>List/view all workflows</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Control Flow</strong>
+    <ol>
+      <li>Start Node (workflow trigger point)</li>
+      <li>End Node (workflow termination)</li>
+      <li>Condition/Decision Node (if-else logic)</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Nodes – Communication</strong>
+    <ol>
+      <li>Email Notification Node</li>
+      <li>SMS Notification Node</li>
+      <li>User Task/Approval Node</li>
+      <li>System Notification Node</li>
+    </ol>
+  </li>
+
+  <li><strong>Workflow Monitoring</strong>
+    <ol>
+      <li>Execution history logs</li>
+      <li>Workflow instance status tracking</li>
+      <li>Node-level execution details</li>
+      <li>Error logs and stack traces</li>
+      <li>Approval node changes for user selection</li>
+      <li>Added SLA and escalation reminder for approvals</li>
+      <li>Added parallel workflow approval node</li>
+    </ol>
+  </li>
+
+  <li><strong>Printing Templates</strong>
+    <ol>
+      <li>QR Code – Generate and Print</li>
+      <li>Barcode – Generate and Print</li>
+      <li>Invoice – Generate and Print</li>
+    </ol>
+  </li>
+
+  <li><strong>Role-Based Dashboards</strong>
+    <ol>
+      <li>Role-based dashboard template creation</li>
+      <li>Dashboard rendering based on created template</li>
+    </ol>
+  </li>
+
+  <li><strong>Scheduler &amp; Task Scheduler</strong>
+    <ol>
+      <li>Create and use Schedule</li>
+      <li>Create and use Task Schedule</li>
+      <li>Event-based task schedule</li>
+      <li>Schedule-based task schedule</li>
+      <li>Schedule a notification</li>
+      <li>SMS</li>
+      <li>Mail</li>
+      <li>WhatsApp</li>
+      <li>Push</li>
+      <li>In-App</li>
+      <li>Schedule a report send (PDF) through mail from a configured email template.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder Functionality</strong>
+    <ol>
+      <li>Same Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Cross Feature
+        <ol class="alpha">
+          <li>Arithmetic</li>
+          <li>Logical</li>
+          <li>Comparison</li>
+          <li>Text</li>
+          <li>Math</li>
+          <li>Date</li>
+          <li>Conditional</li>
+          <li>Miscellaneous</li>
+          <li>Aggregate &#8594; with filter conditions and without filter conditions.</li>
+        </ol>
+      </li>
+      <li>Incompatible datatype operations, for example, arithmetic on a text input field, should show a
+          validation error.</li>
+      <li>Unrecognized fields, functions, or operators should show a validation error.</li>
+      <li>If external fields are called without where() conditions, it should show MULTIPLE RECORDS FOUND
+          ERROR in preview for non-aggregate functions/operations.</li>
+      <li>Variables are not working. Review which variables should be displayed in the modal.</li>
+    </ol>
+  </li>
+
+  <li><strong>Formula Builder UI</strong>
+    <ol>
+      <li>On clicking a feature from the feature list, fields in the selected feature should be displayed,
+          except for the current field, to prevent self-call loops.</li>
+      <li>On selecting external feature fields, where() should appear in the modal.</li>
+      <li>On selecting where(), the modal should automatically switch to the Feature and Fields tab.</li>
+      <li>On hovering over a field, field information such as module name and feature name should be
+          displayed.</li>
+      <li>The Clear button or backspace should work as follows:
+        <ol class="roman">
+          <li>First click of clear/backspace will select the token.</li>
+          <li>Next click of clear/backspace will clear that token.</li>
+        </ol>
+      </li>
+      <li>Empty formulas should not be saved.</li>
+      <li>Formulas should not be saved without validation.</li>
+    </ol>
+  </li>
+
+  <li><strong>Integrations</strong>
+    <ol>
+      <li>Step 1: Go to the Integration Type field and select "Third-Party Software".<br>
+        <span class="expected">Expected Result: A new dropdown field called Select Type should appear.</span>
+      </li>
+      <li>Step 2: Check the options inside the Select Type dropdown.<br>
+        <span class="expected">Expected Result: It should contain options including "Third-Party API" and "Google Drive".</span>
+      </li>
+      <li>Step 3: Choose "Third-Party API" from the dropdown.<br>
+        <span class="expected">Expected Result: The configuration fields specific to the Third-Party API should be displayed.</span>
+      </li>
+      <li>Step 4: Change the selection to "Google Drive".<br>
+        <span class="expected">Expected Result: The system should dynamically display the Google Drive configuration fields: Client ID, Client Secret, and Refresh Token.</span>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+</body>
+</html>
