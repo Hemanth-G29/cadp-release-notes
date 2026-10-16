@@ -104,3 +104,12 @@
   - site/release-notes-v12/index.html
   - site/release-notes-v13/index.html
   - site/index.html
+
+## 2026-10-16 — One Download PDF button in the history view
+- **Author:** hemanth.a
+- **What:** When a build is shown inside the Release History page, the document's own "⬇ Download PDF" line is hidden, leaving the single Download PDF button in the page header. Opening a build on its own ("Open full page") still shows the link, and printed/PDF copies were already without it. The stored release-notes pages are unchanged.
+- **Why:** The two Download PDF controls on one screen were redundant.
+- **QA-Release-Note:** none
+- **Files:**
+  - src/history.js
+  - site/index.html

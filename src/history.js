@@ -53,7 +53,10 @@ header h1{font-size:20px;color:#1169ac;margin:0}header p{font-size:12px;margin:4
 .version-list{flex-direction:row;overflow-x:auto;padding-bottom:4px}.version{width:auto;min-width:180px;flex:0 0 auto}
 .content{padding:18px 16px}.bar h2{font-size:20px}}`;
 
-/** Browser side: sidebar, selection and embedded build page. Data comes from window.BUILDS. */
+/**
+ * Browser side: sidebar, selection and embedded build page. Data comes from window.BUILDS.
+ * Inside the panel the build page's own "Download PDF" line (.dl) is hidden — the header has one.
+ */
 const SCRIPT = `
 const B=window.BUILDS,$=id=>document.getElementById(id);
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -68,14 +71,16 @@ function show(){if(sel==null){$('title').textContent='No release notes published
  const dir='./release-notes-v'+sel+'/';$('title').textContent='Release Notes — v'+sel;
  $('frame').title='Release notes for version '+sel;$('frame').src=dir;$('open').href=dir;$('pdf').href=dir+'index.pdf';document.title='CADP Release Notes — v'+sel;list();}
 function choose(n){sel=n;history.replaceState(null,'','?version='+n);show();window.scrollTo({top:0,behavior:'smooth'});}
-$('frame').addEventListener('load',()=>{fit();try{new ResizeObserver(fit).observe($('frame').contentDocument.body);}catch(e){}});window.addEventListener('resize',fit);$('search').addEventListener('input',list);
+function prep(){try{const d=$('frame').contentDocument,s=d.createElement('style');s.textContent='.dl{display:none!important}';d.head.appendChild(s);new ResizeObserver(fit).observe(d.body);}catch(e){}fit();}
+$('frame').addEventListener('load',prep);window.addEventListener('resize',fit);$('search').addEventListener('input',list);
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);$('copy').textContent='✓ Link copied';setTimeout(()=>{$('copy').textContent='Copy version link'},1600);}catch(e){prompt('Copy this link',location.href);}});
 show();`;
 
 /** The whole page. `builds` = describeBuild() results, any order. */
 function renderHistoryPage(builds) {
   const sorted = [...builds].sort((a, b) => b.version - a.version);
-  const data = JSON.stringify(sorted).replace(/</g, '\\u003c');
+  // Escape "<" as < so a value can never close the <script> it is embedded in.
+  const data = JSON.stringify(sorted).replaceAll('<', '\\u003c'); // NOSONAR S7780: a plain escaped literal is clearer than String.raw here
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
