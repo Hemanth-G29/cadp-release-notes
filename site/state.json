@@ -3,7 +3,56 @@
   "latestAnnouncedVersion": 23,
   "lastProcessedMailId": null,
   "lastCutAt": "2026-10-16T13:19:50.712Z",
-  "bugs": [],
+  "bugs": [
+    {
+      "id": 612,
+      "subject": "Duplicate/unnecessary activity entries logged in Version Log when adding a field (e.g., text box or mobile number)."
+    },
+    {
+      "id": 1847,
+      "subject": "Workspace Management ->New Workspace Is Automatically Created as Private Without Privacy Selection Option."
+    },
+    {
+      "id": 1849,
+      "subject": "Vertical Template-->Vertical Template creation displays only one module instead of all modules from the selected existing workspace."
+    },
+    {
+      "id": 1853,
+      "subject": "Metadata → Archive/Unarchive → \"Select Workspace\" dropdown fails to load workspace list with \"Failed to load workspaces\" message in Archive Entity screen "
+    },
+    {
+      "id": 1930,
+      "subject": "Audit Log → Workspace  Archive/Unarchive→ Workspace Archive and Unarchive Activities Are Not Recorded Correctly in Audit Logs."
+    },
+    {
+      "id": 2024,
+      "subject": "BUG-01 — Old sessions stay listed as active long after the 60-minute session timeout"
+    },
+    {
+      "id": 2025,
+      "subject": "BUG-02 — SSO Client Secret is sent to the browser in plain text in Edit Provider"
+    },
+    {
+      "id": 2027,
+      "subject": "BUG-04 — Users with 8- and 9-digit phone numbers exist, and the number is shown wrongly formatted"
+    },
+    {
+      "id": 2028,
+      "subject": "BUG-06 — Forgot Password reveals whether an account exists (different OTP error for real vs unknown users)"
+    },
+    {
+      "id": 2029,
+      "subject": "BUG-07 — After login the user is not returned to the page opened while logged out"
+    },
+    {
+      "id": 2030,
+      "subject": "BUG-09 — Organisation usage panel shows hard-coded sample data"
+    },
+    {
+      "id": 2032,
+      "subject": "Logged-in Devices shows 'unknown' or internal IP addresses"
+    }
+  ],
   "overview": {},
   "narrative": {
     "features": [],
