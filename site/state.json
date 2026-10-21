@@ -51,12 +51,29 @@
     {
       "id": 2032,
       "subject": "Logged-in Devices shows 'unknown' or internal IP addresses"
+    },
+    {
+      "id": 2038,
+      "subject": "BUG-14 — Users without Super Admin (Viewer, Editor, User Admin) get 403 on their own profile, preferences, devices and Change Password"
     }
   ],
   "overview": {},
   "narrative": {
     "features": [],
-    "enhancements": [],
+    "enhancements": [
+      {
+        "id": "",
+        "module": "invoice-printing",
+        "description": "`buildPrintVariables` now sends:; each value under its field id and its label only. The snake_case forms (`invoice_no`,; `products_table`) are no longer sent: the template service derives them for every key it; receives (`buildTemplateDataContext`), with the same normalization;; each table once per key, as JSON text holding only what the renderer reads: the column labels; (`printColumns`, or a saved record's `columns`) and one value list per column (`columnArrays`).; The rows keyed three ways, the 3–4 spellings of each column list, `columnKeyAliases`, selection; state and `summaryValues` are dropped (`slimTableForPrint`). It mirrors the renderer's; fallbacks: a table with no column labels, or whose labels match nothing, keeps its raw rows;; no `_metadata` (it is still read first, for date formatting).; The four standalone/preview print builders (FeaturePreviewInternal, FeaturePreviewStandalone,; FeaturePreviewStandaloneRoute, NavbarPreview) now use the shared builder, the same one PreviewPage; and the records list use, so they also get the form's date formats, lookups as text instead of; `[object Object]`, and slim tables. `buildInvoicePrintVariables` (ProductDetails/CustomDetails); keeps its own id/label/name aliases but drops the snake_case copies and slims tables.",
+        "benefit": "Ticket \"PDF generate API payload & structure issues (94% duplicate data)\". The captured; generate-pdf body was 1,939,825 bytes, 99.2% of it one 284-row table sent three times, each copy; carrying every cell 7 times (one batch code appeared 21 times). With production payload encryption; it was ~2.6 MB on the wire, built and base64-encoded on the main thread under a 30 s axios timeout.; Applies to generate-pdf, generate-docx and thermal print, which all take this builder's output."
+      },
+      {
+        "id": "",
+        "module": "invoice-printing",
+        "description": "View PDF and Download PDF call master's new; `POST /master/feature-data/:featureId/data/:recordId/print-pdf` with; `{ templateId, versionSource: 'published', knownFingerprint, timeZone }`; (`printTemplateApi.printRecordPdf`). Master builds the print data this page used to build, so; the page no longer downloads the record or posts its data.; `printPdfCache` keeps the same slot, fingerprint and 204 handling. `PdfRequest.variables` is; replaced by `loadVariables()`, which is called only when there is no `featureId` or printing; by id fails (e.g. a master without the endpoint). It then builds and posts the data exactly; as before.; `PdfResult.fileReference` carries the record's part of the download name: master's; `X-Pdf-File-Reference`, or the browser's own `buildPdfFileReference` on the fallback.; `buildPdfFileName` is split into `buildPdfFileReference` + `pdfFileNameFromReference`, with; the same names as before.; `PrintPreviewModal`'s `pdfLoader` may return a `fileName`, used for its Download button.; Download Word still builds the data in the browser (`loadRecordPrintData`).",
+        "benefit": "Ticket \"PDF generate API payload & structure issues\": requests below 1 KB for saved; records, with no record download."
+      }
+    ],
     "whatToTest": [],
     "knownIssues": [
       [

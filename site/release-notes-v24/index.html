@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (24) delivers 12 bug fixes across the platform. Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (24) delivers 13 bug fixes, and 2 enhancements across the platform. Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -123,7 +123,8 @@
     <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No enhancements recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>invoice-printing</td><td>`buildPrintVariables` now sends:; each value under its field id and its label only. The snake_case forms (`invoice_no`,; `products_table`) are no longer sent: the template service derives them for every key it; receives (`buildTemplateDataContext`), with the same normalization;; each table once per key, as JSON text holding only what the renderer reads: the column labels; (`printColumns`, or a saved record&#39;s `columns`) and one value list per column (`columnArrays`).; The rows keyed three ways, the 3–4 spellings of each column list, `columnKeyAliases`, selection; state and `summaryValues` are dropped (`slimTableForPrint`). It mirrors the renderer&#39;s; fallbacks: a table with no column labels, or whose labels match nothing, keeps its raw rows;; no `_metadata` (it is still read first, for date formatting).; The four standalone/preview print builders (FeaturePreviewInternal, FeaturePreviewStandalone,; FeaturePreviewStandaloneRoute, NavbarPreview) now use the shared builder, the same one PreviewPage; and the records list use, so they also get the form&#39;s date formats, lookups as text instead of; `[object Object]`, and slim tables. `buildInvoicePrintVariables` (ProductDetails/CustomDetails); keeps its own id/label/name aliases but drops the snake_case copies and slims tables.</td><td>Ticket &quot;PDF generate API payload &amp; structure issues (94% duplicate data)&quot;. The captured; generate-pdf body was 1,939,825 bytes, 99.2% of it one 284-row table sent three times, each copy; carrying every cell 7 times (one batch code appeared 21 times). With production payload encryption; it was ~2.6 MB on the wire, built and base64-encoded on the main thread under a 30 s axios timeout.; Applies to generate-pdf, generate-docx and thermal print, which all take this builder&#39;s output.</td></tr>
+    <tr><td></td><td>invoice-printing</td><td>View PDF and Download PDF call master&#39;s new; `POST /master/feature-data/:featureId/data/:recordId/print-pdf` with; `{ templateId, versionSource: &#39;published&#39;, knownFingerprint, timeZone }`; (`printTemplateApi.printRecordPdf`). Master builds the print data this page used to build, so; the page no longer downloads the record or posts its data.; `printPdfCache` keeps the same slot, fingerprint and 204 handling. `PdfRequest.variables` is; replaced by `loadVariables()`, which is called only when there is no `featureId` or printing; by id fails (e.g. a master without the endpoint). It then builds and posts the data exactly; as before.; `PdfResult.fileReference` carries the record&#39;s part of the download name: master&#39;s; `X-Pdf-File-Reference`, or the browser&#39;s own `buildPdfFileReference` on the fallback.; `buildPdfFileName` is split into `buildPdfFileReference` + `pdfFileNameFromReference`, with; the same names as before.; `PrintPreviewModal`&#39;s `pdfLoader` may return a `fileName`, used for its Download button.; Download Word still builds the data in the browser (`loadRecordPrintData`).</td><td>Ticket &quot;PDF generate API payload &amp; structure issues&quot;: requests below 1 KB for saved; records, with no record download.</td></tr>
   </tbody>
 </table>
 
@@ -146,6 +147,7 @@
     <tr><td>2029</td><td>BUG-07 — After login the user is not returned to the page opened while logged out</td></tr>
     <tr><td>2030</td><td>BUG-09 — Organisation usage panel shows hard-coded sample data</td></tr>
     <tr><td>2032</td><td>Logged-in Devices shows &#39;unknown&#39; or internal IP addresses</td></tr>
+    <tr><td>2038</td><td>BUG-14 — Users without Super Admin (Viewer, Editor, User Admin) get 403 on their own profile, preferences, devices and Change Password</td></tr>
   </tbody>
 </table>
 
