@@ -113,3 +113,15 @@
 - **Files:**
   - src/history.js
   - site/index.html
+
+## 2026-10-23 — Undo accidental bump to build 26
+- **Author:** hemanth.a
+- **What:** Reverted the 2026-10-23 11:32 UTC rollover (bot commit 849583b), which had frozen v25 and opened v26 although the v25 QA build was not done. State is back to live 25 / last announced 24 / cutoff 2026-10-21T13:24:14Z, v25 is a draft again, and release-notes-v26/ is removed. No OpenProject changes to undo: v25 was frozen with 0 bugs, so the rollover moved none to Ready for Testing.
+- **Why:** The bump was triggered by mistake before the QA build was complete.
+- **QA-Release-Note:** none
+- **Files:**
+  - site/state.json
+  - site/release-notes-v25/index.html
+  - site/release-notes-v26/ (removed)
+  - site/index.html
+  - site/latest.pdf

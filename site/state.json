@@ -1,8 +1,8 @@
 {
-  "liveVersion": 26,
-  "latestAnnouncedVersion": 25,
+  "liveVersion": 25,
+  "latestAnnouncedVersion": 24,
   "lastProcessedMailId": null,
-  "lastCutAt": "2026-10-23T11:32:19.201Z",
+  "lastCutAt": "2026-10-21T13:24:14.045Z",
   "bugs": [],
   "overview": {},
   "narrative": {
@@ -47,18 +47,7 @@
       ]
     ],
     "apiChanges": [],
-    "configChanges": [
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for MASTER, CLIENT_WS, CLIENT_METADATA, NOTIFICATION, WORKFLOW, SEARCH, TEMPLATE, CHAT now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged. `BACKUP_SERVICE_URL` stays public: no k8s Service for it in the repo.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for MASTER, RBAC, CLIENT_WS, NOTIFICATION now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ]
-    ]
+    "configChanges": []
   },
   "approvedAt": null
 }
