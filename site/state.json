@@ -6,9 +6,139 @@
   "bugs": [],
   "overview": {},
   "narrative": {
-    "features": [],
-    "enhancements": [],
-    "whatToTest": [],
+    "features": [
+      {
+        "id": "",
+        "name": "Download PDF for user manuals (same pipeline as Release Notes)",
+        "description": "New `GET /user-manual/download-pdf/:userManualId` returns the generated manual as; a PDF attachment. `userManualDocument.service.js` fills the manual into its selected; template using the same fields as the frontend Preview. `buildManualTokens` mirrors; `ManualPreviewTab#buildManualTokens`: the numbered document, the TOC and the per-section; fields. The template is then put through Release Notes' print pipeline:; `upgradeLegacyTemplateHtml` → `substituteTokens` → `normalizeFlowPositioning` →; `buildPrintSafeCss`, then the template's paperSetup/defaultFont → template-service; `renderHtmlToPdf`. With no template (or one that is missing), it uses the standard layout; at A4 with 15mm margins. The file is named `User Manual(<name> v<version>)-DD-MM-YY HH-MM-SS.pdf`,; ASCII-only because Node rejects non-ASCII text in Content-Disposition. A manual that has not; been generated returns 409. Tests: `userManualDocument.test.js` (3).",
+        "impact": "Requested: user manuals should download like Release Notes."
+      },
+      {
+        "id": "",
+        "name": "Download PDF restored (code was missing behind the two entries above)",
+        "description": "The two entries above were logged, but their code was not in the repo, so this; change re-implements them. `GET /user-manual/download-pdf/:userManualId` and; `userManualDocument.service.js`: tokens mirror the Preview, then `upgradeLegacyTemplateHtml`; → `substituteTokens` → `dropBodyPageBreaks` → `normalizeFlowPositioning` → `buildPrintSafeCss`; → template-service `renderHtmlToPdf` at scale 1. Templates saved without page margins now get; 15mm margins in their own unit, so later pages don't print to the paper edge. Headings stay; with their text, images are never split across pages, and the 794px template canvas fits; inside the margins. The backend `upgradeLegacyTemplateHtml` also drops the; \"Appendix — Screenshots\" heading and the `{{screenshots}}` slot. Tests: `userManualDocument.test.js` (5).",
+        "impact": "The User Manual Preview downloaded a `.html` file. It now downloads a PDF like Release Notes."
+      },
+      {
+        "id": "",
+        "name": "Table rows obey their columns' rules: Required, allowed dates, length, pattern, email",
+        "description": "**Row checks (definition tables, runtime only).** \"+\" refuses the entry row, and saving an edited row refuses the edit, while a shown column breaks its own rule. The rules are Required (blank, whitespace, empty rich text or an empty lookup object), the date rules below, min/max length, pattern, and email format. One message names every problem, e.g. \"Please fill: Corrective Actions, Target Date · Target Date: past dates are not allowed\". Auto-ID, formula, read-only and hidden or condition-hidden columns are never demanded. An edit save skips the date rules, so a row saved earlier keeps its old dates.; **Allowed Dates for table date columns.** Columns → Column Settings shows an \"Allowed Dates\" card under Default Date: Disable past dates, Disable future dates, Disable weekends, Earliest date, Latest date. It is saved on the column (`basic.disablePastDates`, `disableFutureDates`, `disableWeekends`, `minDate`, `maxDate`) and rides the seed's existing `defaultDate` slot, so no seed change is needed. A Date field dragged into the table keeps its own picker settings (`advanced.datepicker.*`); those apply when the column has no Allowed Dates of its own.; **Date cell.** The table's date cell (shared by definition and transaction tables) sets `min`/`max`, so the browser calendar greys the out-of-range days. A date that still breaks a rule (typed by hand, or a weekend) is refused with a message.; **Required marker.** A definition-table header shows a red `*` after the label of every column \"+\" demands (`isUserRequiredColumn`: Required and filled by the user, so an auto-ID column gets none). It sits outside the truncating label so a narrow column never clips it, in the builder canvas and at runtime alike.; **Shared logic.** All of it lives in `helpers/tableRowChecks.ts`. Length and pattern are read through `buildOverlayFieldConfig`, the same lookup the table's text editors use.",
+        "impact": "Required on a table column was never enforced when adding a row. The add path only asked \"is any cell filled\", and the auto-generated Task ID always is, so RCF's \"Long Term Corrective action\" took rows holding nothing but T00001. Table date columns had no allowed-date rules at all: the cell was a bare `<input type=\"date\">`. The Submit-time \"Check Required columns\" toggle exists in code but is missing from the live component-properties seed, so it cannot be switched on."
+      },
+      {
+        "id": "",
+        "name": "User Manual: Download PDF",
+        "description": "The Preview tab has a \"Download PDF\" button. It calls; `userManualApi.downloadPdf` (arraybuffer, 120s) and saves the server-rendered PDF under the; file name the server sends. Before downloading, it saves any unsaved Review & Customize; edits (`onBeforeDownload` → `persist(\"preview\")`) so the PDF matches the preview. The; backend error message is decoded from the arraybuffer body. The HTML download and Print; buttons remain.",
+        "impact": ""
+      },
+      {
+        "id": "",
+        "name": "New chart type: Funnel",
+        "description": "Added **Funnel** as a chart type, a twelfth tile in the Chart Type picker; (Chart Properties) of the generic **Charts** component. A funnel uses the same data; mapping as a pie: a **Stage Field**, plus a value (Count / Percentage / Sum / Average; or a value formula). New **Funnel Options**:; **Stage order:** largest first (default), smallest first (pyramid), data order, or; a custom comma/new-line list. A listed stage with no records shows as an empty 0; stage; unlisted stages follow at the bottom.; **Conversion %:** of the first stage (default), of the previous stage, or hidden.; A pyramid measures from its bottom (entry) stage.; **Stage labels:** inside / right / left / hidden.; **Gap** between stages (0–20 px).",
+        "impact": "Requested chart type for stage-by-stage drop-off (e.g. RCF stages)."
+      }
+    ],
+    "enhancements": [
+      {
+        "id": "",
+        "module": "transaction-parameters",
+        "description": "new Access property **Record Lock Rules** (`recordLockRules`, JSON, registered in; `parameterMetadata.js`): `[{ \"roles\": [\"<role id>\"], \"values\": [\"OWNER\", \"REVIEW\"] }]`. A caller is; locked when a rule for one of their roles lists the record's current Record Lock Field value — each; role is checked only against its own rule. Roles without a rule, and callers with no roles; (workflow updates, workers), are never held. Works alongside the single Record Lock Value / Roles; rule (either one locking is enough), so existing settings behave exactly as before.; `recordAccessPolicy.js` adds `parseLockRules` (unreadable or incomplete rules are dropped — a bad; row can only switch a rule off) and `ruleLocksCaller`; `evaluateRecordAccess` refuses with; `RECORD_ACCESS_LOCKED` and \"This record is read-only for your role at its current stage.\"; Create-lock (`evaluateRecordCreate`) is unchanged.",
+        "benefit": "the single lock rule could hold only one set of phases, already used for the Initiator; (RCF bugs 4 / 25). The COO needed the same \"edit only on my turn\" behaviour with different phases:; after Validate, the COO could still edit and still saw Validate / COO Reject (RF00006)."
+      },
+      {
+        "id": "",
+        "module": "data-archival-permissions",
+        "description": "The three submenus (Data Archival, Data Archival Approval, Data Archival Execution); are now children of `submenu_009_data_mgmt` (Workspace → Data Management) instead of direct; Workspace children — in `menuData.json` and in what the migration writes:; `menu_access_details`: added under Data Management; an earlier run's Workspace-level entries; are moved there (routes merged).; Role trees: nodes are added under the role's Data Management node (admin roles full, others; disabled); Workspace-level nodes from an earlier run are moved there keeping their access.; A role with no Data Management node is left untouched (new counter `noDataManagement`).; Gateway route map, role flattening and the frontend permission lookup all walk nested; submenus, so nothing else changes. Still DRY-RUN by default; nothing applied to any server yet.",
+        "benefit": "User request 2026-10-21 — \"add Data Archival under Data Management\"."
+      },
+      {
+        "id": "",
+        "module": "data-archival-permissions",
+        "description": "Shape is now Workspace → Data Management → Data Archival → (Data Archival Approval,; Data Archival Execution), in `menuData.json` and in what the migration writes. The migration was; rewritten around one placement table (`PARENT_OF`): every run puts each submenu under its; parent wherever an earlier run left it (moves keep access), works on a copy of each tree so a; dry run never mutates, and keeps the admin mobile-flag alignment. Access semantics unchanged; (each submenu still has its own grant; approvers / executors also need Data Archival view to; see jobs, which the nesting now reflects).",
+        "benefit": ""
+      },
+      {
+        "id": "",
+        "module": "data-archival-permissions",
+        "description": "Data Archival is ONE submenu under Workspace → Data Management. Its access types:; View = see jobs / settings / preview; Create = new job, preview, submit, cancel; Edit = edit a; draft / settings, approve, reject, execute, finalize, approve changed records.; `menuData.json`: Approval / Execution submenus removed; their 5 action routes added to Data; Archival's Edit list.; `authorise.middleware.js`: those 5 routes are POSTs (default action 'create'); a candidate; authorizes them against 'edit', like the existing bulk-delete / search special cases.; Migration: one submenu; removes Approval / Execution nodes left by earlier runs from the menu; and from roles, carrying any grant they gave into Data Archival (View → View, Create / Edit →; Edit) so no role loses access.; Separation of duties is unchanged: the master service still refuses an approver who created or; submitted the job (unless self-approval is switched on).",
+        "benefit": ""
+      },
+      {
+        "id": "",
+        "module": "user-manual",
+        "description": "`buildOutline` now produces the full enterprise structure: Purpose; (+ Business Objectives / Problems Solved / Business Value), Introduction, Scope (+ Covered /; Not Covered), Target Audience, Prerequisites & Getting Started, Key Concepts, Navigation,; modules/features, Field Validations, Workflows / Process Flows / Reports (as configured),; Functional Impact, Business Scenarios, Best Practices, What's New, Troubleshooting, FAQs,; Conclusion, Glossary and Revision Recommendations. Each has a `sectionGuide` instruction.; `buildChunks` writes them in themed calls (`CHUNK_GROUPS`) so each response stays small.; The Field Validations call receives every feature's field names. Screenshots also go to the; Navigation call. `structuralFallback` gives fact-based content for each new section when; the AI is unavailable (never brackets). Tests: 15, including a no-placeholder check.",
+        "benefit": "The Enterprise template showed `[List the business objectives…]` style guidance; because generation never wrote those sections."
+      },
+      {
+        "id": "",
+        "module": "user-manual",
+        "description": "`generate` loads the manual's template (Basic Information → Manual Template) with; `releaseTemplateFields.service.js#loadTemplateHtml`, the same loader Release Notes uses.; `draftUserManual` then narrows the outline with `filterOutlineForTemplate`: only sections whose; token the template uses (`TOKEN_SECTIONS`), plus module overviews for `{{configuration}}` and; feature sections for `{{step_by_step}}`. A sub-section whose parent isn't placed is promoted; to top level. No template, `{{manual_document}}`, or no section tokens → the full manual.; `generatedMeta.templateId` records the template used. Tests: 18.",
+        "benefit": "Requested: the document should be generated based on the template selected on the; first page, instead of always generating every section."
+      },
+      {
+        "id": "",
+        "module": "user-manual",
+        "description": "Prompts with screenshots list them numbered and ask the AI to put a; `[[screenshot:N]]` marker where each belongs inside the right section, with a 1–2 sentence; explanation in that section's `screenshots` list. `placeScreenshots` swaps markers for; `<img>` plus \"Figure N — explanation\" (numbered in reading order, each screenshot used once).; Screenshots the AI didn't place, or when the AI is off, are matched to a feature/module title; by caption or file name (longest title first), else go to Getting Started, after the; section's first paragraph. `sanitizeHtml` now keeps `<img>` with an http(s) src + alt only.; Tests: 22.",
+        "benefit": "Requested: screenshots should sit in their respective place with an explanation,; not in a separate screenshots section."
+      },
+      {
+        "id": "",
+        "module": "user-manual",
+        "description": "The PDF no longer starts a new page before every numbered section, including the cover,; Document Control and Table of Contents. `MANUAL_PRINT_CSS` forces `break-before/after:auto` and; `min-height:0`. It overrides breaks and canvas heights whether they are saved inline or as the; template's own `#id` CSS rules. It replaces `dropBodyPageBreaks`, which only matched inline styles; on sections 4 and later. With the Enterprise template and the same content, the PDF went from; 23 pages to 5. Frontend: Print and Download PDF now sit in the Preview's top bar, next to the; template selector.",
+        "benefit": "The downloaded PDF had large blank gaps between pages: the short cover table and the; one-row version table each took a full page."
+      },
+      {
+        "id": "",
+        "module": "definition-table",
+        "description": "The Column Width box in Column Settings (\"e.g. 150px, 20%...\", saved on the column's `width` and `basic.width`) now sizes definition-table columns. A px width gives that column exactly that width. A % width is a share of the table, never below the column's usual minimum (160px, 140px when frozen, 220px for dynamic-field/attribute/value columns). A column with no width shares the leftover space as before. If every column has a width, the first column also takes any leftover space, so the action column stays at the right edge. Anything other than a positive px, % or bare number is ignored. The table scrolls sideways once the columns no longer fit. The new `definitionColumnTracks.ts` builds the tracks; header, input row, saved rows and footer already share one `gridTemplateColumns`.",
+        "benefit": "Every column got `minmax(160px, 1fr)`, an equal share, and the Column Width box did nothing on this table type (transaction tables already honoured it). In RCF's \"Long Term Corrective action\" table inside the stepper, the long Corrective Actions text got the same 247px as Task ID and wrapped into very tall rows. Tables with no Column Width set render exactly as before."
+      },
+      {
+        "id": "",
+        "module": "documentation-hub",
+        "description": "`documentationTemplates.ts` gains `enterpriseUserManual` (category \"Enterprise\", first in; Browse User Manual Templates). Modelled on the \"Cavin Studio — Workflow Management End User; Manual\" PDF: cover page with a details table, Document Control, Table of Contents,; Disclaimer, then numbered sections (Purpose, Introduction, Scope, Target Audience,; Prerequisites, Key Concepts, Functionalities, Process Flow, Navigation, Screen-by-Screen and; Step-by-Step, Field Validations, Workflows and Functional Impact, Business Scenarios, Best; Practices, Troubleshooting, FAQs, Conclusion, Glossary, Appendix Screenshots, Revision; Recommendations). Same look: navy headings, orange sub-headings, navy-header tables, page; breaks per section. Generated sections use the existing tokens. Sections the generator; doesn't produce yet carry grey bracketed guidance for the template author.",
+        "benefit": "Requested: offer the enterprise manual format in the Browse User Manual Templates drawer."
+      },
+      {
+        "id": "",
+        "module": "documentation-hub",
+        "description": "The Enterprise template's guidance placeholders are replaced by new generated-section; tokens (`{{purpose}}`, `{{business_objectives}}`, `{{problems_solved}}`, `{{business_value}}`,; `{{scope}}`, `{{scope_covered}}`, `{{scope_not_covered}}`, `{{audience}}`, `{{key_concepts}}`,; `{{navigation}}`, `{{field_validations}}`, `{{functional_impact}}`, `{{business_scenarios}}`,; `{{best_practices}}`, `{{conclusion}}`, `{{glossary}}`, `{{revision_recommendations}}`). They are; mapped in `ManualPreviewTab` SECTION_TOKENS (anchored for outline navigation) and listed in the; template variables panel. The `entGuide` helper was removed.",
+        "benefit": ""
+      },
+      {
+        "id": "",
+        "module": "documentation-hub",
+        "description": "Review & Customize / Preview show an amber notice when `manual.templateId` differs; from `generatedMeta.templateId`. Generation is now template-specific, so the new template's; sections may not exist until Regenerate.",
+        "benefit": ""
+      },
+      {
+        "id": "",
+        "module": "documentation-hub",
+        "description": "The Review document, the Preview standard layout, `{{manual_document}}` and the download; no longer append a Screenshots section (`buildScreenshotsHtml` removed); `{{screenshots}}`; renders empty. The Enterprise template drops \"Appendix — Screenshots\" (now 23 sections), and; saved templates have that heading removed by `legacyTemplateUpgrade.ts`. RichTextEditor gains; the Image extension (no base64) so editing a section keeps its screenshots. Inline images are; styled in Review, Preview and the editor. Content Input help text updated.",
+        "benefit": ""
+      },
+      {
+        "id": "",
+        "module": "documentation-hub",
+        "description": "The bottom toolbar of the Preview (zoom, \"N sections\", HTML download, Print) is; removed. Zoom moved next to \"Download PDF\", which replaces the HTML download and Print. The; preview frame now fills the page height. In the Enterprise template only the front matter; (Document Control, TOC) starts a new page. `legacyTemplateUpgrade.ts#dropBodyPageBreaks`; strips the forced break from sections 4+ in templates that were already saved.",
+        "benefit": "The toolbar repeated the new button and left empty space. The PDF put every; section on its own mostly-blank page."
+      },
+      {
+        "id": "",
+        "module": "formula-orchestrator",
+        "description": "`evaluate-form-batch` answers 200 with **`results` AND `errors`** — one formula; failing says nothing about the other nine, so the server reports both. Only `results` was ever; read. A formula that failed was therefore indistinguishable from one that produced nothing: the; field went blank, nothing reached the browser, and the field's own **Error Fallback Value** — read; only by `FormulaField`'s error handler, which this path never reaches — silently did nothing.; `webBatchEvaluator.ts` returns `{ results, errors }` instead of the bare results map.; `orchestrator.ts` — `FormulaBatchEvaluator` now accepts **either** shape, so the React; Native evaluator (which returns a bare map) needs no change; `readBatchResponse` normalises.; A failed target takes its node's `errorFallbackValue`, and nothing is written when none is; configured, so a form that never set one is byte-identical to before. New optional; `onErrors` reports each failure with the node it belongs to.; `graph.ts` — the node carries `errorFallbackValue`, read from `advanced`.; `reportBatchErrors.ts` (new) — shared by both orchestrator call sites. Deliberately **not** a; toast: a cross-feature lookup legitimately matches nothing while someone is still typing the; code it reads, so an interrupting message would be worse than the bug. `console.error`,; matching `FormulaField`'s own `console.error(\"Formula error:\", err)`.",
+        "benefit": "CADP QA run 2, clarification FB-060 (Q-04) — \"lookup finds no matching record: both; fields stay blank, no error, toast or message\". Confirmed on DEV: the server returned; `results: { field: null }` with `errors: [\"❌ No records matched for: …\"]` and the browser; discarded the errors. A documented setting that silently does nothing is the defect; blank on; no-match is not, and is unchanged where no fallback is configured."
+      },
+      {
+        "id": "",
+        "module": "rcf-uat-defects",
+        "description": "Transaction Settings → Access gets **Record Lock Rules** (`recordLockRules`): one lock; per role, each with its own values of the Record Lock Field, stored as; `[{ \"roles\": [\"<role id>\"], \"values\": [\"OWNER\", \"REVIEW\"] }]`. A user is read-only when a rule for; their role lists the record's current value; roles without a rule are never held. Works alongside; the existing single rule (Record Lock Value / Roles).; `recordAccessPolicy.ts`: `parseLockRules`, `ruleLocksCaller`; `evaluateRecordAccess` returns; `RECORD_ACCESS_LOCKED` with \"This record is read-only for your role at its current stage.\" The; list hides Edit and the record page opens View Only with Approve/Reject hidden — the existing; lock handling, so **no change to `PreviewPage.tsx`**.; Settings screen: `lock-rules` editor kind + `parseLockRuleDrafts` / `serializeLockRules`; (`paramRowFreeze.ts`), `LockRulesEditor` (`ParamValueCell.tsx`: a card per role with its; locked values, \"Add a role…\"), \"ROLE: values · ROLE: values\" display (`ParamValueDisplay.tsx`),; catalog label (`useParamConfigRules.ts`), Access bucket mapping (`transactionSettingsClosed.ts`).; The server enforces the same rule (master `recordAccessPolicy.js`, see its; `transaction-parameters.md`).",
+        "benefit": "after the COO pressed Validate on RF00006, the COO could still edit RCF Details / COO; REVIEW and still saw Validate / COO Reject. The single lock rule was already taken by the; Initiator, with different phases."
+      }
+    ],
+    "whatToTest": [
+      "Faster, fail-closed role filtering on the module list — All master → client-ws calls now go through one shared HTTP client with keep-alive; agents (`src/utils/clientWsHttp.js`) instead of the global `axios`, so role checks reuse open; sockets rather than paying a TCP/TLS handshake per call; read-only calls retry once on; `ECONNRESET`. The role-check calls (`/role/view/modules`, `/role/view/features`,; `/role/view/features/:moduleId/:featureId`) moved into `ClientWsConnector`.; `getModulesByWorkspace` now runs the feature-count aggregation, the role-filtered recount, the; offline scope and the module role check concurrently (`Promise.all`) instead of one after; another, and `buildViewModules` posts identity stubs (id, tags, feature ids) and matches the; result back to the full documents instead of posting whole module documents.; *Behaviour change:** when the module role check cannot complete (client-ws down, timeout,; malformed response), the request now fails with 503 instead of returning the unfiltered; module list; an upstream 401/403 keeps its status. The role-filtered feature *counts* still; fall back to raw counts on failure."
+    ],
     "knownIssues": [
       [
         "",
@@ -44,10 +174,31 @@
         "",
         "Mobile – Formula Field Not Working in Tables & Charts",
         "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
+      ],
+      [
+        "",
+        "Batch import now resolves lookup fields to record snapshots — The batch import pipeline (`POST /:featureId/data/batch-import/upload`, used by the; Import dialog) stored every lookup field as the raw display text from the sheet, e.g.; `\"Hosur Town East\"`, instead of the; `{ _lookupRecordId, valueFields, displayFields }` snapshot a manual form submit writes.; `batch-import.service.js` resolved reference *tables* but never called; `lookupImportResolutionService`, which is what the non-batch import path uses to build that; snapshot. Added `resolveLookupsForBatch()`, built the lookup source context once per job in; `buildRowContext`, and called it in `processOneBatch` between reference-table resolution and; auto-ID assignment.",
+        "A record imported this way renders correctly but carries no link to its source record,; so every `_lookupRecordId` reader — formula aggregates (`formulaAggregate.repository.js`),; report tables (`report-table.repository.js`) and distributor/tenant data scoping — silently; matches nothing. The defect is invisible on screen, which is what makes it dangerous: it was; found only by reading back 2,000 imported Outlet Master rows and checking the stored shape.; Confirmed present in existing bulk-imported data in the CK Bakery workspace."
+      ],
+      [
+        "",
+        "Revived the batch-create import test suite — `feature-data-import-batched-create.test.js` mocked `mongoose` without; `Schema.Types`. Once `transaction-setting.model.js` entered the dependency graph it read; `Schema.Types.Mixed` at import time, the mock threw, and the suite died before a single test; ran — reported as one failed suite with 0 tests. Added `Schema.Types` to the mock.",
+        "The whole batch-import path had no running test coverage and nobody could see it: the; suite looked like one red suite rather than 19 missing tests."
       ]
     ],
     "apiChanges": [],
-    "configChanges": []
+    "configChanges": [
+      [
+        "Service-to-service calls use in-cluster Service addresses",
+        "In `.env.production`, the `*_SERVICE_URL` values for MASTER, CLIENT_WS, CLIENT_METADATA, NOTIFICATION, WORKFLOW, SEARCH, TEMPLATE, CHAT now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged. `BACKUP_SERVICE_URL` stays public: no k8s Service for it in the repo.",
+        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
+      ],
+      [
+        "Service-to-service calls use in-cluster Service addresses",
+        "In `.env.production`, the `*_SERVICE_URL` values for MASTER, RBAC, CLIENT_WS, NOTIFICATION now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged.",
+        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
+      ]
+    ]
   },
   "approvedAt": null
 }
