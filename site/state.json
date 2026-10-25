@@ -1,8 +1,8 @@
 {
-  "liveVersion": 26,
-  "latestAnnouncedVersion": 25,
+  "liveVersion": 27,
+  "latestAnnouncedVersion": 26,
   "lastProcessedMailId": null,
-  "lastCutAt": "2026-10-23T12:35:16.133Z",
+  "lastCutAt": "2026-10-25T08:44:45.201Z",
   "bugs": [],
   "overview": {},
   "narrative": {
@@ -47,73 +47,7 @@
       ]
     ],
     "apiChanges": [],
-    "configChanges": [
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for USER (rbac), WORKFLOW, TEMPLATE, CLIENT_WS now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`. `TEMPLATE_SERVICE_URL` also had the wrong path (`/template` instead of `/template-service`, the template service's ingress path and `CONTEXT_PATH`), so QA print-link PDF rendering could not reach it unless the secret overrode it.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for USER (rbac), WORKFLOW, TEMPLATE (CLIENT_WS moved earlier) now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for MASTER, CLIENT_WS, CLIENT_METADATA, NOTIFICATION, WORKFLOW, SEARCH, TEMPLATE, CHAT now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`. `AZURE_AD_REDIRECT_URI` stays public: it is the browser sign-in callback.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for MASTER, CLIENT_WS, CLIENT_METADATA, NOTIFICATION, WORKFLOW, SEARCH, TEMPLATE, CHAT now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged. `BACKUP_SERVICE_URL` stays public: no k8s Service for it in the repo.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for USER (rbac), MASTER, TEMPLATE now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`. Also added `WORKFLOW_SERVICE_URL` and `METADATA_SERVICE_URL`, which `activityLog.repository.js` reads but `.env.qa` never set, so those calls went to `undefined/...` in QA unless the `cadp-qa-env` secret supplied them.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for USER (rbac), MASTER now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for USER (rbac), MASTER now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for MASTER, RBAC, CLIENT_WS, NOTIFICATION now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`. `RBAC_SERVICE_URL` was `http://` to the public host, which cost an extra ssl-redirect hop on every call.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for MASTER, RBAC, CLIENT_WS, NOTIFICATION now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for USER (rbac), MASTER, CLIENT_WS, WORKFLOW, TEMPLATE now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for USER (rbac), MASTER, WORKFLOW, CLIENT_WS, TEMPLATE now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "QA: service-to-service calls use in-cluster Service addresses",
-        "In `.env.qa`, the `*_SERVICE_URL` values for USER (rbac), MASTER now point at the; `cadp-qa` namespace Services (`http://cadp-backend-<name>.cadp-qa.svc.cluster.local/<context-path>`); instead of `https://tenantacadp.cavininfotech.com/<context-path>`. `REPORT_EXPORT_RUNTIME_API_BASE` stays public: the headless PDF page uses it.",
-        "Same as the production change: the QA k8s deployments (`k8s/qa`, `NODE_ENV=qa`) run in; `cadp-qa`, so calls between them no longer need the public load balancer, ingress and TLS. If the; `cadp-qa-env` k8s secret defines any of these keys, its value takes precedence."
-      ],
-      [
-        "Service-to-service calls use in-cluster Service addresses",
-        "In `.env.production`, the `*_SERVICE_URL` values for USER (rbac), MASTER now point at the; in-cluster Services (`http://cadp-backend-<name>.cadp-dev.svc.cluster.local/<context-path>`); instead of `https://cadp.cavininfotech.com/<context-path>`. Browser-facing values (CORS, frontend,; approval and subdomain URLs) and external hosts are unchanged. `REPORT_EXPORT_RUNTIME_API_BASE` stays public: the headless PDF page uses it.",
-        "Calls between services in the `cadp-dev` namespace were leaving the cluster through the; public load balancer and nginx ingress with a TLS handshake each time. Calling the ClusterIP; Service directly removes those hops. Ingress no longer applies to these calls, so its body-size; limit and 60s read timeout do not either; the app's own limits and axios timeouts apply.; If the `cadp-dev-env` k8s secret defines any of these keys, its value takes precedence."
-      ]
-    ]
+    "configChanges": []
   },
   "approvedAt": null
 }
