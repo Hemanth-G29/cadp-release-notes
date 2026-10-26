@@ -8,7 +8,9 @@
   "narrative": {
     "features": [],
     "enhancements": [],
-    "whatToTest": [],
+    "whatToTest": [
+      "Roles assigned by their record ID now load correctly — `getRolesByNamesAndTenantId` matched a user's role refs against `roleId` and; a misspelt `__id` field that no role has, so a role referenced by its Mongo `_id`; never matched. It now matches `roleId` or `_id` (for refs that are 24-hex ObjectIds),; the same way the workspace-access checks in `user.workspace.service.js` already do.; Empty/missing refs skip the query and return `[]`, the same result as before."
+    ],
     "knownIssues": [
       [
         "",
@@ -46,8 +48,35 @@
         "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
       ]
     ],
-    "apiChanges": [],
-    "configChanges": []
+    "apiChanges": [
+      [
+        "Workspace list: page size capped at 100, version lookup scoped to the page",
+        "",
+        "`GET /workspaces/workspacesList` now caps `limit` at 100 (minimum 1, default; 10) and treats an invalid or < 1 `page` as 1. The response's `pagination.limit`; reports the capped value. The active-version lookup now reads only the page's; workspaces and only `{ workspaceId, version }`, instead of the full active-version; record of every workspace in the tenant. `getAllActiveVersions(workspaceIds)` keeps; its old behaviour when called without ids; `findLatestActiveByFilter` takes an; optional projection. Also fixed: with `limit=1` and a pinned workspace, page 1; ran `.limit(0)`, which Mongo treats as \"no limit\", so it returned every workspace.; That query is now skipped."
+      ]
+    ],
+    "configChanges": [
+      [
+        "Vault secret names for AI builder / LLM gateway switched to kebab-case",
+        "`runtime-bootstrap.js` now resolves `AI_BUILDER_BASE_URL`, `AI_BUILDER_USERNAME`,; `AI_BUILDER_PASSWORD`, `AI_BUILDER_HIERARCHY`, `LLM_GATEWAY_URL` and `LLM_GATEWAY_API_KEY` from the; vault secrets `ai-builder-base-url`, `ai-builder-username`, `ai-builder-password`,; `ai-builder-hierarchy`, `llm-gateway-url` and `llm-gateway-api-key` (previously the UPPER_SNAKE names).; Env var names consumed by the code are unchanged.",
+        "The vault keys were renamed to kebab-case to match the other secrets."
+      ],
+      [
+        "Faster workspace-access lookup and perf measurement in RBAC",
+        "New roles index `{ tenantId: 1, workspaceId: 1, roleId: 1 }`. The only existing index; starts with `roleName`, but the role lookups made on every authenticated request; (`getRolesByNamesAndTenantId`) and by `GET /users/workspace`; (`getWorkspaceIdsWithDirectRoles`, `getWorkspaceIdsWithGroupRoles`) filter on; tenantId/workspaceId/roleId and never on roleName, so they could not use it.; Mongoose `autoIndex` builds it on each tenant DB the first time the Role model is; bound there after deploy (non-unique, no data changes).; `getWorkspaceIdsByTenant` (`GET /users/workspace`) now selects only the user fields; it reads instead of the whole user document. Response unchanged.; Ported master's perf measurement (`src/utils/perf-metrics.js`,; `src/middleware/perf-timing.middleware.js`): per-request timing with Mongo op; count/time, `[perf] slow mongo command` (≥ `PERF_SLOW_MONGO_MS`, default 100),; `[perf] slow outgoing http` (≥ `PERF_SLOW_HTTP_MS`, default 500), and a periodic; per-route p50/p95/p99 summary. Same `PERF_*` env vars as master. Because every; browser request passes through RBAC, `[perf] request` lines default to requests; ≥ 500 ms (`PERF_LOG_MIN_MS`). Requests forwarded by the proxy routers group by; their id-normalised path, tagged `[proxied]`. Log lines carry field names only,; never values, bodies or tokens.",
+        "master logged `[perf] slow outgoing http` for; `GET localhost:3001/rbac/users/workspace` at 2,890 ms on; `GET /master/workspaces/workspacesList` in UAT, and RBAC had no measurement to show; which step was slow."
+      ],
+      [
+        "LLM gateway URL resolved from vault",
+        "`runtime-bootstrap.js` now maps `LLM_GATEWAY_URL` from the vault secret `llm-gateway-url`.; Optional; falls back to the `.env` value / built-in default as before. The API key still comes from; each saved LLM integration.",
+        "Aligns with master backend's vault key naming."
+      ],
+      [
+        "AI builder credentials resolved from vault",
+        "`runtime-bootstrap.js` now maps `AI_BUILDER_BASE_URL`, `AI_BUILDER_USERNAME` and; `AI_BUILDER_PASSWORD` from the vault secrets `ai-builder-base-url`, `ai-builder-username` and; `ai-builder-password`. Optional; `.env` values still apply when the secret is absent.",
+        "Aligns with master backend so AI workflow generation reads credentials from the vault; instead of plaintext env files (addresses the follow-up above)."
+      ]
+    ]
   },
   "approvedAt": null
 }
