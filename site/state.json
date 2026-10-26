@@ -72,6 +72,11 @@
         "Aligns with master backend's vault key naming."
       ],
       [
+        "Perf measurement in client-ws",
+        "Ported master's perf measurement (`src/utils/perf-metrics.js`,; `src/middleware/perf-timing.middleware.js`): per-request timing grouped by Express; route with Mongo op count/time, `[perf] slow mongo command`; (≥ `PERF_SLOW_MONGO_MS`, default 100), `[perf] slow outgoing http`; (≥ `PERF_SLOW_HTTP_MS`, default 500) and a periodic per-route p50/p95/p99 summary.; Same `PERF_*` env vars as master. Most traffic here is master's service-to-service; role checks, so `[perf] request` lines default to requests ≥ 500 ms; (`PERF_LOG_MIN_MS`). Log lines carry route templates, collection and field names; only, never values, bodies or tokens.",
+        "master could see that client-ws role checks were slow; (`POST /role/view/features`, 1,199 ms in UAT) but client-ws had no measurement to; show which step was slow."
+      ],
+      [
         "AI builder credentials resolved from vault",
         "`runtime-bootstrap.js` now maps `AI_BUILDER_BASE_URL`, `AI_BUILDER_USERNAME` and; `AI_BUILDER_PASSWORD` from the vault secrets `ai-builder-base-url`, `ai-builder-username` and; `ai-builder-password`. Optional; `.env` values still apply when the secret is absent.",
         "Aligns with master backend so AI workflow generation reads credentials from the vault; instead of plaintext env files (addresses the follow-up above)."
