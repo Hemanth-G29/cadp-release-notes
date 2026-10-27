@@ -125,3 +125,12 @@
   - site/release-notes-v26/ (removed)
   - site/index.html
   - site/latest.pdf
+
+## 2026-10-27 — Claude Code skill for the QA release notes
+- **Author:** hemanth.a
+- **What:** Added `.claude/skills/qa-release-notes/` — `SKILL.md` (procedures: build and curate build N, bump after the mail, undo a wrong bump, move bugs to Ready for Testing, publish old builds; and the known traps) and `architecture.md` (data flow, OpenProject/Graph/GitLab calls, state, configuration, file map), updated for the release history page, the `qa` branch and `add-build.js`.
+- **Why:** So anyone using Claude Code in this repo follows the same steps and avoids the problems already hit (bump sweeping late bugs, draft PDF after freeze, missing GitLab token).
+- **QA-Release-Note:** none
+- **Files:**
+  - .claude/skills/qa-release-notes/SKILL.md (new)
+  - .claude/skills/qa-release-notes/architecture.md (new)
