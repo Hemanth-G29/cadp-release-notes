@@ -3,7 +3,12 @@
   "latestAnnouncedVersion": 26,
   "lastProcessedMailId": null,
   "lastCutAt": "2026-10-25T08:44:45.201Z",
-  "bugs": [],
+  "bugs": [
+    {
+      "id": 1677,
+      "subject": "Design Page → After saving a component on the Design Page, the Close button on the JSON page overlaps with the AI icon."
+    }
+  ],
   "overview": {},
   "narrative": {
     "features": [
