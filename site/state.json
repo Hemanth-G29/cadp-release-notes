@@ -207,6 +207,16 @@
         "Workspace list: page size capped at 100, version lookup scoped to the page",
         "",
         "`GET /workspaces/workspacesList` now caps `limit` at 100 (minimum 1, default; 10) and treats an invalid or < 1 `page` as 1. The response's `pagination.limit`; reports the capped value. The active-version lookup now reads only the page's; workspaces and only `{ workspaceId, version }`, instead of the full active-version; record of every workspace in the tenant. `getAllActiveVersions(workspaceIds)` keeps; its old behaviour when called without ids; `findLatestActiveByFilter` takes an; optional projection. Also fixed: with `limit=1` and a pinned workspace, page 1; ran `.limit(0)`, which Mongo treats as \"no limit\", so it returned every workspace.; That query is now skipped."
+      ],
+      [
+        "All external-database calls go to the Database Sync service",
+        "",
+        "Follow-up to the test-query entry below: the other external-database calls in; `integrations.ts` now use `/dbsync/external-db/...` as well: explore, aggregate, select,; distinct-values, select/validate and query. Same payloads and responses."
+      ],
+      [
+        "test-query moved to the Database Sync service",
+        "",
+        "`integrationsApi.testExternalDbQuery` now calls; `POST /dbsync/external-db/test-query` instead of `/master/external-db/test-query`. Same; payload and response; the endpoint is now served by `cadp_dbsync_backend_nodejs` through; the RBAC gateway's `/dbsync` proxy. Callers are unchanged: the Database Sync query; builder, table data sources (`unifiedTable/useTableDataSource.ts`) and the external-DB; widget (`externalDbWidget.ts`, comment updated)."
       ]
     ],
     "configChanges": [
@@ -219,6 +229,11 @@
         "Register the formula-ownership routes in the role route map",
         "Registered the four new master routes under `/rbac/master/formula/ownership`; so the gateway stops refusing them.; `authorise.middleware.js` authorises by EXACT path, not by prefix: it looks the; request path up in the map `roleRouteBuilder` builds from `menu_access_details`; and caches in Redis under `ROLE_ROUTE_MAP`. A path absent from that map is a 403; for every role, Super Admin included — which is what these routes returned while; the master service answered them correctly on a direct call.; They are added to the TOP-LEVEL `routes` of the **Dashboard** and **Metadata**; menus, where the existing formula routes (`/evaluate`, `/validate`,; `/evaluate-table`, `/evaluate-form-batch`) already live, so they inherit exactly; the same permissions as the formula routes they accompany. GET maps to `view` and; POST to `create` (`mapMethodToAction`), so the read route goes under View and the; three write routes under Create.; Both halves are updated: `menuData.json` (the seed, for environments built from; scratch) and an idempotent migration for environments that already exist. The; migration drops `ROLE_ROUTE_MAP` after writing — without that the updated menu; document stays invisible until the cache misses or the service restarts.; Applied to `uat_cadp_rbac`: 2 menus matched, 8 paths added, 2 documents written,; cache dropped. Verified afterwards through the gateway — list, check, claim,; conflict, batch, release and whole-workflow release all return correctly, and five; parallel claims of one field produced exactly one row.",
         "The ownership routes shipped in the master service were unreachable; through the gateway."
+      ],
+      [
+        "/dbsync proxy for the new Database Sync service",
+        "New `/dbsync` proxy to `cadp_dbsync_backend_nodejs` (`DBSYNC_SERVICE_URL`),; set up like the `/master` proxy: `/dbsync` is stripped, Authorization and JSON bodies; are forwarded, 600 s timeouts, a 503 JSON error when the service is down. When; `DBSYNC_INTERNAL_SECRET` is set it is added as `x-internal-auth` (the dbsync service is; cluster-internal and checks it). The query builder's test-query moved there:; `POST /rbac/master/external-db/test-query` → `POST /rbac/dbsync/external-db/test-query`.; Route map: `menuData.json` (seed for new environments) has the new path in place of; the old one, and drops `/rbac/master/database-sync/run/:featureId` (only the scheduler; ever called it, not through this gateway, and it no longer exists on master).; Existing environments: `src/scripts/migrations/register-dbsync-routes.js` adds the new; path wherever the old one is registered (same roles keep access), then drops the; ROLE_ROUTE_MAP cache. Dry run by default; `--apply` writes; `--remove-old` also removes; the retired master paths.",
+        "Database Sync moved out of the master service (see; cadp_master_backend_nodejs docs/changes/database-sync.md, same date)."
       ],
       [
         "Faster workspace-access lookup and perf measurement in RBAC",
