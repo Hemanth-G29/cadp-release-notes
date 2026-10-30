@@ -1,155 +1,14 @@
 {
-  "liveVersion": 27,
-  "latestAnnouncedVersion": 26,
+  "liveVersion": 28,
+  "latestAnnouncedVersion": 27,
   "lastProcessedMailId": null,
-  "lastCutAt": "2026-10-25T08:44:45.201Z",
-  "bugs": [
-    {
-      "id": 623,
-      "subject": "Components --> Quantity→ Number Stepper properties (value, min, max, and step) are not reflected in the form field when custom values are set."
-    },
-    {
-      "id": 870,
-      "subject": "Component → Stepper View → When trying to add a stepper, the stepper properties overlap with each other and become misaligned."
-    },
-    {
-      "id": 1173,
-      "subject": "Components → Color Picker → Color Picker Properties→ Configured palette colors are not reflected on the Create page."
-    },
-    {
-      "id": 1209,
-      "subject": "Component → Container → After configuring fields inside the Container component, the fields overlap with each other."
-    },
-    {
-      "id": 1294,
-      "subject": "Component → Accordion → When the Accordion component is dragged onto the Design page and configured with two columns, the hover effect overlaps with the adjacent column."
-    },
-    {
-      "id": 1299,
-      "subject": "Component → Accordion → The phone number dropdown icon overlaps with the country code field."
-    },
-    {
-      "id": 1300,
-      "subject": "Component → Accordion → The phone number field is misaligned."
-    },
-    {
-      "id": 1337,
-      "subject": "Components → Stepper View → Stepper Properties→ Selected Stepper icon is not displayed on the Create page."
-    },
-    {
-      "id": 1343,
-      "subject": "Components → Stepper View → Stepper Properties→ Stepper View saves only Step 1 data, Step 2 data is missing in Table View."
-    },
-    {
-      "id": 1350,
-      "subject": "Components → Stepper View → Stepper Properties→ Newly added Step 3 overlaps with existing steps in Stepper View."
-    },
-    {
-      "id": 1497,
-      "subject": "Components → Text Block → Text Block Properties → Text Block content is not visible until the feature is reopened."
-    },
-    {
-      "id": 1498,
-      "subject": "Components → Text Block → Text Block Properties → Content Format→ Content Format changes are not applied in the Text Block component."
-    },
-    {
-      "id": 1500,
-      "subject": "Components → Text Block→ Submitted Text Block data is not displayed in the Table List."
-    },
-    {
-      "id": 1524,
-      "subject": "Component → Form Page → The dropdown icons in the configured required fields are overlapping."
-    },
-    {
-      "id": 1528,
-      "subject": "Component → Tags Input → The Copy and Clear All options are missing from the right corner of the Tags Input field."
-    },
-    {
-      "id": 1532,
-      "subject": "Component → Tags Input → The minimum tag limit is configured, but the system allows fewer tags than the configured minimum."
-    },
-    {
-      "id": 1551,
-      "subject": "Components → Section → Section Properties → Icon Set→ Discount icon overlaps with other icons in the Material icon set."
-    },
-    {
-      "id": 1564,
-      "subject": "Components → Calculator→ Duplicate and Delete buttons are missing in the Calculator component."
-    },
-    {
-      "id": 1566,
-      "subject": "Components → Calculator → Calculator Properties→ Calculator mode changes are not applied immediately on the Design page."
-    },
-    {
-      "id": 1569,
-      "subject": "Components → Calculator→ Submitted Calculator data is not displayed in the Table View."
-    },
-    {
-      "id": 1593,
-      "subject": "Component → Drawer → Placeholders display incorrect characters (â†)."
-    },
-    {
-      "id": 1595,
-      "subject": "Component → Drawer → Component properties are not working as expected"
-    },
-    {
-      "id": 1600,
-      "subject": "Components → Modal → Modal Properties → Icon Set→ Discount icon overlaps with other icons in the Material icon set."
-    },
-    {
-      "id": 1674,
-      "subject": "Components → Text Block→ Text Block border overlaps with other elements on the Create page."
-    },
-    {
-      "id": 1677,
-      "subject": "Design Page → After saving a component on the Design Page, the Close button on the JSON page overlaps with the AI icon."
-    },
-    {
-      "id": 1698,
-      "subject": "Components → Link→ Link color and functionality are not reflected on the Create page."
-    },
-    {
-      "id": 1740,
-      "subject": "AI Ask FAQ icon does not display tooltip on mouse hover."
-    },
-    {
-      "id": 1776,
-      "subject": "Components → Image Viewer → Image Properties→ Uploaded image is not displayed on the Create page."
-    }
-  ],
+  "lastCutAt": "2026-10-30T10:34:24.416Z",
+  "bugs": [],
   "overview": {},
   "narrative": {
-    "features": [
-      {
-        "id": "",
-        "name": "Fetch Records node: palette, config panel, test run, Run for, @ picker (Phases 5–6)",
-        "description": "Workflow Builder support for the backend `fetch-record-node`; (`services/cadp_workflow_backend_nodejs/docs/changes/fetch-record-node.md`).; **Node registration:** `fetch-record-node` in the `WorkflowNodeType` union, a; `NODE_DEFINITIONS` entry (category action, \"Fetch Records\"; `defaultConfig` copied key for; key from the backend catalog), and the Database icon in the 3 icon maps.; **Branch handles:** `found`, `empty`, plus `error` when Continue On Error is on; (`branchUtils.getNodeBranchDefinitions`). These are the labels the engine routes on.; **Config panel** (`FetchRecordConfigPanel`, routed by type in `NodeConfigPanel`, the same; pattern as Approval Gate). Sections:; 1. Source: module, feature, optional Data Table.; 2. Filter: nested ALL/ANY groups with `@`/`{{}}` token values; skip-blank and; include-deleted toggles.; 3. Result: single / list / count / exists / aggregate; fields to return; group by,; aggregates and having; sort; limit.; 4. Output: output variable (validated `^\\w+$`), output rows field, when nothing is found,; continue on error, timeout.; **Downstream tokens:**; `useUpstreamSources` derives a Fetch node's outputs from its returned fields and; aggregate aliases: `{{<nodeId>.record.X}}` / `{{<nodeId>.rows[0].X}}`, count, found.; It no longer lists the fetched feature as an upstream *trigger* feature (its values do; not come from the trigger record).; `useFieldTagging` offers upstream Fetch outputs even when the caller passes none, and; `{{row.X}}` entries (\"Fetch row\" group, listed first) when the step's Records Field equals; a Fetch node's Output Rows Field.; **Run for** (`RunForSelector`, shown above Create / Update / Upsert / Delete):; Options are \"This trigger record\" or \"Each row from: <Fetch node>\", and it writes; `recordsField`.; Switching back to the trigger record asks for confirmation when `{{row.…}}` tokens are; used.",
-        "impact": ""
-      }
-    ],
-    "enhancements": [
-      {
-        "id": "",
-        "module": "user-preferences",
-        "description": "Added `aiWidgetMode` to the `interface` subdocument:; ```js; aiWidgetMode: {; type: String,; enum: [\"collapse\", \"resize\", \"none\"],; default: \"collapse\",; },; ```; It stores how the global \"Cavin's AI\" assistant widget occupies the screen for one user:; `collapse` = thin edge tab, `resize` = draggable-width panel with a movable launcher,; `none` = the original floating corner button. Set from **User Preferences → Interface → \"AI; assistant on screen\"**; the frontend side is documented in; `cadp_frontend_reactjs/docs/changes/global-ai-assistant-widget.md`.; No controller, service or route change was needed: `updateUserPreferences` already flattens the; payload into `$set` (`flattenForSet`), and GET returns the whole document.",
-        "benefit": "The widget's layout was hardcoded in the frontend and had to be changed by editing a config; constant and redeploying. Making it a preference lets each user choose a layout that suits their; screen, and lets the default change without a build.; *`interfaceSchema` is the validation boundary and must be changed deliberately.** Mongoose; strict mode *silently drops* keys that are not on the schema, so without this field the frontend; save would succeed and the value would come back empty on the next load — a bug that looks like; a frontend caching problem. The route carries no Joi/DTO whitelist, so this `enum` is the only; thing rejecting a bad value. **Any new mode must be added here *and* in; `cadp_frontend_reactjs/src/config/aiAssistantWidget.ts`.**"
-      },
-      {
-        "id": "",
-        "module": "global-ai-assistant-widget",
-        "description": "The floating corner launcher (`dockMode === \"none\"`) now carries; `title=\"AI assistant\"`. Hovering it shows the same tooltip as the collapsed side tab, instead of; nothing.",
-        "benefit": "Every other navigation icon in the app explains itself on hover; this one did not. It was; the only launcher variant without a `title`, because the collapsed-tab branch sets one from; `dockMode` while the floating branch — a separate `<button>` — never did. Users had only the; icon to go on.; `aria-label` is kept, so the accessible name is unchanged and screen-reader behaviour is identical;; `title` adds the sighted-user tooltip on top."
-      },
-      {
-        "id": "",
-        "module": "global-ai-assistant-widget",
-        "description": "The widget no longer has one fixed layout. Users choose how it occupies the screen in; *User Preferences → Interface → \"AI assistant on screen\"**, and the choice is saved per user,; per workspace, on the server. Three options:; **Side tab** *(default)* — a thin 22×40 px tab flush against the right edge of the window, with; a chevron pointing inward. The page underneath is fully usable. Clicking the tab slides in the; 380 px panel; the chevron in the panel header pushes it back to the edge. The conversation is; kept — collapsing returns the panel to the edge, it does not delete the thread.; (Same as the old `X`: collapsing still clears the unsent draft in the composer and any; attachments, and aborts only the brief create-mode enqueue window. Background jobs and; in-flight Ask requests keep running.)*; **Resizable panel** — the collapsed tab can be dragged up and down the edge, its position is; remembered, and double-clicking it moves the widget to the opposite edge (left ↔ right). While; open, the panel's inner edge is a drag handle; width is clamped to 320–720 px and remembered.; **Floating button** — the previous behaviour, unchanged: a round 40 px button in the; bottom-right corner that opens the panel. Kept as an escape hatch for anyone who prefers it.; Both the collapsed and expanded states respect the chosen mode; nothing else about the assistant; changed. Create/Ask tabs, permissions (`useAiPermissions`), history, attachments, voice capture; and every API call are untouched — this is presentation only.",
-        "benefit": "The old floating button sat in the bottom-right corner, on top of page controls: table actions,; form buttons and dialog footers in that corner could not be clicked while the assistant was; available. Users had no way to move it, resize it, or get it out of the way other than keeping; the panel open — which covered even more of the page. A fixed layout could not satisfy both a; small laptop and a wide monitor, so the choice was handed to the user."
-      }
-    ],
-    "whatToTest": [
-      "Roles assigned by their record ID now load correctly — `getRolesByNamesAndTenantId` matched a user's role refs against `roleId` and; a misspelt `__id` field that no role has, so a role referenced by its Mongo `_id`; never matched. It now matches `roleId` or `_id` (for refs that are 24-hex ObjectIds),; the same way the workspace-access checks in `user.workspace.service.js` already do.; Empty/missing refs skip the query and return `[]`, the same result as before."
-    ],
+    "features": [],
+    "enhancements": [],
+    "whatToTest": [],
     "knownIssues": [
       [
         "",
@@ -185,75 +44,14 @@
         "",
         "Mobile – Formula Field Not Working in Tables & Charts",
         "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
-      ],
-      [
-        "",
-        "Found: notification banner covers the Floating button — Recorded, not fixed. The \"Enable push notifications\" banner renders at; `bottom-4 right-4` with `z-9998`; the Floating button renders at `bottom-6 right-6` with `z-70`.; The banner paints over the button and intercepts clicks until dismissed.",
-        ""
       ]
     ],
-    "apiChanges": [
-      [
-        "All external-database endpoints moved to cadp_dbsync_backend_nodejs",
-        "",
-        "Follow-up to the Database Sync move below: the rest of the external-database; code moved to `cadp_dbsync_backend_nodejs` as well, so master no longer contains any.; Endpoints: `/external-db/explore`, `/query`, `/aggregate`, `/export`, `/bulkdataFetch`,; `/distinct-values`, `/select`, `/select/validate` (plus `/test-query`, `/test-connection`; moved earlier).; Code: `external-db-explorer.controller.js`, `external-db-select.controller.js`, their; routes, `external-db-{aggregate,distinct,explorer,export,page,select}.service.js`, and; the whole `src/service/external-db/` folder including the SQL core (`core/`).; Tests: external-db-page, external-db-select, external-db-statement-timeout and the nine; sql-core-* suites moved with the code.; Master keeps the shared helpers that other code uses: `constants/dacFilterOperators.js`; (extraction DTO), `utils/filterGroupUtils.js`, `communicators/client.ws.service.js`.; `data-archival/rules/readOnly.rules.js` still lists `/external-db/*` as read-only routes;; those entries no longer match anything in master and are harmless.; The external-DB change logs (external-db-explorer.md, external-db-sql-core.md,; external-db-dac.md) were copied to the dbsync repo; the copies here are marked moved."
-      ],
-      [
-        "Database Sync moved out of master into cadp_dbsync_backend_nodejs",
-        "",
-        "Database Sync now runs in its own service, `cadp_dbsync_backend_nodejs`.; Master no longer runs syncs or serves the query builder's test endpoints.; **Moved out of master** (now in the dbsync repo): the scheduled run; (`GET /database-sync/run/:featureId`), scheduler registration (create/recreate/remove; the notification-service task), `bulkSyncFeatureData`, `reconcileFullSyncDeletes`,; `resolveImportFieldMetadataForFeature`, `ensureSyncMatchIndex`,; `external-db-query.controller/service/routes` (`POST /external-db/test-query`,; `POST /external-db/test-connection`), `external-db/json-path-explode.js`,; `external-db/row-group-in-memory.js`, and the notification-service connector.; The import/auto-ID helpers those methods call stay in master (regular imports use; them); dbsync carries its own copy of the 48 methods the sync needs.; **Master still** validates and saves the feature's `databaseSync` config. After a; save that touched config, and after a feature delete, it now calls; `POST {DBSYNC_SERVICE_URL}/database-sync/schedule/:featureId` (new; `communicators/dbsync.service.js`); the dbsync service owns the scheduler task and; stores `schedulerTaskId`/`schedulerTriggerId` on the feature. Still fire-and-forget.; The frontend calls `/dbsync/external-db/test-query` through the RBAC gateway's new; `/dbsync` proxy.; The dbsync service adds a per-feature run lock (one run per feature across all its; pods) and a 30-minute scheduler timeout for sync actions. Overlapping runs were; visible in UAT logs: a run longer than the scheduler's 5-minute HTTP timeout was; retried while still running."
-      ],
-      [
-        "Workspace list: page size capped at 100, version lookup scoped to the page",
-        "",
-        "`GET /workspaces/workspacesList` now caps `limit` at 100 (minimum 1, default; 10) and treats an invalid or < 1 `page` as 1. The response's `pagination.limit`; reports the capped value. The active-version lookup now reads only the page's; workspaces and only `{ workspaceId, version }`, instead of the full active-version; record of every workspace in the tenant. `getAllActiveVersions(workspaceIds)` keeps; its old behaviour when called without ids; `findLatestActiveByFilter` takes an; optional projection. Also fixed: with `limit=1` and a pinned workspace, page 1; ran `.limit(0)`, which Mongo treats as \"no limit\", so it returned every workspace.; That query is now skipped."
-      ],
-      [
-        "All external-database calls go to the Database Sync service",
-        "",
-        "Follow-up to the test-query entry below: the other external-database calls in; `integrations.ts` now use `/dbsync/external-db/...` as well: explore, aggregate, select,; distinct-values, select/validate and query. Same payloads and responses."
-      ],
-      [
-        "test-query moved to the Database Sync service",
-        "",
-        "`integrationsApi.testExternalDbQuery` now calls; `POST /dbsync/external-db/test-query` instead of `/master/external-db/test-query`. Same; payload and response; the endpoint is now served by `cadp_dbsync_backend_nodejs` through; the RBAC gateway's `/dbsync` proxy. Callers are unchanged: the Database Sync query; builder, table data sources (`unifiedTable/useTableDataSource.ts`) and the external-DB; widget (`externalDbWidget.ts`, comment updated)."
-      ]
-    ],
+    "apiChanges": [],
     "configChanges": [
       [
-        "Vault secret names for AI builder / LLM gateway switched to kebab-case",
-        "`runtime-bootstrap.js` now resolves `AI_BUILDER_BASE_URL`, `AI_BUILDER_USERNAME`,; `AI_BUILDER_PASSWORD`, `AI_BUILDER_HIERARCHY`, `LLM_GATEWAY_URL` and `LLM_GATEWAY_API_KEY` from the; vault secrets `ai-builder-base-url`, `ai-builder-username`, `ai-builder-password`,; `ai-builder-hierarchy`, `llm-gateway-url` and `llm-gateway-api-key` (previously the UPPER_SNAKE names).; Env var names consumed by the code are unchanged.",
-        "The vault keys were renamed to kebab-case to match the other secrets."
-      ],
-      [
-        "Register the formula-ownership routes in the role route map",
-        "Registered the four new master routes under `/rbac/master/formula/ownership`; so the gateway stops refusing them.; `authorise.middleware.js` authorises by EXACT path, not by prefix: it looks the; request path up in the map `roleRouteBuilder` builds from `menu_access_details`; and caches in Redis under `ROLE_ROUTE_MAP`. A path absent from that map is a 403; for every role, Super Admin included — which is what these routes returned while; the master service answered them correctly on a direct call.; They are added to the TOP-LEVEL `routes` of the **Dashboard** and **Metadata**; menus, where the existing formula routes (`/evaluate`, `/validate`,; `/evaluate-table`, `/evaluate-form-batch`) already live, so they inherit exactly; the same permissions as the formula routes they accompany. GET maps to `view` and; POST to `create` (`mapMethodToAction`), so the read route goes under View and the; three write routes under Create.; Both halves are updated: `menuData.json` (the seed, for environments built from; scratch) and an idempotent migration for environments that already exist. The; migration drops `ROLE_ROUTE_MAP` after writing — without that the updated menu; document stays invisible until the cache misses or the service restarts.; Applied to `uat_cadp_rbac`: 2 menus matched, 8 paths added, 2 documents written,; cache dropped. Verified afterwards through the gateway — list, check, claim,; conflict, batch, release and whole-workflow release all return correctly, and five; parallel claims of one field produced exactly one row.",
-        "The ownership routes shipped in the master service were unreachable; through the gateway."
-      ],
-      [
-        "/dbsync proxy for the new Database Sync service",
-        "New `/dbsync` proxy to `cadp_dbsync_backend_nodejs` (`DBSYNC_SERVICE_URL`),; set up like the `/master` proxy: `/dbsync` is stripped, Authorization and JSON bodies; are forwarded, 600 s timeouts, a 503 JSON error when the service is down. When; `DBSYNC_INTERNAL_SECRET` is set it is added as `x-internal-auth` (the dbsync service is; cluster-internal and checks it). The query builder's test-query moved there:; `POST /rbac/master/external-db/test-query` → `POST /rbac/dbsync/external-db/test-query`.; Route map: `menuData.json` (seed for new environments) has the new path in place of; the old one, and drops `/rbac/master/database-sync/run/:featureId` (only the scheduler; ever called it, not through this gateway, and it no longer exists on master).; Existing environments: `src/scripts/migrations/register-dbsync-routes.js` adds the new; path wherever the old one is registered (same roles keep access), then drops the; ROLE_ROUTE_MAP cache. Dry run by default; `--apply` writes; `--remove-old` also removes; the retired master paths.",
-        "Database Sync moved out of the master service (see; cadp_master_backend_nodejs docs/changes/database-sync.md, same date)."
-      ],
-      [
-        "Faster workspace-access lookup and perf measurement in RBAC",
-        "New roles index `{ tenantId: 1, workspaceId: 1, roleId: 1 }`. The only existing index; starts with `roleName`, but the role lookups made on every authenticated request; (`getRolesByNamesAndTenantId`) and by `GET /users/workspace`; (`getWorkspaceIdsWithDirectRoles`, `getWorkspaceIdsWithGroupRoles`) filter on; tenantId/workspaceId/roleId and never on roleName, so they could not use it.; Mongoose `autoIndex` builds it on each tenant DB the first time the Role model is; bound there after deploy (non-unique, no data changes).; `getWorkspaceIdsByTenant` (`GET /users/workspace`) now selects only the user fields; it reads instead of the whole user document. Response unchanged.; Ported master's perf measurement (`src/utils/perf-metrics.js`,; `src/middleware/perf-timing.middleware.js`): per-request timing with Mongo op; count/time, `[perf] slow mongo command` (≥ `PERF_SLOW_MONGO_MS`, default 100),; `[perf] slow outgoing http` (≥ `PERF_SLOW_HTTP_MS`, default 500), and a periodic; per-route p50/p95/p99 summary. Same `PERF_*` env vars as master. Because every; browser request passes through RBAC, `[perf] request` lines default to requests; ≥ 500 ms (`PERF_LOG_MIN_MS`). Requests forwarded by the proxy routers group by; their id-normalised path, tagged `[proxied]`. Log lines carry field names only,; never values, bodies or tokens.",
-        "master logged `[perf] slow outgoing http` for; `GET localhost:3001/rbac/users/workspace` at 2,890 ms on; `GET /master/workspaces/workspacesList` in UAT, and RBAC had no measurement to show; which step was slow."
-      ],
-      [
-        "LLM gateway URL resolved from vault",
-        "`runtime-bootstrap.js` now maps `LLM_GATEWAY_URL` from the vault secret `llm-gateway-url`.; Optional; falls back to the `.env` value / built-in default as before. The API key still comes from; each saved LLM integration.",
-        "Aligns with master backend's vault key naming."
-      ],
-      [
-        "Perf measurement in client-ws",
-        "Ported master's perf measurement (`src/utils/perf-metrics.js`,; `src/middleware/perf-timing.middleware.js`): per-request timing grouped by Express; route with Mongo op count/time, `[perf] slow mongo command`; (≥ `PERF_SLOW_MONGO_MS`, default 100), `[perf] slow outgoing http`; (≥ `PERF_SLOW_HTTP_MS`, default 500) and a periodic per-route p50/p95/p99 summary.; Same `PERF_*` env vars as master. Most traffic here is master's service-to-service; role checks, so `[perf] request` lines default to requests ≥ 500 ms; (`PERF_LOG_MIN_MS`). Log lines carry route templates, collection and field names; only, never values, bodies or tokens.",
-        "master could see that client-ws role checks were slow; (`POST /role/view/features`, 1,199 ms in UAT) but client-ws had no measurement to; show which step was slow."
-      ],
-      [
-        "AI builder credentials resolved from vault",
-        "`runtime-bootstrap.js` now maps `AI_BUILDER_BASE_URL`, `AI_BUILDER_USERNAME` and; `AI_BUILDER_PASSWORD` from the vault secrets `ai-builder-base-url`, `ai-builder-username` and; `ai-builder-password`. Optional; `.env` values still apply when the secret is absent.",
-        "Aligns with master backend so AI workflow generation reads credentials from the vault; instead of plaintext env files (addresses the follow-up above)."
+        "OCR.Space key is read from the vault on deployed pods",
+        "`OCR_SPACE_API_KEY` is removed from `.env.production`, so deployed pods load it from the vault secret; `ocr-space-api-key` (mounted as `dev-ocr-space-api-key` or `ocr-space-api-key`) through the mapping that already; exists in `src/config/runtime-bootstrap.js`. `.env.development` / `.env.uat` keep the key for local runs (CSI off).",
+        "A value in the env file wins over the vault, so the vault mapping was never used and the live key sat in; git. **Deploy:** the `cadp-dev-kv` SecretProviderClass must expose `ocr-space-api-key` (or `cadp-dev-env` must set; `OCR_SPACE_API_KEY`) before this ships — otherwise OCR returns \"OCR service is not configured (missing; OCR_SPACE_API_KEY)\". The key has been in git history, so rotate it when it moves to the vault."
       ]
     ]
   },
