@@ -3,7 +3,12 @@
   "latestAnnouncedVersion": 27,
   "lastProcessedMailId": null,
   "lastCutAt": "2026-10-30T10:34:24.416Z",
-  "bugs": [],
+  "bugs": [
+    {
+      "id": 1162,
+      "subject": "Bullet List and Numbered List actions remove selected text instead of applying formatting."
+    }
+  ],
   "overview": {},
   "narrative": {
     "features": [],
