@@ -9,6 +9,10 @@
       "subject": "Bullet List and Numbered List actions remove selected text instead of applying formatting."
     },
     {
+      "id": 1441,
+      "subject": " Formula field---> The formula field output is not displayed in the list data when the same feature variable is used. It only works when a different feature variable is mapped. This issue occurs only in the Aggregate field."
+    },
+    {
       "id": 1571,
       "subject": "Components → Calendar → Calendar Properties→ Calendar property settings are not reflected after Save and Publish."
     },
@@ -89,7 +93,68 @@
         "impact": ""
       }
     ],
-    "enhancements": [],
+    "enhancements": [
+      {
+        "id": "",
+        "module": "data-import",
+        "description": "The XLSX sample template now gives a table component's own dropdown columns (manual; options) a selectable in-cell dropdown on the table's sheet, the same way manual dropdowns on the; Records sheet already worked. Option values go on a per-table `<Table> Options` sheet.",
+        "benefit": "`getSampleTemplateStructure` only filled table-sheet `columnOptions` from; `buildReferenceTableColumnOptions` (a reference table's match columns), so every manual-dropdown; column inside a transaction/data table got `null` and no dropdown. New; `buildTableManualColumnOptions` / `_getManualTableColumnOptions` read the column's options from; root/basic/advanced/componentProps (mirroring the frontend's `resolveColumnOptions` /; `resolveColumnOptionSource`), only for a `manual` source — users/roles/org and feature sources are; skipped. Reference match-column options still take precedence for the same column."
+      },
+      {
+        "id": "",
+        "module": "formula-aggregate-filter-1762",
+        "description": "A filtered aggregate — `COUNT_RECORDS({field}, {status} == \"closed\")` and the rest of the `*_OF_RECORDS` family — now applies its filter against the **records** rather than a flat list of the field's values, and an aggregate chosen from **\"Saved records\"** on the current feature now resolves its source instead of reading nothing. `== 0` no longer matches every record, `!= 0` no longer matches none, and `> N` no longer matches nothing.",
+        "benefit": "Two defects combined, and both had to be fixed for a filtered count to be right.; 1. **The array path won.** The external resolver replaces an aggregate's field token with `__aggN`, a flat list of that field's values — fine for an unfiltered total, but a filter's tokens name *fields of a record*, and a list of values has no record to read them from. The filter tokens resolved to nothing and were substituted as `0`, so every comparison was really against zero.; 2. **No feature resolved.** `pickAggregateFeatureId` consulted only `selectModuleSets`, which lists the features a user explicitly added. A same-feature aggregate picked as \"Saved records\" emits no set at all — the token map is what records it, as `source: 'external'` plus the owning feature — so no feature resolved and the aggregate's records were never fetched.; Observed on DEV before the fix, over 4 records all with non-zero values: `== 0` → 4, `!= 0` → 0, `> 0` → 0."
+      },
+      {
+        "id": "",
+        "module": "formula-aggregate-view-scope",
+        "description": "A formula aggregate (`COUNT_RECORDS`, `SUM_OF_RECORDS`, and the other `*_OF_RECORDS` functions) now also honours the role's **View** scope — `Own` or `Group` — not just its Data Access Control filter. Two paths are covered: the cross-feature record scan and the same-feature aggregate push-down pipeline. The aggregate and the user's own record list now report the same set.",
+        "benefit": "Two different mechanisms narrow a feature's rows, and they live in different places. The DAC **rule** already reaches every read, including aggregate pipelines, through the global plugin (`config/db/session-param-plugin.js`). The `view` **scope** is not a rule — it never appears in `permissionIndex.filter` — so it is applied by the route as `_metadata.createdById`. A formula has no route to inherit it from, so a `View: Own` user's aggregate counted every creator's records. Measured on a test feature: a role set to `View: Own` was shown the full workspace total while its own list returned only its own rows."
+      },
+      {
+        "id": "",
+        "module": "formula-time-diff-arg-type",
+        "description": "`TIME_DIFF({field}, \"10:00\", \"hours\")` now fails validation when `{field}` is a **Text** field, with `TYPE_MISMATCH` on argument 1. A time written as a quoted literal — `TIME_DIFF({end}, \"10:00\", \"hours\")` — and a real TIME field both continue to validate as before.",
+        "benefit": "The validator's time check exempted any `string` argument, because a quoted literal such as `\"10:00\"` is how a time argument is normally written. But a Text field also resolves to `string`, so `TIME_DIFF({city}, ...)` passed validation and then produced `NaN` at runtime — the error surfaced as a wrong number in the form rather than as a validation message. The two cases are distinguishable in the AST: a quoted time is a `ConstantNode`, a field reference is not. The exemption is therefore narrowed to literals rather than removed."
+      },
+      {
+        "id": "",
+        "module": "ai-welcome-icon-a11y",
+        "description": "The badge icon on the AI assistant's welcome card now shows a tooltip on hover and announces itself to a screen reader. The text names what the panel is for: **Create with AI**, **Ask about the platform**, or the read-only variant's own title.",
+        "benefit": "The icon was rendered `aria-hidden` inside a bare `div`, so it had neither a hover tooltip nor an accessible name — QA filed it as \"FAQ icon does not display tooltip on mouse hover\" (#1740). Naming it is also the honest thing for a screen reader: the icon states the panel's purpose, and a decorative hidden icon states nothing."
+      },
+      {
+        "id": "",
+        "module": "ai-widget-thread-per-tab",
+        "description": "Switching the AI assistant between the **Create** and **Ask** tabs now returns you to the conversation you were last in on that tab, instead of blanking the transcript back to the welcome card.",
+        "benefit": "The tab switch set the active thread to `null` outright, so the transcript fell back to the empty welcome state until a manual refresh — even though the thread still existed (the server held it for Create, `localStorage` for Ask) and **Show chat history** still listed it (#1726). The thread was never lost; the widget just stopped pointing at it."
+      },
+      {
+        "id": "",
+        "module": "formula-wizard-aggregate-source",
+        "description": "An aggregate built through the guided **Formula Wizard** now reads the stored records of the feature it names — including when that feature is the one the formula lives on — and a value typed into the wizard's condition no longer silently matches nothing.",
+        "benefit": "Two defects, both on the wizard path only (the field picker was already correct).; 1. **Wrong token source (#1441 / #1623-#1638).** The wizard stamped `source: 'local'` on every token belonging to the current feature. For an aggregate that is wrong: \"This form\" holds exactly one value, and aggregating one value is meaningless, so the engine had no record set and returned its empty fallback — a same-feature aggregate read `0.00` however many records existed. The field picker has always carried this distinction (`readsSavedRecords` → `source: 'external'`); the wizard did not, so the guided path could not produce a working same-feature aggregate at all.; 2. **Double-quoted values (#1762).** A value typed into the wizard was wrapped in quotes unconditionally, so typing `\"Biscuits\"` — quotes included — produced `\"\"Biscuits\"\"`, a literal that matches nothing. The condition was valid and simply never matched."
+      },
+      {
+        "id": "",
+        "module": "formula-year-integer-display",
+        "description": "A formula whose entire expression is `YEAR(...)` now displays as a whole year — `2026`, not `2026.00` — in the form field, the table cell and the list/view. The rule is anchored to the whole expression: `YEAR({d}) + 1` and `ROUND(YEAR({d}) / 2)` are ordinary numbers again and keep their configured formatting.",
+        "benefit": "The numeric display default is two decimal places, which is right for money and wrong for a calendar year (#1668). Three formatters disagreed about it — the shared engine formatter, the form field and the transaction table each had their own path — so the same formula could read `2026` in one place and `2026.00` in another."
+      },
+      {
+        "id": "",
+        "module": "formula-year-special-case-revert",
+        "description": "Removes the rule that made a bare `YEAR(...)` formula render without decimals regardless of the field's configuration. A year now follows the field's Number Format like every other numeric formula. The one part of the earlier change that is **kept** is the `decimalPlaces` clamp correction: a configured 0 now means zero decimals instead of silently becoming one.",
+        "benefit": "The earlier change special-cased `YEAR(...)` so it always rendered as `2026`. That overrode an explicit design choice — the platform already lets a designer turn decimals off (Advanced → Number Format → uncheck Decimals), and the two-decimal default is applied to every numeric formula on purpose, which is why `3 + 2` reads `5.00`. Special-casing one function made a year behave differently from every other number without anyone asking for it, and it made the display depend on the expression's shape rather than on the field's settings. **#1668 is a configuration answer, not a defect.**"
+      },
+      {
+        "id": "",
+        "module": "image-upload-reject-message",
+        "description": "When the image picker refuses a file before uploading it — too large, or the wrong format — it now shows a short message naming the file and the reason, e.g. `photo.png — File is larger than 10MB`. Previously the picker simply did nothing.",
+        "benefit": "The size/format check happens before the file becomes an upload, so a rejected file never enters the preview list and had no thumbnail to hang an error badge on; the only trace was a `console.error` the user never sees (#1708). QA filed it as \"6.68 MB PNG: not uploaded, no error/validation message\" — the check was working, but silently."
+      }
+    ],
     "whatToTest": [],
     "knownIssues": [
       [
