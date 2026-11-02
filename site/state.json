@@ -9,8 +9,16 @@
       "subject": "Bullet List and Numbered List actions remove selected text instead of applying formatting."
     },
     {
+      "id": 1255,
+      "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature→ Rows Per Page count is incorrect on the Create page."
+    },
+    {
       "id": 1441,
       "subject": " Formula field---> The formula field output is not displayed in the list data when the same feature variable is used. It only works when a different feature variable is mapped. This issue occurs only in the Aggregate field."
+    },
+    {
+      "id": 1570,
+      "subject": "Components → Calendar → Calendar Properties → Default View→ Selected Default View is not reflected in the Calendar component."
     },
     {
       "id": 1571,
@@ -25,8 +33,64 @@
       "subject": "Components → Tooltip → Field Properties → Text→ Tooltip text field allows unlimited character input."
     },
     {
+      "id": 1857,
+      "subject": "Components → DateTime Picker → Advanced → DateTime Picker → Min Date Time→ DateTime Picker allows time selection before the configured minimum time."
+    },
+    {
       "id": 1865,
       "subject": "Components→ Radio Button component name changes to Radio group."
+    },
+    {
+      "id": 1873,
+      "subject": "Components → File Upload → File Upload Settings → Max File Size→ No validation message is displayed when file size exceeds the limit."
+    },
+    {
+      "id": 1878,
+      "subject": "Components → Image Upload → Image Upload Settings → Max File Size→ Image Upload does not display an error for oversized files."
+    },
+    {
+      "id": 1929,
+      "subject": "Form Builder page-->Feature image is not saved/displayed on the Feature page after configuration, although it is displayed correctly in the Preview page."
+    },
+    {
+      "id": 2047,
+      "subject": "View page repeats Order Items 2 rows in every table"
+    },
+    {
+      "id": 2048,
+      "subject": "Sub-row fields from Item Master show \"-\""
+    },
+    {
+      "id": 2049,
+      "subject": "Sub-row lines are not saved with the transaction"
+    },
+    {
+      "id": 2051,
+      "subject": "Navigate does not pass the mapped header Item Code"
+    },
+    {
+      "id": 2052,
+      "subject": "Old Navigate row transfer replays on new Create pages and blocks page-load rows"
+    },
+    {
+      "id": 2054,
+      "subject": "Deleted parent row is still saved (sub-row table)"
+    },
+    {
+      "id": 2055,
+      "subject": "Mobile layout pushes Submit off-screen"
+    },
+    {
+      "id": 2056,
+      "subject": "\"Date Range Filter\" setting shows no control"
+    },
+    {
+      "id": 2057,
+      "subject": "Unsaved builder changes are discarded without warning"
+    },
+    {
+      "id": 2058,
+      "subject": "Category and Previous Order dropdowns cannot be cleared"
     }
   ],
   "overview": {},
