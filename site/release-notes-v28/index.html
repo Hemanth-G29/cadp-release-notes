@@ -94,7 +94,7 @@
   <tr><td>Field</td><td>Details</td></tr>
   <tr><td>Product Name</td><td>CADP Workspace</td></tr>
   <tr><td>Release Version</td><td>Release 1.0.0 (28)</td></tr>
-  <tr><td>Release Date</td><td>November 3, 2026</td></tr>
+  <tr><td>Release Date</td><td>November 4, 2026</td></tr>
   <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
   <tr><td>Prepared By</td><td>Development Team</td></tr>
   <tr><td>Approved By</td><td>Ganagavathy</td></tr>
@@ -186,6 +186,7 @@
   <tbody>
     <tr><td>OCR.Space key is read from the vault on deployed pods</td><td>`OCR_SPACE_API_KEY` is removed from `.env.production`, so deployed pods load it from the vault secret; `ocr-space-api-key` (mounted as `dev-ocr-space-api-key` or `ocr-space-api-key`) through the mapping that already; exists in `src/config/runtime-bootstrap.js`. `.env.development` / `.env.uat` keep the key for local runs (CSI off).</td><td>A value in the env file wins over the vault, so the vault mapping was never used and the live key sat in; git. **Deploy:** the `cadp-dev-kv` SecretProviderClass must expose `ocr-space-api-key` (or `cadp-dev-env` must set; `OCR_SPACE_API_KEY`) before this ships — otherwise OCR returns &quot;OCR service is not configured (missing; OCR_SPACE_API_KEY)&quot;. The key has been in git history, so rotate it when it moves to the vault.</td></tr>
     <tr><td>Workflow OCR node reads the server OCR.Space key from the vault</td><td>The OCR node&#39;s server-side OCR.Space key (`OCR_SPACE_API_KEY`) is now loaded from the vault at startup,; the same way client-ws loads it, so OCR nodes without their own API key use OCR.Space instead of falling back; to the lower-quality local Tesseract OCR. The service reads the mounted secret `dev-ocr-space-api-key`, then; `ocr-space-api-key`; a value already in the environment still wins. The key is optional — startup does not fail; without it.</td><td>The node falls back to `process.env.OCR_SPACE_API_KEY`, but this service had no vault mapping and no env; entry for it, so the server key was never set and every key-less OCR node silently used Tesseract; (`usedFallback: true`). Deploy: the `cadp-dev-kv` SecretProviderClass must expose `ocr-space-api-key` (the same; secret client-ws already maps) to the workflow pod.</td></tr>
+    <tr><td>Dev server forwards /client/ws for the report &quot;exact PDF&quot; export</td><td>`server.proxy` gains `/client/ws` → `http://localhost:3003`.</td><td>The report-export page (report-export.html → StandaloneReportExportPage) fetches; `/client/ws/report/:featureId/runtime-data` from its own origin, which is the gateway host when; deployed. client_ws now sends local exports to this server&#39;s page, as production sends them to; the deployed frontend&#39;s (cadp_client_ws_backend_nodejs → inter-service-http.md, same date). So; the dev server must route that path.</td></tr>
   </tbody>
 </table>
 

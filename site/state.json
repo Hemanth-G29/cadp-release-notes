@@ -268,6 +268,11 @@
         "Workflow OCR node reads the server OCR.Space key from the vault",
         "The OCR node's server-side OCR.Space key (`OCR_SPACE_API_KEY`) is now loaded from the vault at startup,; the same way client-ws loads it, so OCR nodes without their own API key use OCR.Space instead of falling back; to the lower-quality local Tesseract OCR. The service reads the mounted secret `dev-ocr-space-api-key`, then; `ocr-space-api-key`; a value already in the environment still wins. The key is optional — startup does not fail; without it.",
         "The node falls back to `process.env.OCR_SPACE_API_KEY`, but this service had no vault mapping and no env; entry for it, so the server key was never set and every key-less OCR node silently used Tesseract; (`usedFallback: true`). Deploy: the `cadp-dev-kv` SecretProviderClass must expose `ocr-space-api-key` (the same; secret client-ws already maps) to the workflow pod."
+      ],
+      [
+        "Dev server forwards /client/ws for the report \"exact PDF\" export",
+        "`server.proxy` gains `/client/ws` → `http://localhost:3003`.",
+        "The report-export page (report-export.html → StandaloneReportExportPage) fetches; `/client/ws/report/:featureId/runtime-data` from its own origin, which is the gateway host when; deployed. client_ws now sends local exports to this server's page, as production sends them to; the deployed frontend's (cadp_client_ws_backend_nodejs → inter-service-http.md, same date). So; the dev server must route that path."
       ]
     ]
   },
