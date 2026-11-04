@@ -25,6 +25,10 @@
       "subject": "Components → Calendar → Calendar Properties→ Calendar property settings are not reflected after Save and Publish."
     },
     {
+      "id": 1668,
+      "subject": "Formula-->YEAR() function returns the year with decimal places (e.g., 2026.00) instead of an integer."
+    },
+    {
       "id": 1699,
       "subject": "Components → Tooltip→ Tooltip is not working on the Create page."
     },
