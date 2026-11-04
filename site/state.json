@@ -13,20 +13,12 @@
       "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature→ Rows Per Page count is incorrect on the Create page."
     },
     {
-      "id": 1441,
-      "subject": " Formula field---> The formula field output is not displayed in the list data when the same feature variable is used. It only works when a different feature variable is mapped. This issue occurs only in the Aggregate field."
-    },
-    {
       "id": 1570,
       "subject": "Components → Calendar → Calendar Properties → Default View→ Selected Default View is not reflected in the Calendar component."
     },
     {
       "id": 1571,
       "subject": "Components → Calendar → Calendar Properties→ Calendar property settings are not reflected after Save and Publish."
-    },
-    {
-      "id": 1668,
-      "subject": "Formula-->YEAR() function returns the year with decimal places (e.g., 2026.00) instead of an integer."
     },
     {
       "id": 1699,
