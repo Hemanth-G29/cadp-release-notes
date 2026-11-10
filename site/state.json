@@ -3,7 +3,24 @@
   "latestAnnouncedVersion": 28,
   "lastProcessedMailId": null,
   "lastCutAt": "2026-11-05T07:09:55.426Z",
-  "bugs": [],
+  "bugs": [
+    {
+      "id": 1217,
+      "subject": "Dark mode is not applied consistently across all application screens and UI components."
+    },
+    {
+      "id": 1558,
+      "subject": "Selected Default Workspace Is Not Automatically Loaded After User Logs Back Into the Application"
+    },
+    {
+      "id": 1849,
+      "subject": "Vertical Template-->Vertical Template creation displays only one module instead of all modules from the selected existing workspace."
+    },
+    {
+      "id": 2064,
+      "subject": "Reset-password OTP has no attempt limit"
+    }
+  ],
   "overview": {},
   "narrative": {
     "features": [],
