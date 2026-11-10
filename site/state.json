@@ -9,6 +9,10 @@
       "subject": "Dark mode is not applied consistently across all application screens and UI components."
     },
     {
+      "id": 1236,
+      "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature →S.No. column is blank when loading data from a Platform Feature."
+    },
+    {
       "id": 1558,
       "subject": "Selected Default Workspace Is Not Automatically Loaded After User Logs Back Into the Application"
     },
@@ -17,8 +21,20 @@
       "subject": "Vertical Template-->Vertical Template creation displays only one module instead of all modules from the selected existing workspace."
     },
     {
+      "id": 1932,
+      "subject": "Workspace-->The module and feature are already published, but the feature table list page incorrectly shows the status as Unpublished."
+    },
+    {
       "id": 2064,
       "subject": "Reset-password OTP has no attempt limit"
+    },
+    {
+      "id": 2080,
+      "subject": "User Management →The application incorrectly uses the first three digits of the user's mobile number as the PIN Code when creating a user through the Feature Properties configuration."
+    },
+    {
+      "id": 2081,
+      "subject": "In Jason Page Close Button Overlaps with AI Tab."
     }
   ],
   "overview": {},
