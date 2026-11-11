@@ -13,12 +13,60 @@
       "subject": "Components → Table → Data Table Properties → Data Source → Platform Feature →S.No. column is blank when loading data from a Platform Feature."
     },
     {
+      "id": 1240,
+      "subject": "Cloned feature shows inconsistent publish status, preventing record creation."
+    },
+    {
+      "id": 1428,
+      "subject": "Workspace → Portal Management → Roles & Permissions→ Edit and Delete options are not working in the Roles & Permissions menu."
+    },
+    {
+      "id": 1433,
+      "subject": "Workspace → Portal Management → Portal Users → Create User→ Phone Number field accepts invalid input in Create User."
+    },
+    {
+      "id": 1435,
+      "subject": "Workspace → Portal Management → Portal Users→ Edit and Remove options are not working in Portal Users."
+    },
+    {
+      "id": 1507,
+      "subject": "Vertical Template → Creating a Vertical Template fails during data submission with a 500 Internal Server Error displaying \"Feature is not defined.\""
+    },
+    {
+      "id": 1508,
+      "subject": "Feature Data Import : Generated import template incorrectly validates ItemCode as a dropdown with values Active and Inactive."
+    },
+    {
+      "id": 1554,
+      "subject": "Workspace Management → Roles & Permission  →No 'No Data Found' Message Displayed for Invalid Role Search"
+    },
+    {
       "id": 1558,
       "subject": "Selected Default Workspace Is Not Automatically Loaded After User Logs Back Into the Application"
     },
     {
+      "id": 1770,
+      "subject": "User Management->New User->Platform options are not displayed when creating a user in a newly created workspace"
+    },
+    {
+      "id": 1772,
+      "subject": " Workspace Management → User Management →User Management displays users from the previous workspace when accessing a newly created workspace"
+    },
+    {
+      "id": 1775,
+      "subject": "Role Management→ Super Admin permissions are not automatically assigned in Role Management for newly created workspaces"
+    },
+    {
+      "id": 1812,
+      "subject": "Portal Management → When I try to configure the module, the created module does not appear below the dropdown."
+    },
+    {
       "id": 1849,
       "subject": "Vertical Template-->Vertical Template creation displays only one module instead of all modules from the selected existing workspace."
+    },
+    {
+      "id": 1931,
+      "subject": "workspace-->Application name validation incorrectly counts a space as a character. When 2 characters and 1 space are entered, clicking Create does nothing and no validation message is displayed."
     },
     {
       "id": 1932,
