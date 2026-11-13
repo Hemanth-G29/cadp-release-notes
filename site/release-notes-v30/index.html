@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (30) delivers 0 bug fixes across the platform. Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (30) delivers 0 bug fixes, 1 new feature, and 2 enhancements across the platform. Highlights include Credential Manager: &quot;Both&quot; checkbox to create users in the workspace and a portal. Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -112,7 +112,7 @@
     <tr><th>Feature ID</th><th>Feature Name</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No new features recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>Credential Manager: &quot;Both&quot; checkbox to create users in the workspace and a portal</td><td>Feature Properties → Use as Credential Manager → &quot;Create users in&quot; has a new &quot;Both&quot;; checkbox on the right. When checked, Workspace and Portal are both selected, a portal must be; picked, and every record creates a workspace user and a portal user. The mapping list shows; separate &quot;Workspace Roles&quot; and &quot;Portal Roles&quot; fields (plus Portal Category), and there are two; default-role lists: Default Workspace Role(s) and Default Portal Role(s). Checking or unchecking; &quot;Both&quot; clears the role mappings and default roles, because their meaning changes. Portal sign-up; settings list &quot;Both&quot; features for their portal.</td><td>The same user sometimes needs to be created in both places at once, with different roles.</td></tr>
   </tbody>
 </table>
 
@@ -123,7 +123,8 @@
     <tr><th>Enhancement ID</th><th>Module</th><th>Description</th><th>Benefit</th></tr>
   </thead>
   <tbody>
-    <tr><td></td><td>None</td><td>No enhancements recorded yet for this release.</td><td>N/A</td></tr>
+    <tr><td></td><td>definition-table</td><td>The Settings → **Row actions** section is removed, along with everything it set: show or hide Add / Edit / Delete, Add position, new row at top, ask before deleting, Save each row / Save with, the table&#39;s words and colours, and button looks. The definition table again has its fixed &quot;+ Add definition&quot; (runtime only, not drawn on the builder canvas), pencil, bin and words, as before 2026-11-10. **Kept:** a record opened in **View** shows no Add, Edit or Delete (before 2026-11-10 they still worked there).</td><td>Add, Edit and Delete already existed. The extra settings were not needed: of 318 definition tables on the UAT host, none had any of them saved, and the address page saves with the page&#39;s own Save button.</td></tr>
+    <tr><td></td><td>definition-table</td><td>Table → Settings → **Add Button** (Definition tables only): Button text, Button colour, Text colour. Empty keeps &quot;Add definition&quot;, the brand colour and white text. The Settings panel now reads the table type the same way the table does (`resolveTableKind`), so sections shown only for a table type also appear when the type is saved only under `table.source.tableType`. An empty colour in a seeded colour field shows &quot;Default&quot; instead of &quot;#000000&quot;.</td><td>The button&#39;s words and colours were fixed.</td></tr>
   </tbody>
 </table>
 

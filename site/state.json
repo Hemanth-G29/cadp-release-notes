@@ -6,8 +6,28 @@
   "bugs": [],
   "overview": {},
   "narrative": {
-    "features": [],
-    "enhancements": [],
+    "features": [
+      {
+        "id": "",
+        "name": "Credential Manager: \"Both\" checkbox to create users in the workspace and a portal",
+        "description": "Feature Properties → Use as Credential Manager → \"Create users in\" has a new \"Both\"; checkbox on the right. When checked, Workspace and Portal are both selected, a portal must be; picked, and every record creates a workspace user and a portal user. The mapping list shows; separate \"Workspace Roles\" and \"Portal Roles\" fields (plus Portal Category), and there are two; default-role lists: Default Workspace Role(s) and Default Portal Role(s). Checking or unchecking; \"Both\" clears the role mappings and default roles, because their meaning changes. Portal sign-up; settings list \"Both\" features for their portal.",
+        "impact": "The same user sometimes needs to be created in both places at once, with different roles."
+      }
+    ],
+    "enhancements": [
+      {
+        "id": "",
+        "module": "definition-table",
+        "description": "The Settings → **Row actions** section is removed, along with everything it set: show or hide Add / Edit / Delete, Add position, new row at top, ask before deleting, Save each row / Save with, the table's words and colours, and button looks. The definition table again has its fixed \"+ Add definition\" (runtime only, not drawn on the builder canvas), pencil, bin and words, as before 2026-11-10. **Kept:** a record opened in **View** shows no Add, Edit or Delete (before 2026-11-10 they still worked there).",
+        "benefit": "Add, Edit and Delete already existed. The extra settings were not needed: of 318 definition tables on the UAT host, none had any of them saved, and the address page saves with the page's own Save button."
+      },
+      {
+        "id": "",
+        "module": "definition-table",
+        "description": "Table → Settings → **Add Button** (Definition tables only): Button text, Button colour, Text colour. Empty keeps \"Add definition\", the brand colour and white text. The Settings panel now reads the table type the same way the table does (`resolveTableKind`), so sections shown only for a table type also appear when the type is saved only under `table.source.tableType`. An empty colour in a seeded colour field shows \"Default\" instead of \"#000000\".",
+        "benefit": "The button's words and colours were fixed."
+      }
+    ],
     "whatToTest": [],
     "knownIssues": [
       [
