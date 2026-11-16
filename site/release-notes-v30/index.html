@@ -175,6 +175,7 @@
     <tr><td>364</td><td>Organization Details → Basic Info: Website URL accepts invalid URL formats without validation.</td><td>Expected: Validate the URL format and show an error message for invalid values, such as www.example or example@123.www.example</td></tr>
     <tr><td></td><td>Builder Tool Not Available on Mobile Web</td><td>The builder tool is not supported on mobile web. This is implemented as expected — builder functionality is restricted to desktop browsers by design. It should be available on Tab though.</td></tr>
     <tr><td></td><td>Mobile – Formula Field Not Working in Tables &amp; Charts</td><td>Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review.</td></tr>
+    <tr><td></td><td>Help, examples and templates now match the engine (NB-12) — Every entry that named a formula function differently from how the engine actually; behaves has been corrected, in three places: **Help / Cheat Sheet** (`formulaHelpData.ts`), the; *Examples** panel (`formulaExamples.ts`), and the **Operators and Functions** tooltip; (`OperatorsAndFunctionsTab.tsx`).; | Entry | Said | Now says |; | --- | --- | --- |; | `COUNT_RECORDS` | `COUNT_RECORDS()` | `COUNT_RECORDS({field})` — the field argument is required |; | `COUNT_RECORDS` with filter | filter shown as the **first** argument | `COUNT_RECORDS({field}, {key} == value)` |; | `DAY_OF_WEEK` | &quot;1=Monday … 7=Sunday&quot; | returns the day **name** — `&quot;Sunday&quot;` … `&quot;Saturday&quot;` |; | `MIN_OF_RECORDS` | example used a **date** field | numeric only; a date is coerced and returns `0` |; | `CONTAINS` | third argument not mentioned | documents the optional `caseSensitive`, default **case-sensitive** |; | Examples — &quot;Count all child records&quot; | `COUNT_RECORDS()` | `COUNT_RECORDS({id})` |; | Examples — &quot;Count with condition&quot; | `COUNT_RECORDS({status} == &quot;completed&quot;)` | `COUNT_RECORDS({id}, {status} == &quot;completed&quot;)` |</td><td>QA filed this as NB-12. The template &quot;Count child records&quot; inserted `COUNT_RECORDS()`,; which the validator rejects outright — *&quot;Function COUNT_RECORDS expects at least 1 arguments, but; got 0&quot;*. The cheatsheet said `DAY_OF_WEEK` returned a number and it returns text. Nothing in the; engine changed; the help was describing a different engine than the one that runs.</td></tr>
   </tbody>
 </table>
 
@@ -648,6 +649,10 @@
       </li>
     </ol>
   </li>
+</ul>
+<p><strong>This build — additional test focus:</strong></p>
+<ul>
+  <li>Keyboard shortcuts FSD extension: tests + QA plan — New Vitest suites:; `utils/shortcuts/fsdRuntime.test.ts` (17 tests):; Component actions: press, focus, clear, toggle and open; hidden or disabled components are skipped.; Record buttons and record navigation.; Grid / popup key ownership, single-key rules, and first-field focus after Create.; `keyMapping/console/consoleLabels.test.ts` (7 tests): picker → scope, and folder ids.; Frontend shortcut tests: 108 passing. The full type check (`tsc --noEmit`) is clean after all phases.; QA test plan mapping the FSD&#39;s 30 scenarios: `docs/keyboard-shortcuts/QA_TEST_PLAN.md` in the workspace root.</li>
 </ul>
 
 <!-- ═══════════════════════════════════════════════ -->

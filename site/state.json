@@ -28,7 +28,9 @@
         "benefit": "The button's words and colours were fixed."
       }
     ],
-    "whatToTest": [],
+    "whatToTest": [
+      "Keyboard shortcuts FSD extension: tests + QA plan — New Vitest suites:; `utils/shortcuts/fsdRuntime.test.ts` (17 tests):; Component actions: press, focus, clear, toggle and open; hidden or disabled components are skipped.; Record buttons and record navigation.; Grid / popup key ownership, single-key rules, and first-field focus after Create.; `keyMapping/console/consoleLabels.test.ts` (7 tests): picker → scope, and folder ids.; Frontend shortcut tests: 108 passing. The full type check (`tsc --noEmit`) is clean after all phases.; QA test plan mapping the FSD's 30 scenarios: `docs/keyboard-shortcuts/QA_TEST_PLAN.md` in the workspace root."
+    ],
     "knownIssues": [
       [
         "",
@@ -64,6 +66,11 @@
         "",
         "Mobile – Formula Field Not Working in Tables & Charts",
         "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
+      ],
+      [
+        "",
+        "Help, examples and templates now match the engine (NB-12) — Every entry that named a formula function differently from how the engine actually; behaves has been corrected, in three places: **Help / Cheat Sheet** (`formulaHelpData.ts`), the; *Examples** panel (`formulaExamples.ts`), and the **Operators and Functions** tooltip; (`OperatorsAndFunctionsTab.tsx`).; | Entry | Said | Now says |; | --- | --- | --- |; | `COUNT_RECORDS` | `COUNT_RECORDS()` | `COUNT_RECORDS({field})` — the field argument is required |; | `COUNT_RECORDS` with filter | filter shown as the **first** argument | `COUNT_RECORDS({field}, {key} == value)` |; | `DAY_OF_WEEK` | \"1=Monday … 7=Sunday\" | returns the day **name** — `\"Sunday\"` … `\"Saturday\"` |; | `MIN_OF_RECORDS` | example used a **date** field | numeric only; a date is coerced and returns `0` |; | `CONTAINS` | third argument not mentioned | documents the optional `caseSensitive`, default **case-sensitive** |; | Examples — \"Count all child records\" | `COUNT_RECORDS()` | `COUNT_RECORDS({id})` |; | Examples — \"Count with condition\" | `COUNT_RECORDS({status} == \"completed\")` | `COUNT_RECORDS({id}, {status} == \"completed\")` |",
+        "QA filed this as NB-12. The template \"Count child records\" inserted `COUNT_RECORDS()`,; which the validator rejects outright — *\"Function COUNT_RECORDS expects at least 1 arguments, but; got 0\"*. The cheatsheet said `DAY_OF_WEEK` returned a number and it returns text. Nothing in the; engine changed; the help was describing a different engine than the one that runs."
       ]
     ],
     "apiChanges": [],
