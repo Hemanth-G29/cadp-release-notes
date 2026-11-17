@@ -94,7 +94,7 @@
   <tr><td>Field</td><td>Details</td></tr>
   <tr><td>Product Name</td><td>CADP Workspace</td></tr>
   <tr><td>Release Version</td><td>Release 1.0.0 (30)</td></tr>
-  <tr><td>Release Date</td><td>November 16, 2026</td></tr>
+  <tr><td>Release Date</td><td>November 17, 2026</td></tr>
   <tr><td>Release Type</td><td>Feature &amp; Bug Fix Release</td></tr>
   <tr><td>Prepared By</td><td>Development Team</td></tr>
   <tr><td>Approved By</td><td>Ganagavathy</td></tr>
@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (30) delivers 0 bug fixes, 1 new feature, and 2 enhancements across the platform. Highlights include Credential Manager: &quot;Both&quot; checkbox to create users in the workspace and a portal. Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (30) delivers 0 bug fixes, 1 new feature, and 2 enhancements across the platform. Highlights include Credential Manager: &quot;Both&quot; checkbox to create users in the workspace and a portal. It also includes a required configuration change (see Configuration Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -146,7 +146,8 @@
     <tr><th>Configuration</th><th>Description</th><th>Impact</th></tr>
   </thead>
   <tbody>
-    <tr><td>None</td><td>No configuration changes are required for this release.</td><td>N/A</td></tr>
+    <tr><td>Draft &amp; Publish switched off: Key Mapping saves go live</td><td>New switch `KBD_SHORTCUTS_DRAFT_PUBLISH_ENABLED` (default **false**). While off, every shortcut save is live immediately, whatever mode a tenant had chosen; `/settings` reports `publishMode: &#39;direct&#39;` and `draftPublishEnabled: false`; switching a tenant to Draft &amp; Publish is refused (400). Set it to `true` to bring back Draft &amp; Publish, Versions and rollback.</td><td>Product owner request: only &quot;Save Changes&quot;, no Publish step.</td></tr>
+    <tr><td>Gateway pointed backup requests at the chat service on dev</td><td>`.env.production` had `BACKUP_SERVICE_URL=http://cadp-backend-chat.cadp-dev.svc.cluster.local/backup-service` — the chat service&#39;s host. It now names the backup service: `http://cadp-backend-backup.cadp-dev.svc.cluster.local/backup-service` (matches `k8s/dev/service.yaml` in the backup repo). The dev deployment also reads the `cadp-dev-env` Key Vault secret, which takes precedence; check its `BACKUP_SERVICE_URL` too.</td><td>On dev every backup screen showed &quot;The backup service is currently unavailable&quot; (the gateway&#39;s 503 when it can&#39;t reach the service).</td></tr>
   </tbody>
 </table>
 
@@ -175,6 +176,7 @@
     <tr><td>364</td><td>Organization Details → Basic Info: Website URL accepts invalid URL formats without validation.</td><td>Expected: Validate the URL format and show an error message for invalid values, such as www.example or example@123.www.example</td></tr>
     <tr><td></td><td>Builder Tool Not Available on Mobile Web</td><td>The builder tool is not supported on mobile web. This is implemented as expected — builder functionality is restricted to desktop browsers by design. It should be available on Tab though.</td></tr>
     <tr><td></td><td>Mobile – Formula Field Not Working in Tables &amp; Charts</td><td>Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review.</td></tr>
+    <tr><td></td><td>Built-in templates now refresh on seed, so a corrected template reaches existing databases — Two changes to the built-in catalogue.; 1. **Content fix.** The &quot;Count child records&quot; template inserted `COUNT_RECORDS()`. The validator; requires at least one argument, so using it produced *&quot;Function COUNT_RECORDS expects at least 1; arguments, but got 0&quot;* every time. It now inserts `COUNT_RECORDS({id})`.; 2. **Seeding fix.** `seedBuiltIns` used `update: { $setOnInsert: ... }`, which writes a built-in once; and never again. Once a database had seeded the old text, the row existed, the update matched; nothing to do, and correcting `BUILT_IN_TEMPLATES` had no effect — which is why QA still saw; `COUNT_RECORDS()` after the template was fixed in code. Content fields (`category`,; `description`, `formula`, `explanation`, `useWhen`, `tags`) are now refreshed on every boot;; `$setOnInsert` still covers first creation.</td><td>QA-reported NB-12. Also explains a class of bug where a built-in template edit appears to; do nothing in the running product.</td></tr>
     <tr><td></td><td>Help, examples and templates now match the engine (NB-12) — Every entry that named a formula function differently from how the engine actually; behaves has been corrected, in three places: **Help / Cheat Sheet** (`formulaHelpData.ts`), the; *Examples** panel (`formulaExamples.ts`), and the **Operators and Functions** tooltip; (`OperatorsAndFunctionsTab.tsx`).; | Entry | Said | Now says |; | --- | --- | --- |; | `COUNT_RECORDS` | `COUNT_RECORDS()` | `COUNT_RECORDS({field})` — the field argument is required |; | `COUNT_RECORDS` with filter | filter shown as the **first** argument | `COUNT_RECORDS({field}, {key} == value)` |; | `DAY_OF_WEEK` | &quot;1=Monday … 7=Sunday&quot; | returns the day **name** — `&quot;Sunday&quot;` … `&quot;Saturday&quot;` |; | `MIN_OF_RECORDS` | example used a **date** field | numeric only; a date is coerced and returns `0` |; | `CONTAINS` | third argument not mentioned | documents the optional `caseSensitive`, default **case-sensitive** |; | Examples — &quot;Count all child records&quot; | `COUNT_RECORDS()` | `COUNT_RECORDS({id})` |; | Examples — &quot;Count with condition&quot; | `COUNT_RECORDS({status} == &quot;completed&quot;)` | `COUNT_RECORDS({id}, {status} == &quot;completed&quot;)` |</td><td>QA filed this as NB-12. The template &quot;Count child records&quot; inserted `COUNT_RECORDS()`,; which the validator rejects outright — *&quot;Function COUNT_RECORDS expects at least 1 arguments, but; got 0&quot;*. The cheatsheet said `DAY_OF_WEEK` returned a number and it returns text. Nothing in the; engine changed; the help was describing a different engine than the one that runs.</td></tr>
   </tbody>
 </table>
