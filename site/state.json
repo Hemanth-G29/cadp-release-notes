@@ -1,36 +1,14 @@
 {
-  "liveVersion": 30,
-  "latestAnnouncedVersion": 29,
+  "liveVersion": 31,
+  "latestAnnouncedVersion": 30,
   "lastProcessedMailId": null,
-  "lastCutAt": "2026-11-12T09:55:51.416Z",
+  "lastCutAt": "2026-11-17T04:44:40.648Z",
   "bugs": [],
   "overview": {},
   "narrative": {
-    "features": [
-      {
-        "id": "",
-        "name": "Credential Manager: \"Both\" checkbox to create users in the workspace and a portal",
-        "description": "Feature Properties → Use as Credential Manager → \"Create users in\" has a new \"Both\"; checkbox on the right. When checked, Workspace and Portal are both selected, a portal must be; picked, and every record creates a workspace user and a portal user. The mapping list shows; separate \"Workspace Roles\" and \"Portal Roles\" fields (plus Portal Category), and there are two; default-role lists: Default Workspace Role(s) and Default Portal Role(s). Checking or unchecking; \"Both\" clears the role mappings and default roles, because their meaning changes. Portal sign-up; settings list \"Both\" features for their portal.",
-        "impact": "The same user sometimes needs to be created in both places at once, with different roles."
-      }
-    ],
-    "enhancements": [
-      {
-        "id": "",
-        "module": "definition-table",
-        "description": "The Settings → **Row actions** section is removed, along with everything it set: show or hide Add / Edit / Delete, Add position, new row at top, ask before deleting, Save each row / Save with, the table's words and colours, and button looks. The definition table again has its fixed \"+ Add definition\" (runtime only, not drawn on the builder canvas), pencil, bin and words, as before 2026-11-10. **Kept:** a record opened in **View** shows no Add, Edit or Delete (before 2026-11-10 they still worked there).",
-        "benefit": "Add, Edit and Delete already existed. The extra settings were not needed: of 318 definition tables on the UAT host, none had any of them saved, and the address page saves with the page's own Save button."
-      },
-      {
-        "id": "",
-        "module": "definition-table",
-        "description": "Table → Settings → **Add Button** (Definition tables only): Button text, Button colour, Text colour. Empty keeps \"Add definition\", the brand colour and white text. The Settings panel now reads the table type the same way the table does (`resolveTableKind`), so sections shown only for a table type also appear when the type is saved only under `table.source.tableType`. An empty colour in a seeded colour field shows \"Default\" instead of \"#000000\".",
-        "benefit": "The button's words and colours were fixed."
-      }
-    ],
-    "whatToTest": [
-      "Keyboard shortcuts FSD extension: tests + QA plan — New Vitest suites:; `utils/shortcuts/fsdRuntime.test.ts` (17 tests):; Component actions: press, focus, clear, toggle and open; hidden or disabled components are skipped.; Record buttons and record navigation.; Grid / popup key ownership, single-key rules, and first-field focus after Create.; `keyMapping/console/consoleLabels.test.ts` (7 tests): picker → scope, and folder ids.; Frontend shortcut tests: 108 passing. The full type check (`tsc --noEmit`) is clean after all phases.; QA test plan mapping the FSD's 30 scenarios: `docs/keyboard-shortcuts/QA_TEST_PLAN.md` in the workspace root."
-    ],
+    "features": [],
+    "enhancements": [],
+    "whatToTest": [],
     "knownIssues": [
       [
         "",
@@ -66,31 +44,10 @@
         "",
         "Mobile – Formula Field Not Working in Tables & Charts",
         "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
-      ],
-      [
-        "",
-        "Built-in templates now refresh on seed, so a corrected template reaches existing databases — Two changes to the built-in catalogue.; 1. **Content fix.** The \"Count child records\" template inserted `COUNT_RECORDS()`. The validator; requires at least one argument, so using it produced *\"Function COUNT_RECORDS expects at least 1; arguments, but got 0\"* every time. It now inserts `COUNT_RECORDS({id})`.; 2. **Seeding fix.** `seedBuiltIns` used `update: { $setOnInsert: ... }`, which writes a built-in once; and never again. Once a database had seeded the old text, the row existed, the update matched; nothing to do, and correcting `BUILT_IN_TEMPLATES` had no effect — which is why QA still saw; `COUNT_RECORDS()` after the template was fixed in code. Content fields (`category`,; `description`, `formula`, `explanation`, `useWhen`, `tags`) are now refreshed on every boot;; `$setOnInsert` still covers first creation.",
-        "QA-reported NB-12. Also explains a class of bug where a built-in template edit appears to; do nothing in the running product."
-      ],
-      [
-        "",
-        "Help, examples and templates now match the engine (NB-12) — Every entry that named a formula function differently from how the engine actually; behaves has been corrected, in three places: **Help / Cheat Sheet** (`formulaHelpData.ts`), the; *Examples** panel (`formulaExamples.ts`), and the **Operators and Functions** tooltip; (`OperatorsAndFunctionsTab.tsx`).; | Entry | Said | Now says |; | --- | --- | --- |; | `COUNT_RECORDS` | `COUNT_RECORDS()` | `COUNT_RECORDS({field})` — the field argument is required |; | `COUNT_RECORDS` with filter | filter shown as the **first** argument | `COUNT_RECORDS({field}, {key} == value)` |; | `DAY_OF_WEEK` | \"1=Monday … 7=Sunday\" | returns the day **name** — `\"Sunday\"` … `\"Saturday\"` |; | `MIN_OF_RECORDS` | example used a **date** field | numeric only; a date is coerced and returns `0` |; | `CONTAINS` | third argument not mentioned | documents the optional `caseSensitive`, default **case-sensitive** |; | Examples — \"Count all child records\" | `COUNT_RECORDS()` | `COUNT_RECORDS({id})` |; | Examples — \"Count with condition\" | `COUNT_RECORDS({status} == \"completed\")` | `COUNT_RECORDS({id}, {status} == \"completed\")` |",
-        "QA filed this as NB-12. The template \"Count child records\" inserted `COUNT_RECORDS()`,; which the validator rejects outright — *\"Function COUNT_RECORDS expects at least 1 arguments, but; got 0\"*. The cheatsheet said `DAY_OF_WEEK` returned a number and it returns text. Nothing in the; engine changed; the help was describing a different engine than the one that runs."
       ]
     ],
     "apiChanges": [],
-    "configChanges": [
-      [
-        "Draft & Publish switched off: Key Mapping saves go live",
-        "New switch `KBD_SHORTCUTS_DRAFT_PUBLISH_ENABLED` (default **false**). While off, every shortcut save is live immediately, whatever mode a tenant had chosen; `/settings` reports `publishMode: 'direct'` and `draftPublishEnabled: false`; switching a tenant to Draft & Publish is refused (400). Set it to `true` to bring back Draft & Publish, Versions and rollback.",
-        "Product owner request: only \"Save Changes\", no Publish step."
-      ],
-      [
-        "Gateway pointed backup requests at the chat service on dev",
-        "`.env.production` had `BACKUP_SERVICE_URL=http://cadp-backend-chat.cadp-dev.svc.cluster.local/backup-service` — the chat service's host. It now names the backup service: `http://cadp-backend-backup.cadp-dev.svc.cluster.local/backup-service` (matches `k8s/dev/service.yaml` in the backup repo). The dev deployment also reads the `cadp-dev-env` Key Vault secret, which takes precedence; check its `BACKUP_SERVICE_URL` too.",
-        "On dev every backup screen showed \"The backup service is currently unavailable\" (the gateway's 503 when it can't reach the service)."
-      ]
-    ]
+    "configChanges": []
   },
   "approvedAt": null
 }
