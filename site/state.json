@@ -3,7 +3,24 @@
   "latestAnnouncedVersion": 30,
   "lastProcessedMailId": null,
   "lastCutAt": "2026-11-17T04:44:40.648Z",
-  "bugs": [],
+  "bugs": [
+    {
+      "id": 1825,
+      "subject": "Components → Navbar → Links Style → Normal→ Navbar link Text Color option is not working and Padding option is duplicated in Normal and Hover link styles."
+    },
+    {
+      "id": 1828,
+      "subject": "Components → Navbar → Links Style → Hover→ Hover properties are not working."
+    },
+    {
+      "id": 1830,
+      "subject": "Components → Navbar → Links Style → Active→ Padding option is duplicated in Active link style."
+    },
+    {
+      "id": 1839,
+      "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
+    }
+  ],
   "overview": {},
   "narrative": {
     "features": [],
