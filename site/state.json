@@ -23,9 +23,341 @@
   ],
   "overview": {},
   "narrative": {
-    "features": [],
-    "enhancements": [],
-    "whatToTest": [],
+    "features": [
+      {
+        "id": "",
+        "name": "Charts can show only their top N categories, filter on category totals, and use formula filters",
+        "description": "two new optional keys on each `req[]` entry of the batch evaluate-table call (Smart Filters C5 / C6),; plus a fix to the result cache:; **`seriesLimits`** (grouped entries only): `{ by: <widgetId>, topN?: 1–1000, order?: top | bottom,; totalFilter?: { operator: gt | gte | lt | lte | eq | neq | between, value, value2? } }`. After every series of; the entry is worked out (`evaluateFeatureBatch`, so the database, push-down and in-memory paths all agree), the; categories are ranked by the `by` series, those failing the totals test are dropped, the top / bottom N are; kept, and the same categories are kept in every series of the entry. A category with no value (null) never; passes a totals test and ranks last. New module `engine/filters/seriesLimits.js` (pure; validation and rule).; **`formulaFilters`**: up to 5 `{ expression }` (≤ 2000 characters, Formula Builder syntax, e.g.; `{Amount} * {Qty} > 1000`). Only records for which every formula is true are counted. They are worked out; per record by the shared projection core (`keepRowsMatchingFormulas`, after the field filters and date range),; so with formula filters the entry skips the database paths (DB aggregation, chart push-down) and uses the; in-memory path, for grouped charts and KPI / single values. A field the feature does not have gives an error; cell naming it; a record whose formula cannot be worked out is left out. Scatter and table callers ignore them.; **Cache:** both keys are part of the evaluate-table-batch result cache key. **Fix:** a cached answer kept its; `requestKey` (it was dropped, so in a pooled request that mixed cached and fresh charts the cached ones came back; empty: a 2026-11-17 `requestKey` regression).; `validateBatchReq` checks both keys (`seriesLimits` needs a `groupBy` and a `by` naming one of the entry's; formula columns).",
+        "impact": "Smart Filters plan, Phase C (C5 parameters / Top N / totals filters, C6 formula filters). Formula gate:; \"Yes, proceed\"."
+      },
+      {
+        "id": "",
+        "name": "Open Module / Open Feature shortcuts can be limited to one page",
+        "description": "An Open Module / Open Feature shortcut now has a Page setting: All pages (default — the key must be unique everywhere) or one page (Workspaces list, Modules list, Features list, Records list, Record form, Feature builder). A page-limited key works only on that page, so the same key may be used by another action on a different page. Keys of one workspace still never clash with another workspace's Open keys. Import / export carry the page (`MODULES`, `FEATURES`, …).",
+        "impact": "User request (Key Mapping › Workspace tab Page column)."
+      },
+      {
+        "id": "",
+        "name": "New workspaces get the System notifications kit from the notification service",
+        "description": "Workspace creation (`POST /workspaces`, `POST /workspaces/workspace-user`, and the default; workspace at tenant sign-up) now runs `setUpWorkspaceNotifications`: first the copy from the tenant's; default workspace (as before), then `provisionSystemNotifications`, which calls the notification; service's `POST /system-defaults/provision` with a signed service token; (scope `master.workspace-defaults`). That installs one published email template and one event task per; platform event (user created, admin password reset, manual and automatic unlock, the four portal login; events). Master then records the event subscription of each task the kit created. Both steps are; required: a failure rolls the workspace back. The copy now skips kit items in the default workspace; (`excludeSystemItems`), since the new workspace gets its own; workspace clone and template import still; copy everything. Because the copy runs first, a task the default workspace had for the same event; leaves the kit's task switched off. The response carries `systemNotifications` (`kitVersion`, per-item; outcome) next to `notificationSeed`. This replaces the master-side seed added earlier today; (`src/utils/defaultSchedulerTasks.js`, the `seededSchedulerEvents` workspace field and; `DEFAULT_USER_CREATE_EMAIL_TEMPLATE` are removed; none of it was released). Service-token minting moved; to `src/service/communicators/serviceToken.js`, shared by the template and notification clients.",
+        "impact": "The default-workspace seed relied on whatever an admin had built there. A new tenant's default; workspace starts empty, the copy only reads the current environment, and master was writing the; notification service's collections directly. The notification service now owns the defaults."
+      },
+      {
+        "id": "",
+        "name": "`datepicker`: \"Rolling window\" Date Limit Mode",
+        "description": "In the `datepicker` document's \"Datepicker\" section, `datepicker.mode` gains the option; `'rolling'`, and five keys follow it (shown only in that mode): `datepicker.rollingAnchor` (`today` / `date`,; default `today`), `datepicker.rollingAnchorDate` (date, used when the anchor is `date`),; `datepicker.rollingBefore` and `datepicker.rollingAfter` (whole numbers, blank = no limit on that side) and; `datepicker.rollingUnit` (`days` / `weeks` / `months`, default `days`).",
+        "impact": "Lets a Date Picker accept only a window that moves with today, e.g. only the last 30 days; (before 30, after 0), or N before and N after today or a fixed date. The anchor day is always inside the; window. The frontend panel, runtime field and save pipeline read the same keys; (`cadp_frontend_reactjs/src/utils/dateRollingWindow.ts`), so saving works before the re-seed."
+      },
+      {
+        "id": "",
+        "name": "`timepicker`: \"Default Time\" (fixed time, or now ± offset)",
+        "description": "The `timepicker` document's \"Timepicker\" section gains six keys, reusing the Default Date names:; `timepicker.defaultDateType` (`none` / `static` / `dynamic`, default `none`), `timepicker.defaultDateValue`; (time, for `static`), `timepicker.defaultDateTarget` (`current_date` = Current Time, for `dynamic`),; `timepicker.defaultDateOffsetEnabled` (checkbox), `timepicker.defaultDateOffsetValue` (whole number, negative; goes back) and `timepicker.defaultDateOffsetUnit` (`minutes` / `hours`, default `minutes`).",
+        "impact": "Lets a Time Picker open pre-filled with the current time ± an offset, like the Date Picker's; Default Date. The default is exact (not rounded to the Step). It is always kept inside Min/Max Time, and an; offset past midnight stops at the end of the day instead of wrapping. When a Default Time is set, the minute; list counts in Steps from it (11:47, step 15 → 11:47, 12:02, 12:17 …). The frontend reads these keys in; `cadp_frontend_reactjs/src/utils/defaultTimeResolver.ts`, and saving works before the re-seed."
+      },
+      {
+        "id": "",
+        "name": "Show a dashboard inside another website (embed keys and 1-hour embed tokens)",
+        "description": "Smart Filters D4.; **Embed keys** (workspace admins only, `x-is-administrator` from the gateway): `GET` / `POST /dashboard/:dashboardId/embed-keys`,; `DELETE /dashboard/:dashboardId/embed-keys/:keyId` (revoke). A key names one role (it must be one the dashboard is; bound to) and 1–10 websites (`https://host[:port]`, no path); at most 20 active per dashboard. The secret is; returned once inside the credential `cadpembed.<workspace, environment, key id>.<secret>`; only a salted scrypt hash; is stored (`dashboard_embed_keys`), never listed.; **Token exchange** (public, no sign-in): `POST /embed/token {key}` → `{token, expiresAt, dashboardId, workspaceId}`.; Checks the secret (timing-safe), that the key is not revoked and the dashboard is published and active, then signs an; HS256 token with `EMBED_TOKEN_SECRET` (1 hour) carrying tenant, workspace, environment, dashboard, role, key, the; features the published dashboard reads, and the allowed websites. 30 exchanges per key per 10 minutes per server; (429). `EMBED_TOKEN_SECRET` unset (or under 32 characters) = 503, embedding off.; The RBAC gateway checks these tokens and lets them make only the dashboard's read calls (gateway docs/changes/auth.md).",
+        "impact": "Smart Filters plan, Phase D (D4). User decisions: admins make keys; a key carries one role; tokens last 1 hour; and the host renews them."
+      },
+      {
+        "id": "",
+        "name": "Ask AI on dashboards: describe the filters you want in words",
+        "description": "`POST /ai/dashboard-filters` (Smart Filters D1). The body is the viewer's request (≤ 500 characters),; today's date, the dashboard's AI connection (`integrationId`, optional `model`) and a catalogue of what the; dashboard offers: ≤ 40 filters (key, name, type, ≤ 50 values each), date presets and parameters.; The service builds a fixed prompt (the request is fenced and marked as data), sends it through the workspace's; AI connection (new exported `completePrompt` in ai.service.js: LLM Integration via its gateway, OpenAI / Gemini; via `generateText`), reads the first JSON object in the answer, and keeps only filters, values, date presets; and parameter options the catalogue lists (case-insensitive match to the listed spelling). Everything dropped is; returned in `skipped`. Nothing is applied: the viewer confirms in the browser.; At most 20 requests per person per 5 minutes on each server (429), since each is a paid AI call.; `save-json` also bounds `canvasData.filterAssistant` (`enabled`, `integrationId`, `model`), the builder's Ask AI; setting.",
+        "impact": "Smart Filters plan, Phase D (D1). AI gate: \"proceed\"."
+      },
+      {
+        "id": "",
+        "name": "Saved filter views, opening view, and filter templates for dashboards",
+        "description": "New endpoints under `/dashboard` for Smart Filters Phase C, stored in a new `dashboard_filter_views`; collection (one per workspace database):; `GET /:dashboardId/filter-views` (paged, `page` / `limit` ≤ 100): the caller's own views plus every view shared; on that dashboard, and the caller's opening view (`defaultViewId`).; `POST /:dashboardId/filter-views`: save a view `{ name, visibility: personal|shared, payload, makeDefault }`.; The payload is the page's filter selection (`filterState.groups` ≤ 200, date preset, \"Apply to\" field, financial; period), at most 100 KB. At most 50 views per person per dashboard.; `GET` / `PUT` / `DELETE /:dashboardId/filter-views/:viewId`: open (own or shared only, else 404), rename / share /; update, delete (owner only, else 403; soft delete, and anyone who opened on it goes back to the starting filters).; `PUT /:dashboardId/filter-views/default` `{ viewId | null }`: the view this person opens the dashboard on.; `GET` / `POST /filter-templates`, `DELETE /filter-templates/:templateId`: filter lists a builder can add to; another dashboard of the workspace (owner-only delete, at most 200).; `save-json` also bounds the new filter definition keys: `defaultValues` (≤ 50), `defaultMode` in / out,; `behavior` normal / required / locked / hidden, `editableByRoles` (≤ 100), `syncKey` (≤ 80).; `save-json` also bounds `canvasData.dashboardParameters` (Smart Filters C5 / C6): at most 20, each with an `id`,; a `name`, a `kind` of measure / topN / formula, ≤ 30 `options`, and for a formula filter an `expression`; (≤ 2000) and its `sourceId`.; A view holds filter choices only, never data: each viewer's widgets still go through that viewer's own access.",
+        "impact": "Smart Filters plan, Phase C (save, share, secure). User: \"Yes, start Phase C\"."
+      },
+      {
+        "id": "",
+        "name": "Every new workspace gets the System notifications kit",
+        "description": "New service-to-service endpoint `POST /system-defaults/provision` installs the System; notifications kit in the caller's workspace: for each platform event RBAC publishes, one published; email template and one enabled event task that emails the event's `email` with it. Kit v1 covers; `on.user.create`, `on.user.password.reset.admin`, `onUserManualUnlock`, `onUserAutoUnlock`,; `on.portal.user.create`, `on.portal.user.signup`, `on.portal.user.forgot.password` and; `on.portal.user.password.reset` (templates named \"System: …\"). The master service calls it for every; new workspace, including the default workspace at tenant sign-up. Behaviour:; Idempotent: each item is identified by a `systemKey`; an installed item is left as it is.; A template a user deleted is not reinstalled (and gets no task).; A template name already used by the workspace's own template is reported (`name-taken`) and that; item is skipped instead of failing.; When the workspace already has its own enabled task for an event, the kit task is installed; switched off, so people get one email, not two.; Items are written at the workspace's root version (1.0.0) so every later version sees them.; Browser tokens get 403; only `x-service-auth` calls are accepted.; The response lists each item's outcome (`items`) and the tasks it created (`createdTasks`); master; records their event subscriptions.",
+        "impact": "New workspaces only got notifications that someone had built in the tenant's default; workspace; a new tenant's default workspace starts empty, so user and portal emails were missing."
+      },
+      {
+        "id": "",
+        "name": "A chart's category can be a formula",
+        "description": "on line, bar, horizontal bar, area, pie, donut, funnel, radar and flat treemap charts that read a feature,; the category (X-axis, slice, stage, treemap label) can be a formula instead of a field - `YEAR({Invoice Date})`,; `IF({Base Value} > 100000, \"High\", \"Low\")`, `CONCAT({Region}, \" - \", {Segment})`. In Chart Properties, under the; category field, **Category Source Type** = Field / Formula; Formula shows a category formula box (suggestions,; check, preview of the categories and their record counts), and the value box's preview then groups by it.; The server groups by the formula (evaluate-table `groupBy: [{ formula, key }]`), so a formula category needs the; chart's grouped formula path: the value is a formula with a total (every value formula, Series 2 / 3+ too), no; colour formula, at most one category field, a flat treemap. Otherwise the panel says which of these is missing; and the chart keeps grouping by its category field.; At runtime the grouped rows carry the formula's categories under the chart's own category field name, so the; rest of the chart reads them unchanged; the axis / legend / series name is the X-axis label when set, else the; formula text.; The category field stays saved as the fallback: the report-template chart widget (ChartWidget), which does not; read category formulas yet, still draws by it.; Saved as `categoryFormulaConfig` (same shape as the other chart formulas) in the chart settings and the saved; field mapping; reloads in the builder.",
+        "impact": "Formula Builder plan, Phase 2 step 5b."
+      },
+      {
+        "id": "",
+        "name": "Smart Filters D4: show a dashboard inside another website",
+        "description": "**Embed keys (builder).** An \"Embed\" button beside \"Dashboard filters\" in the dashboard builder. Workspace admins make a; key (name, the role whose data it shows, the websites allowed to show it), copy it once, and revoke keys; the screen; shows the four steps for the website (server exchange, iframe, hourly renewal, optional filters). Others are told only; admins can manage keys.; **Embed page.** `/embed/dashboard#token=<embed token>` (outside the signed-in area; skips the session refresh). It; shows only when the token is a valid, unexpired embed token and the page is framed by one of its websites; the token is; then removed from the address and sent on every request (`setEmbedToken` in services/api: no store token, no body; encryption, a 401 raises `cadp:embed:expired` instead of the login redirect). It renders the runtime dashboard page with; `embed`: the token's workspace, dashboard and role; no Modules link, dashboard tabs, export, saved views or Ask AI; no; role list fetch; a 403 / 404 shows \"This dashboard is not available here\" instead of navigating.; **Talking to the website** (`useEmbedBridge`, postMessage, only to and from the allowed website): out `ready`,; `filtersChanged` (bar filters and date), `chartClicked`, `tokenExpiring` (5 minutes before), `tokenExpired`, `error`; in; `setFilters` (by filter name: values with in / out, or a min / max; a date preset or from / to; `clear`) and `setToken`; (accepted only for the same workspace, dashboard and role). Locked, hidden and role-limited filters cannot be set; the; website is told which filters were not applied.",
+        "impact": "Smart Filters plan, Phase D (D4). User: \"Yes, build D4\"."
+      },
+      {
+        "id": "",
+        "name": "Smart Filters Phase D (D1, D2): Ask AI for filters, and \"why is it empty?\"",
+        "description": "**Ask AI (D1).** The builder's Dashboard filters screen has an Ask AI tab: turn it on and pick one of the; workspace's AI connections and a model (saved as `canvasData.filterAssistant`). Viewers then get an \"Ask AI\" box on; the filter bar: they type a request (\"North and South this financial year, orders over 1 lakh\"); the page sends; the request with the filters they may change (locked / hidden ones left out), up to 50 values for up to 10 text; filters, the date presets and the parameters (not formula filters); the server returns a checked proposal, which; is shown as \"Apply these?\" with anything left out. Nothing changes until Apply; Apply goes through Undo like any; bar change, and a proposed date uses the date menu's own preset handling (or a from / to range). The box says the; request and filter names / values go to the workspace's AI connection.; **\"Why is it empty?\" (D2).** Every widget's filter badge gets \"Why is it empty? Check each filter\": it counts the; widget's records under the page's filters and without each one in turn (the date range and each filter group, up to; 6), with the same per-widget scope and per-source fields the widget uses, one record per request. The list shows; \"Without Region: 1,204 records\" with Remove (filters the viewer cannot change say \"locked\"), or that no single; filter explains it. Feature sources only (not database / API widgets).",
+        "impact": ""
+      },
+      {
+        "id": "",
+        "name": "Smart Filters Phase C (C5, C6): Top N and totals filters, parameters (measure switch, Top N choice), formula filters",
+        "description": "**\"Show only\" on a chart (C5).** Bar, horizontal bar, line, area, pie, donut and funnel charts get a \"Show only\"; setting in the builder: the top or bottom N categories, and / or only categories whose total is greater than /; at least / less than / at most / equal to / not equal to / between values. Ranked by the chart's first value as; the chart adds it up (sum, count, average…). Grouped formula charts ask the server to do it (`seriesLimits`, one; category field), so a chart with thousands of categories receives only the ones it shows; every chart also; applies the same rule itself (`components/charts/chartCategoryLimits.ts`), so raw-record charts behave the same.; The chart's filter badge lists \"Top 10\", \"Totals ≥ 1,000\".; **Parameters (C5).** A new Parameters tab in the builder's Dashboard filters screen:; **Measure switch:** series names to switch between (as in the chart legend); the charts it reaches show only the; picked series (a chart with no series of that name is left as it is).; **Top N choice:** e.g. 5 / 10 / 20 / All; overrides the \"Show only\" number of the charts it reaches.; Each reaches every widget or ticked widgets. On the filter bar they show as one-pick lists.; **Formula filters (C6).** Also in the Parameters tab: a name, the data source it is written for, and a formula in; Formula Builder syntax (e.g. `{Amount} * {Qty} > 1000`, field buttons insert `{Field}`; unknown fields block; Apply). Shown as an On / Off switch on the bar (Off or On at start), or \"Always applied, not shown\" (a dataset; filter). When On, that source's formula charts (grouped and single value) and KPI cards count only the records; that make it true, worked out record by record on the server. Other widgets of that source list it as \"not; applied\" in their filter badge.; **Storage.** Parameters are saved with each dashboard version (`canvasData.dashboardParameters`, beside; `filterDefinitions`, through the same builder draft and Save). The viewer's picks live in the page's filter state; (`parameters`), so tab memory, saved views, links and \"Remember my last filters\" carry them; they travel to; widgets beside the record filters (`context.parameters` / `parameterValues`), never inside them, so a pick never; changes another widget's records.",
+        "impact": ""
+      },
+      {
+        "id": "",
+        "name": "Smart Filters Phase C (C1–C4): saved views, share links, locked / hidden / required filters, synced filters, templates",
+        "description": "**Saved views (C1).** A Views menu at the end of the filter bar: save the current filters as a view, only for you; or shared with everyone on the dashboard; open, rename, update with the current filters, share / unshare, delete; (your own views); ★ picks the view the dashboard opens on for you. A view holds the whole selection (bar values,; Filters panel sets, date preset, Apply to, financial period). Conditions on fields the dashboard no longer has are; skipped with a message. Stored by the dashboard service (`dashboardFilterViewsApi`).; **Share links.** \"Copy link\" gives `/dashboard/runtime?workspaceId=…&dashboardId=…&view=<id>`: the view's id only,; never filter values. A personal view's link is disabled (it only opens for its owner); a link to a view that is; not shared with the reader says so.; **What a dashboard opens on:** a share link's view, else the tab's own filters (as before), else \"Remember my last; filters\" (a tick box in the menu; kept in this browser per person and dashboard, forgotten when unticked), else your; opening view, else the builder's starting values. \"Back to the dashboard's starting filters\" resets.; **Locked, hidden, required and role-limited filters (C2) and dataset filters (C3).** A builder filter can now have; starting values (keep or leave out) and a behaviour: Required (always keeps a value; no ×, Clear puts it back),; Locked (lock icon, can't be opened), Always applied (hidden: not on the bar; applied to its widgets, i.e. a dataset; filter), and \"Who can change it\" (roles; others see it locked). The page enforces these whatever a restore, view,; link, sync, Clear all or Clear bar filters does (`withEnforcedValues`, one effect). Saved views and remembered; filters leave enforced filters out. Value lists already follow each viewer's record scope (own / group); which; records a viewer may see stays with Data Access rules on the server: these settings shape the page only.; **Synced filters (C4).** A filter's \"Sync name\": dashboards of the workspace whose filters share it carry the; viewer's pick (and its clearing) from one to the next, in this browser.; **Filter templates (C4).** The builder's Dashboard filters screen has a Templates panel: save the list for the; workspace, or add a saved one. Fields travel by label and are mapped again by label (cascading kept; filters with no; matching field are named and left out).",
+        "impact": ""
+      },
+      {
+        "id": "",
+        "name": "Smart Filters Phase B: the new filter bar (pinned filters, value lists with counts, search, cascading, chips, Undo, Impact, reports)",
+        "description": "the runtime dashboard's value-chips row is replaced by the Smart Filters bar; (`src/features/dashboardFilters/bar/`, rendered by DashboardRuntimePage where DashboardFilterChips was):; **Pinned filters + More.** With builder definitions, their placement and control decide. Without, the first five; text fields are pinned, ID-like and number fields go under More, and dates stay with the Date control.; **Value lists (B1).** Values come with counts and a server-side search (escaped since Phase 0), up to 50 at a time.; The counts follow every other filter, because the list is requested with the page's filters for that source,; minus this filter's own selection (`excludeSelf`). Include / Exclude, Select shown, Clear, and type-in for; sources without a value list. Picked values with no rows now stay listed as \"no rows now\". Each tick applies at; once. Number filters get a min / max popover (both ends included).; **Cascading (B3).** A definition can be narrowed by a parent (`parentId`, a new \"Narrow its list by\" setting in the; builder, with loop checks in validation). The child's list follows the parent automatically. When the parent; changes, picked child values that no longer exist are removed, with a message saying which.; **Search any value (B5).** One box searches up to 8 text filters' values (5 each); Enter or a click adds the value.; **Chips, Undo, Clear (B4).** Active bar filters show as chips with ×; Undo steps back up to 30 bar changes;; \"Clear bar filters\" removes only the bar's filters (the page's Clear all still clears everything).; **Impact (B7).** The Impact button opens a table of every widget against every active filter, with ✓ or — and; the reason (the same report as the widget badges).; **Storage.** Selections are the same `chips:<key>` groups the old chips wrote (values OR'd as `equals`, Exclude =; `notEquals` AND'd, ranges `greaterThanOrEqual` / `lessThanOrEqual`). Saved tab state and every widget work; unchanged, and the Filters panel still ignores them.; Unlike the old chips, the bar also works on mixed dashboards (values from each filter's `valuesFrom` source).",
+        "impact": "Smart Filters plan, Phase B. User: \"Yes, start Phase B\"."
+      },
+      {
+        "id": "",
+        "name": "Smart Filters Phase A (A1, A2, A3, A5): filter definitions, builder \"Dashboard filters\" screen, mapped fields, default date",
+        "description": "**A1 Filter definitions** (`src/features/dashboardFilters/`). Each filter has a stable ID, name, data type, control,; placement (bar / More), scope (every widget / chosen widgets), the field it uses in each data source (a dotted key; reaches a linked record's field), an optional default date preset, and a blanks rule. They are saved inside each; dashboard version's canvas JSON as `filterDefinitions`, so they are versioned and published with the dashboard.; `readFilterDefinitions` reads saved definitions defensively.; `buildAutoFilterDefinitions` gives exactly today's list for a dashboard with none: every field for one; source; every shared label for several. It keeps today's keys, so saved filter states still match.; `validateFilterDefinitions` treats a type mismatch, an unknown field or no mapping as an error, and an unmapped; source as a warning.; The builder rebuilds the canvas JSON from its components, which don't carry definitions. So; `withDashboardFilterDefinitions` (draftStore.ts) adds the builder's draft, or reads the newest saved version's; list, before every dashboard save (TopToolbar `persistDashboardJsonSnapshot`). A save never drops them.; **A2 Mapped fields at runtime** (DashboardRuntimePage). When the dashboard version has definitions:; A mixed dashboard renames filters per source with the builder's mappings (`runtimeFieldsFromDefinitions`); instead of matching labels. Different field names and linked fields therefore work, and a type mismatch counts; as not mapped.; A single-source dashboard shows the builder's list, names and order, keyed by its real field keys, so requests; and saved states are unchanged.; No definitions: the same as before.; `loadFeatureFilterFields` / `loadSourceFilterFields` moved to `features/dashboardFilters/sourceFields.ts` and are; shared with the builder screen.; **A3 Builder screen** (\"Dashboard filters\" button in the builder toolbar, dashboard flow only; DashboardFiltersModal).; Start from the automatic list, or add a filter from a field picker of every source's fields by label.; Rename and reorder filters; choose control, placement and default date.; Map a field per data source, with linked fields marked and a type check, plus \"Map the rest by field name\".; Choose which widgets a filter reaches, each widget shown with ✓ or the reason it isn't reached.; Validate; Apply is blocked while errors remain. \"Back to automatic\" clears the list.; Applied definitions are saved with the dashboard's Save and go live on Publish.; **A5 Default date**: a date definition's `defaultDatePreset` (a Periodic Masters preset, kept by name) is; applied when the dashboard opens with nothing saved in the tab. It is worked out on every open by the Phase 0; preset effect, so \"This FY\" rolls over.",
+        "impact": "Smart Filters plan, Phase A. User: \"Engine first, as planned\", \"IMPLEMENT ALL STEP BY STEP (A1–A7)\"."
+      },
+      {
+        "id": "",
+        "name": "Application name when restoring; header follows a restore",
+        "description": "The restore wizard's Mode step has an optional **Application name** field for \"Replace this workspace\" and \"Restore as a new workspace\". It's hidden for platform restores; blank keeps the name.; After a replace completes, the Restore page reloads the current workspace (`fetchWorkspaceByIdAsync`), so the header shows the restored or new application name at once.; The platform check now labels `apieventmappings` as \"API event mappings (tenant-wide)\".",
+        "impact": "UAT request; in the browser run the header kept the old name until the workspace was reloaded."
+      },
+      {
+        "id": "",
+        "name": "Backup and Restore pages follow their own role-screen rows",
+        "description": "A control on the Backup or Restore page now shows only when both the backup service's rule (workspace Administrator or tenant owner) and the role screen allow it.; Each page opens with its own row's View.; Working with backups (create, download, cancel, unlock, import, delete, settings) needs the Backup row, even from the Restore page.; Restoring needs Restore → Create.; While permissions are still loading, the row check allows; the server decides either way.",
+        "impact": "Backup and Restore are now separate rows under Data Management on the role screen (rbac menuData.json)."
+      },
+      {
+        "id": "",
+        "name": "Choose whether to take a safety backup",
+        "description": "After \"What changes\", the restore wizard asks **Take a safety backup first?**: **Yes (recommended)**, selected by default, or **No**. With No:; the Safety backup step is skipped and the button reads \"Continue without safety backup\";; Confirm warns that the restore can't be undone and asks for \"I understand this restore can't be undone\" instead of the safety token.; `startRestore` sends `skipSafetyBackup` in that case.",
+        "impact": "Users asked to be able to restore without waiting for a safety backup."
+      },
+      {
+        "id": "",
+        "name": "Key Mapping › Workspace: Page column for Open Module / Open Feature shortcuts",
+        "description": "The selected module / feature's shortcut now has a **Page** column: All pages (default) or one page (\"Modules list only\", \"Records list only\", …). A page-limited key only works on that page and may share its key with an action on another page; All pages must be unique everywhere. The duplicate-key check while typing follows the same rule.",
+        "impact": "User request."
+      },
+      {
+        "id": "",
+        "name": "Payment event: bag-line totals and picked lookups as values",
+        "description": "The payment-success event (`paymentEventExtraValues`) carries two new value sets:; `__cartLineTotals_<line field>`: the sum of each numeric bag-line column over `__cartLines` (`lineTotalsEventValues`), rounded to 2 decimals; a column that is text on any line is left out. The workflow value picker (`useTriggerEventValues`) lists them as \"Bag lines total · <field>\".; `__picked_<field id>` and `__picked_<label>`: a record picked in one of the page's lookup fields, as text — its values joined with \", \", several picks with \"; \" (`pickedLookupEventValues`), e.g. the delivery address.",
+        "impact": "CK's payment workflow writes Order To Billing: its Total Qty / Net / Tax are sums a workflow cannot work out from a list, and a mapping built from several address tokens was dropped whole when one part was blank."
+      },
+      {
+        "id": "",
+        "name": "Portal shopper choices keep their fields by id",
+        "description": "a portal choice (Portal → Shopper Context) saves `valueFieldId`, `displayFieldId`, `showFieldIds` next to the field names. Its field pickers list the record's own fields and each table's columns separately (\"Shipping Addresses › State\", saved name \"Shipping Addresses.State\"), so a column no longer merges with a record field of the same name.; `choiceFieldIds.ts` (new): field options = the record's own fields (`fetchFields ownOnly`) plus each table's columns from the line-table list (`lineTables`, then `lineTable: <id>` → \"<Table>.<Column>\", the key a chosen row carries); the plain list does not always say which table a column belongs to; `resolveChoiceFieldNames` turns ids into today's names; `choiceFieldIdsByName` / `choiceFieldNameById`.; Store: `configureShopperContext` refreshes the keys' names from their ids after the portal loads; `readShopperChoice(key, field, fieldId)` reads by id when given.; Tax seller/buyer state (`{ from: 'shopper-choice', key, field, fieldId }`) and its picker save and read the id.; Payment event: each kept field is also sent as `__shopper_<key>_<field id>`; the workflow value list offers that token (labelled with today's name).; Keys saved by name only keep working as before.",
+        "impact": "choices stored field names; renaming a field or table broke tax state, delivery address and \"Deliver to\" silently, and table columns could not be picked at all."
+      }
+    ],
+    "enhancements": [
+      {
+        "id": "",
+        "module": "backup-export",
+        "description": "A workspace's version history (`workspace_versions`), change log (`workspace_modifications`) and access control (`WorkspaceAccessControls`) live in the tenant root database, and its stage configuration (`stageconfigurations`) in master's shared database. None of them were in any backup. `GET /internal/backup-export/workspace` now exports them for the workspace, and `POST …/workspace/import` writes them back there (REPLACE clears the workspace's first; otherwise it only adds). An empty version history or access control is treated as \"not captured\" and leaves the live one alone. Before this change, import wrote `workspace_versions` into the workspace's own database instead of the root database. Undoing a restore-as-new now also removes its version history and change log, and its first-version check reads the root database.",
+        "benefit": "The framework document's workspace scope (version history, settings, permissions) wasn't fully covered."
+      },
+      {
+        "id": "",
+        "module": "workspaces",
+        "description": "When a workspace is created (`POST /workspaces` and `POST /workspaces/workspace-user`), the; notification seed from the tenant's default workspace now also copies its Task Scheduler; *API-event tasks** (`triggerType: 'event'`, `eventConfig.eventType: 'api-event'`, e.g.; `on.user.create`, `on.user.password.reset.admin`, unlock and portal login events) with:; their `scheduler_actions`, the custom `scheduler_task_groups` they belong to (default groups are; seeded by the notification service), and an `events` task-subscription entry per event. Task and; action ids are kept, so the copied email/SMS steps point at the templates and delivery profiles; copied in the same step. `workspaceId`, `env` and the workspace version (1.0.0) are rewritten;; each task's enabled flag is copied as it is. Schedule and SLA tasks, triggers and run history are; not copied. A failure in this step rolls the new workspace back, like a template-copy failure.; The seed result now includes `notificationSeed.schedulerSummary` (count per collection).; `buildEventLookupQuery` moved to `src/utils/eventLookupQuery.js` and is shared with the; task-subscription route.",
+        "benefit": "A new workspace got the email templates but no task, so RBAC's `on.user.create` event; found nothing in the new workspace and the new-user (password) email was never sent."
+      },
+      {
+        "id": "",
+        "module": "workspaces",
+        "description": "Before a workspace's notification assets are copied, the tenant's default workspace; (the source) is given the default api-event tasks if it doesn't have them. Today that is one task:; *New user account email** on `on.user.create`, an EMAIL step to the event's `email` with a; built-in subject and body (name, email, and the temporary password when the event carries one,; rendered by the email worker's Handlebars). Set `DEFAULT_USER_CREATE_EMAIL_TEMPLATE` to the name of; a published email template in the default workspace to send that template instead. The email goes; out through the workspace's default delivery profile. The event subscription entry is created as well. This also runs when the; default workspace itself is created (tenant sign-up). Each event is seeded once per default; workspace and env (`seededSchedulerEvents` on the workspace record, stored as `<env>:<eventName>`): if the workspace already has a task for; the event it is left alone, and a task an admin deletes later is not recreated. Seeding the source is; best effort: a failure is logged and reported in `notificationSeed.defaultTasks.error`, and the new; workspace copies whatever tasks exist. The create response reports what was seeded in; `notificationSeed.defaultTasks`.",
+        "benefit": "The default workspace had the email templates but no Task Scheduler task, so the task copy; added earlier today had nothing to copy and `on.user.create` still sent no email in new workspaces."
+      },
+      {
+        "id": "",
+        "module": "workspaces",
+        "description": "A new workspace now copies only the notification **provider configs** from the tenant's; default workspace (delivery profiles and SMS, in-app, push and WhatsApp configs), so it can send; straight away. Its templates and tasks come only from the System notifications kit. Templates,; template versions and api-event tasks the admin built in the default workspace are no longer copied.; `notificationSeed.summary` therefore lists only the config collections, and `schedulerSummary` is gone.; Workspace clone and template import are unchanged: they still copy templates from their source; workspace. Removed as unused: `cloneSchedulerEventTasksFast` and the `excludeSystemItems` option (both; added earlier today, never released). New export `NOTIFICATION_CONFIG_COLLECTION_NAMES`.",
+        "benefit": "Drafts and test templates in the default workspace were spreading to every new workspace;; every workspace should start from the same standard set."
+      },
+      {
+        "id": "",
+        "module": "auth",
+        "description": "Password checks at registration, change password and reset now skip any `require*` or; `block*` rule set to `false` (for example `blockUsernameInPassword = false`). Failed rules return; plain messages such as \"Password must not contain your username\" instead of; \"blockUsernameInPassword validation failed\". When a workspace has no common-password rule at all,; common passwords are still blocked by default; a workspace that sets `blockCommonPasswords = false`; now turns that check off.",
+        "benefit": "Both validators ignored the rule's value, so switching a rule off in Workspace Settings had; no effect, and users saw internal policy names as error messages."
+      },
+      {
+        "id": "",
+        "module": "auth",
+        "description": "`blockUsernameInPassword` now rejects a password containing any part of the username that; is 3+ characters long (e.g. username \"John D\" blocks `John@123456`). For an email username only; the part before `@` is used. The error now reads \"Password must not contain your username or any part of it\".",
+        "benefit": "The rule compared the whole username, and passwords cannot contain spaces, so any username; with a space (the admin-entered Name, e.g. \"John D\") could never trigger it."
+      },
+      {
+        "id": "",
+        "module": "auth",
+        "description": "`blockTenantNameInPassword` now rejects any 3+ character part of the organization name,; ignoring legal-form words (pvt, ltd, private, limited, llp, inc, corp, company, …), so; \"Cavin Kare Pvt Ltd\" blocks `Cavin@2026`. `blockCommonPasswords` now also rejects passwords that; contain a common word anywhere (password, welcome, admin, qwerty, letmein, …), including leetspeak; such as `P@ssw0rd`, so `Password@123` is rejected. Both validators now share one implementation.",
+        "benefit": "An organization name with a space could never match (passwords have no spaces), and the; common-password rule only matched a dozen exact passwords, so `Password@123` passed."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "Notification templates (email, SMS, in-app, push, WhatsApp) can now use `{{app_url}}`, which renders the tenant's public application address at send time — e.g. `https://vennillatemplate.cavininfotech.com`, `https://cadp.cavininfotech.com`, `https://cadp.ckedge.in`. Useful for \"log in here …\" links that must point at the sender's own tenant rather than a hard-coded host.; Resolved on every channel's send path (template and direct content) and on the template preview/test endpoints:; **Email:** `POST /email-templates/:id/preview`, `POST /email-templates/:id/test`, `renderTemplate`; **SMS:** `POST /sms-templates/:templateId/preview`; **Push:** `POST /push-templates/:templateId/preview`; **In-App:** `POST /inapp-templates/:templateId/preview`",
+        "benefit": "Teams were pasting literal hostnames into templates, so a template copied between environments mailed the wrong domain. QA-relevant."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "Notification templates (email, SMS, in-app, push, WhatsApp) can now use `{{current_date}}`, `{{current_time}}`, `{{current_day}}`, `{{current_month}}` and `{{current_year}}`, plus `{{current_date_iso}}` for a sortable form. They are filled in when the message is rendered, in the channel's or task's timezone (default Asia/Kolkata), so the recipient sees the day and clock the message was actually sent — including on a job that retries after midnight. Examples: `{{current_date}}` → `18-Nov-2026`, `{{current_time}}` → `08:25 PM`, `{{current_day}}` → `Wednesday`, `{{current_month}}` → `November`, `{{current_year}}` → `2026`.; Apply to all five channels, on both the template path and the direct-content path, and to the template preview/test endpoints:; **Email:** `POST /email-templates/:id/preview`, `POST /email-templates/:id/test`, `renderTemplate`; **SMS:** `POST /sms-templates/:templateId/preview`; **Push:** `POST /push-templates/:templateId/preview`; **In-App:** `POST /inapp-templates/:templateId/preview` (its sample context no longer carries its own, differently formatted `current_date`/`current_time`)",
+        "benefit": "Templates could only show a date that came from a record or a scheduler value. Teams were adding throwaway custom variables to print \"today\", which nothing resolved. QA-relevant."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "`GET /email-templates` now accepts `sortBy` (`createdAt` | `updatedAt` | `name`, default `createdAt`) and `view=summary`, which returns only the fields list cards need (id, name, description, category, tags, status, dates, variable names/labels) as lean documents, without the HTML and builder design content. `pagination.total` now respects the `search` filter. Search also matches `tags`, where module and feature labels are stored. `page` and `limit` are validated: `page` ≥ 1, `limit` between 1 and 100, default 20.",
+        "benefit": "The Templates Library Email tab showed only the first 20 templates, and its search couldn't reach older templates. Each list call also downloaded every template's full HTML and design payload. Before this change, the count ignored `search`, and `limit=0` returned every template with no limit."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "The SMS, WhatsApp, In-App and Push list endpoints now take the same `page`, `limit`, `sortBy` and `view=summary` params as email, and search name, description and tags.; **SMS, WhatsApp and Push** return `{ data, pagination }` only when `page` or `limit` is sent. Without them they still return every template as a plain array, sorted by last modified.; **In-App** keeps its existing default of pages of 20. It also now applies `search`, which it previously ignored.; The paging, sort, summary-projection and search rules for all five channels live in a new shared helper, `utils/template-list.utils.js`. Email was moved onto it, with no change in behaviour.",
+        "benefit": "In-App had the same 20-template cutoff as email. SMS, WhatsApp and Push returned unbounded result sets containing every template's full content. The repo standards require pagination on list endpoints."
+      },
+      {
+        "id": "",
+        "module": "change-password-policies",
+        "description": "The Change Password screen (also used for the forced first-login password change) now; lists these workspace rules: \"Must not be a commonly used password\", \"Must not contain your username\",; \"Must not contain your organization name\", \"Must not match any of your last N passwords\" and the; minimum password strength score. The strength score is checked as the user types; the other four; are shown as notes ([i]) because only the server can check them. Require/block rules that are; set to `false` in Workspace Settings are no longer listed.",
+        "benefit": "Users could meet every rule on screen and still have the password rejected on save by; `blockCommonPasswords`, `blockUsernameInPassword`, `blockTenantNameInPassword`,; `passwordStrengthScoreMin` or `passwordHistoryCount`, which the screen never showed."
+      },
+      {
+        "id": "",
+        "module": "change-password-policies",
+        "description": "On the Change Password screen, \"Must not be a commonly used password\", \"Must not contain; your username\" and \"Must not contain your organization name\" now turn green or red as the user types,; like the other rules, and block Save until met. The username and organization name come from the new; `GET /rbac/profile/password-context` endpoint. If that call fails, those two rules fall back to a; gray [i] note checked only by the server. \"Must not match any of your last N passwords\" stays a; note, because previous passwords are only stored on the server.",
+        "benefit": "Users asked for these rules to show pass/fail like the rest instead of a gray note."
+      },
+      {
+        "id": "",
+        "module": "change-password-policies",
+        "description": "\"Must not contain your username or any part of it\" now turns red when the password contains; any 3+ character part of the username (e.g. \"John D\" → `John@123456` is red), matching the server.",
+        "benefit": "Usernames with a space could never match a password, so the rule never triggered."
+      },
+      {
+        "id": "",
+        "module": "change-password-policies",
+        "description": "The checklist's organization-name rule now turns red for any 3+ character part of the; organization name (legal-form words like \"pvt\" / \"ltd\" ignored), and the common-password rule turns; red for passwords containing words like \"password\", \"welcome\" or \"admin\" (e.g. `Password@123`).; The checks live in a new shared util that mirrors the rbac backend.",
+        "benefit": "Keep the live checklist identical to the server's rules."
+      },
+      {
+        "id": "",
+        "module": "chart-formula-box",
+        "description": "**Switching to Field keeps the formula.** Category Source Type → Field changes only the mode; the formula; stays saved (every chart reader ignores it while Field is picked - `hasChartAxisFormula` needs mode; `formula`) and comes back with Formula. A green \"Formula kept: … · Clear it\" note shows under the field; picker. The same for the Value and Series 2 switches - their formula is parked in `yAxisFormulaKept` /; `y1AxisFormulaKept`, which no chart reads, because some report readers (chartOptionBuilder,; chartConfigHydration, ReportBuilderPage) treat any formula text as active whatever its mode; the parked; copy lasts until the chart is saved (the serializer does not keep it). Series 3+ keep their formula in; place (every reader checks `sourceType` first).; **\"Open full editor\" on the category box**, like the value boxes: the Expression Builder opens with the; box's text and Save puts the formula back in the category. It refuses totals through its existing; `localValidator` option (\"A category is worked out per record, so totals such as SUM_OF_RECORDS cannot be; used here.\") - the builder itself is unchanged.; **Too many categories:** above 50 the category box shows an amber \"N categories is too many to read on a; chart.\" For number categories a **Group into bands** button writes a `CASE` formula in round steps; (1 / 2 / 5 × a power of ten, about 5 bands) worked out from the smallest and largest category; for text or; date categories it suggests a coarser field or YEAR / QUARTER / MONTH. Only a warning - saving still works.; Labels use a plain hyphen (\"1,000 - 1,999\"): the editor outlines look-alike dashes.",
+        "benefit": "user review of the X-Axis Field / Formula switch (`{Rate}` → 1,642 categories), prototype agreed; first; choices: warn above 50, round steps, Value and Series 2 too, no automatic opening of the builder."
+      },
+      {
+        "id": "",
+        "module": "chart-formula-box",
+        "description": "in Chart Properties the category control (X-axis, pie / donut Category Field, funnel Stage Field,; treemap Label Field) now reads top to bottom like the value control:; **Category Source Type** first. **Field** shows the field picker as before. **Formula** shows the category formula; box *instead of* the picker - before, the picker sat above the box and its list, which opens as soon as the search; gets focus, dropped over the formula and its preview.; In Formula mode the picked field stays as the fallback (used where a formula category is not, e.g. a report with; filters), shown as one line - \"Fallback field (reports with filters): Brand · Change\"; Change opens the picker; under the box, Done closes it.; When the formula cannot be used yet, the reason shows above the field the chart groups by meanwhile.",
+        "benefit": "user feedback on the X-field list covering the category formula (2026-11-17), prototype agreed first."
+      },
+      {
+        "id": "",
+        "module": "chart-formula-box",
+        "description": "a report chart (ChartWidget) whose category is a formula now groups by it, like the dashboard chart:; the server groups by the formula and the rows carry it under the chart's category field name; the category is; shown under the X-axis label, else the formula text (display names only - the aliases used to fetch data are; unchanged).; Only on the report chart's server-grouping path: **no report or chart filter active**, a line / bar / horizontal; bar / area / pie / donut / funnel chart, every value a formula with a total. Otherwise it groups by the category; field as before and shows a short grey note under the chart - \"Category formula not applied while filters are; active - grouped by Region\" (or \"... not applied to this chart in reports ...\"). The note is left out of PDF /; print exports.; The report builder now keeps `categoryFormulaConfig` in the chart's saved field mapping when the chart has a; category formula; other charts save exactly as before. (It still saves only the Y value formula of the value; formulas - Series 2 / 3+ and the colour formula are not carried into report widgets; unchanged here.)",
+        "benefit": "Formula Builder plan, Phase 2 step 5c."
+      },
+      {
+        "id": "",
+        "module": "chart-formula-box",
+        "description": "in Chart Properties, a chart value set to Source Type = Formula (Y value, Series 2, Series 3 onwards) no; longer shows the formula as read-only text with Edit Formula / Clear Formula. It is a one-line formula box you type; in: field and function suggestions, a check as you type (\"✓ Number\" or the error with its fix), and a preview of the; first 5 values per category of the chart's own category field (X-axis, slice / stage field, …). **Open full editor**; opens the same Expression Builder as before, with what the box holds right now - including a formula that does not; pass yet, so it can be fixed there. **Clear Formula** stays.; Only a formula that passes its check is saved, in exactly the shape the Expression Builder's Save writes (canonical; `{f:<id>}` expression, editor text, token map, select-module sets; the slot's temp variables are kept). While the; text does not pass, the chart keeps its last good formula. Emptying the box clears the formula. Opening a chart; writes nothing.; A value formula worked out per record, with no total (`{base_value} / {qty}`, used by scatter charts), is accepted; as before - checked as a general formula and marked \"worked out per record\", with no preview (the chart combines; those values itself).; Only for a chart that reads a feature; other data sources, and a slot whose field selection is blocked, keep the; read-only display.; Not changed: the colour formula (it can be per record or a total, so neither kind of box fits); the runtime; the; saved dashboard format.",
+        "benefit": "Formula Builder plan, Phase 2 step 5a. Step 5b (a formula for the category itself) is separate."
+      },
+      {
+        "id": "",
+        "module": "credential-manager",
+        "description": "Feature Properties → Credential Manager → \"Create users in\" is now one three-way choice:; *Workspace | Portal | Both**, with a single hint line for the selected option. It replaces the; \"Both\" checkbox over a Workspace/Portal toggle (which turned into one solid bar when \"Both\" was; ticked) and the repeated description. Saved settings are unchanged.",
+        "benefit": "The previous control was hard to read."
+      },
+      {
+        "id": "",
+        "module": "data-management-backup",
+        "description": "**View Keys:**; A header with icon and subtitle, an amber \"Keep this token secure\" card, and the token in a labelled block (info tip, masked field with show/hide, Copy).; \"Download Token\" at the bottom left and Close at the right.; Still one Backup Access Token (not Figma's three), shown once, with \"I have saved this token\" before closing.; The brand colour comes from the page.; **Restore, first screen** (it replaces the \"Access token\" and \"Mode\" steps):; a red-icon \"Restore Backup\" header;; a backup details card (name, created on, size, status);; \"Restore Target\" cards (the existing choices);; \"Enter Restore Key\" with a Paste button;; a red \"This action will overwrite your current data\" warning (or a neutral note for a new workspace);; \"We recommend creating a backup before restoring. Create Backup\", which opens Create Backup.; The button reads \"Restore Backup\". What will change, safety backup, confirm, progress and result are unchanged.",
+        "benefit": "UI to match the Figma design. The single token and the step-by-step restore were kept on purpose (user decision 2026-11-19)."
+      },
+      {
+        "id": "",
+        "module": "data-management-backup",
+        "description": "The Create Backup dialog no longer offers Platform / Workspace / Both.; A Platform Admin's backup, manual or automatic, always holds the workspace and the platform together (Both).; A workspace administrator, who may not back up platform data, gets a Workspace backup.; A \"What is backed up\" line says which one, and the pre-checks run for it.; The target cards are removed: `BackupTargetPicker.tsx` (`TargetOptionCard`) is deleted, and `BACKUP_TARGETS` with its icons is removed from `backupData.ts`. Nothing else used them.",
+        "benefit": "Users asked for one option only: back up workspace and platform together."
+      },
+      {
+        "id": "",
+        "module": "extended-chart-types",
+        "description": "**Plain fills by default.** The stripes, dots and hatching were ECharts' colour-blind decal patterns, which were on; for every chart. They are now opt-in. The builder's Texture toggle reads \"Plain / Colour-blind patterns\" and; saves the new `chartPatterns` key (default off). Every saved chart already carries `plainChart: false`, so that; key couldn't be reused to mean \"patterns on\". The toggle still writes `plainChart` as the opposite, for old readers.; `buildChartAriaConfig(patterns)` shows decals only for `true`; `CHART_ARIA_CONFIG` has decals off.; **Short axis numbers.** Value axes read 5 Cr / 21 L / 50 K instead of 50,000,000 (`applyShortAxisNumbers` +; `formatAxisShortNumber` in chartCommon.ts), on dashboards (ChartPreview) and reports, exports included; (chartOptionBuilder). An axis with its own label formatter (percent axes, custom formats) is left alone, and; tooltips keep full numbers. New builder toggle \"Axis numbers: Short (L, Cr) / Full\", saved as; `axisNumbers` (default `short`). It is hidden for charts without a number axis (pie, donut, funnel, gauge,; radar, treemap, heatmap, map, sankey, sunburst, calendar, graph, parallel).; **Field labels in formula series names.** A formula that names its fields (`SUM({base_value})`, `MIN({qty})`) was; described as \"Sum of base value\": the alias map from the extraction field list has labels, ids and keys, but no; names. New `useFieldLabelsByName(featureId)` (utils/featureFieldLabels.ts, the same cached registry read; click-to-filter uses) feeds a display-only `seriesNameAliases` (names → labels, extraction aliases win). It is; used for the Y / Series 2 / Series 3+ names in ChartPreview and ChartWidget, and for the report option builder's; names (`displayFieldAliases`, `getChartDisplayMeta`). The aliases that read data are unchanged.",
+        "benefit": "user screenshot of \"Filter Test - Category Formula (copy)\": \"why still it is showing like this\". The user said; \"Yes, fix all three\" (Formula gate yes for ChartPreview.tsx / chartFormulaUtils.ts callers)."
+      },
+      {
+        "id": "",
+        "module": "extended-chart-types",
+        "description": "**Date-part categories** (`chartFormulaUtils.ts`, `datePartLabeller` in `evaluateChartGroupedSeriesBatch` - the one; place formula categories arrive, so every chart type, dashboards and reports): `QUARTER(…)` → Q1–Q4,; `MONTH(…)` → Jan–Dec, `WEEK(…)` → W1–W53 (was the bare number 1–4).; **Per-record formula names** (`deriveChartFormulaDisplayLabel`): a formula with fields and no totals is read out; in words too - the scatter legend says \"base value ÷ qty\" (was \"Formula\").; **Pie** (`ChartPreview.tsx`): centred, moved away from the legend wherever it sits (it sat at 38 % for any; legend - made for a right-hand legend - so the default top legend left it off-centre).; **Treemap** (`ChartPreview.tsx`): each box shows its name and value (\"Q2 · 3.81 Cr\"); the path bar shows only; for a nested treemap (it was an empty grey square under a flat one).; **Scatter** (`ChartPreview.tsx`): dots 7 px above 300 points and 5 px above 1,000, see-through, no shadow (2,000; 10 px shadowed dots piled into a blur).; **Histogram** (`buildEchartsOption.ts`, `buildHistogram`): round bins (1 / 2 / 5 × a power of ten wide, starting; on a multiple) labelled \"500 - 999\", every label shown and turned when there are many (was \"[51.00, 545.80)\",; every third label).; **Pareto** (`extendedChartOptions.ts`): every category labelled (every other one was hidden).; **Sankey** (`buildEchartsOption.ts`): flows in their source node's colour (all grey), hovering highlights a node's; flows.; **Funnel:** not changed - Stage order already offers \"Data order\" and \"Custom stage order\"; largest first stays; the default.",
+        "benefit": "the polish list from the 26-type review. Formula gate yes for ChartPreview.tsx / chartFormulaUtils.ts."
+      },
+      {
+        "id": "",
+        "module": "keyboard-shortcuts",
+        "description": "Workspace Settings › Key Mapping › Shortcuts now has three tabs: All Actions | Platform Level | Component Level. Platform Level lists its shortcuts in sections — General, Workspace Level, Module Level, Feature Level. The Open Module / Open Feature lists (with Add Module / Add Feature) sit at the top of their section. Overview › Level Summary is unchanged.",
+        "benefit": "User request — one place for all non-component shortcuts."
+      },
+      {
+        "id": "",
+        "module": "keyboard-shortcuts",
+        "description": "New **Workspace** tab next to Platform Level. Left: search and a module → feature tree (items with a key show it). Pick a module or feature to set, on the right, the key that opens it from any page of this workspace. Choosing a key another Open Module / Open Feature shortcut already uses shows the Shortcut Conflict dialog; **Override** moves the key (the other shortcut is removed on save). Keys whose module / feature was deleted are listed under **Missing**. The Add Module / Add Feature pop-ups are gone; Platform Level no longer lists Open shortcuts.",
+        "benefit": "User request — same tree layout as Language Mapping."
+      },
+      {
+        "id": "",
+        "module": "keyboard-shortcuts",
+        "description": "Builder › feature settings: new **Open Feature Shortcut** card under \"Show in Side Menu\" — set, turn off or remove the key that opens this feature from any page of the workspace. It is the same shortcut as Workspace Settings › Key Mapping › Workspace, so a key set in either place shows in the other (Workspace Settings View to see, Edit to save; same conflict / Override dialog).; Keyboard Shortcuts help (Ctrl+/ › Workspace tab): lists this workspace's **Modules** and **Features** open keys first (whatever page they are limited to), then the shortcuts of the current page. Platform tab unchanged.; Key Mapping tables: inherited rows read \"Inherited from: Platform / Default\"; rows set at this level read \"Inherited from: <parent> · Overridden by: <this level>\" (FSD §9.3 — the parent is never changed).",
+        "benefit": "User request (FSD §9.3 Override Rule; builder feature-opening key; help overlay workspace shortcuts)."
+      },
+      {
+        "id": "",
+        "module": "lookup-field",
+        "description": "For dropdowns whose options come from a feature or from feature names, the \"Others...\" choice now appears only when \"Include Others option\" is turned on in Field Properties, both in the dropdown list and in the lookup pop-up. Before, it always appeared even with the option turned off. The \"No options found\" message now also appears correctly when the only choice left would have been \"Others...\". Dropdowns sourced from Users, Roles, Organization or Period Types have no such setting and still show \"Others...\" as before.",
+        "benefit": "Form builders can now hide the free-text \"Others...\" choice on feature-sourced dropdowns, so users can only pick values that exist as records."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "The Email, SMS, Push and In-App template builders now offer `{{app_url}}` under **General**, and in the `{{` autocomplete. At send time it renders the tenant's own application address — `https://vennillatemplate.cavininfotech.com`, `https://cadp.cavininfotech.com`, `https://cadp.ckedge.in` — so a template can say \"log in at {{app_url}}\" without a hostname being pasted into the text.",
+        "benefit": "A template copied between environments carried a hard-coded host, so messages pointed at another stage's (or another tenant's) application."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "The Email, SMS, Push and In-App template builders now offer `{{current_date}}`, `{{current_time}}`, `{{current_day}}`, `{{current_month}}` and `{{current_year}}` under the **General** tab, and in the `{{` autocomplete while typing. The notification service fills them in when the message is sent, so a template can say \"Order dated {{current_date}}\" without a record field or a scheduler job.; `{{current_date}}` → `18-Nov-2026`; `{{current_time}}` → `08:25 PM`; `{{current_day}}` → `Wednesday`; `{{current_month}}` → `November`; `{{current_year}}` → `2026`",
+        "benefit": "There was no way to print the date a notification was sent. Teams added a custom variable and nothing ever filled it, so the message showed the token."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "The Templates Library → Notification → Email tab now loads templates in pages of 20, with a **Load more** button and a \"Showing X of Y\" count. Search runs on the server across all templates (name, description, module and feature tags) after a 300 ms pause in typing. Sort is applied by the server, and **Created Date** now sorts by the creation date instead of the last-modified date. List calls use the API's `view=summary`, so template HTML is no longer downloaded for the cards.",
+        "benefit": "Only the first 20 email templates were ever shown, and search only looked through those 20. The page also always fetched platform roles and workspace dashboards, even though only the Dashboard category uses them. Returning from the editor could fetch the email list twice."
+      },
+      {
+        "id": "",
+        "module": "template-library",
+        "description": "The SMS, WhatsApp, In-App and Push tabs now work like the Email tab:; pages of 20 with **Load more** and a \"Showing X of Y\" count; search that runs on the server after a 300 ms pause in typing; sorting done by the server; the lightweight summary payload.; In-App previously showed only its first 20 templates. On WhatsApp, the **All** view pages its workspace templates, while provider templates load in full and are still searched in the browser. The **Provider** view is unchanged.",
+        "benefit": "In-App had the same 20-template cutoff Email had. SMS, WhatsApp and Push downloaded every template with its full content on every visit to the tab."
+      }
+    ],
+    "whatToTest": [
+      "Each organisation keeps its own login in the same browser — Signing in to two organisations in the same browser (for example; `cadp.cavininfotech.com` and `vennillatemplate.cavininfotech.com`) no longer mixes them up. Each; organisation and environment now has its own refresh cookie (`refreshToken_<tenantId>_<env>`), so; both stay signed in side by side, and signing out of one leaves the other alone.; **Phase 1 (tenant binding):** `/public/users/refresh` only uses a refresh token whose tenant (and; env, for environment domains) matches the site the request came from (Origin/Referer → tenant; via `getTenantByHost`). Otherwise it returns `401 tenant_mismatch` and issues nothing. The; gateway also rejects an access token used from another tenant's site with the same 401, which; covers every proxied service. Service tokens, report-export tokens, callers with no browser page; and hosts that are not tenant sites are skipped.; **Phase 2 (per-tenant cookie):** every login, SSO/SAML, refresh, env switch and token handoff; writes the cookie under the name for the token's own tenant + env. Logout and device sign-out; clear only that cookie.; **Migration:** the old shared `refreshToken` cookie is still accepted, but only when it belongs to; the requesting site's tenant. On that refresh it is moved to the new name and cleared. Mobile and; API clients without a browser page keep the old behaviour.; Refresh failures now return HTTP 401 (they were sent as 500 because the status was passed in; the wrong argument).",
+      "\"Workspace + Portal\" features create both users from record events — The Credential Manager Kafka sync (`feature-data-events`) now honours; `bothTargets`: for a \"Workspace + Portal\" feature every record creates/updates a workspace user; AND a portal user, the portal user getting its own roles (`portalRole` mapping, else; `defaults.portalRoleIds`), matching master's direct sync. The two halves run independently.; Previously this path created only the workspace user unless the target was exactly \"Portal\".",
+      "Faster Audit Log page: windowed records table, fewer reloads and requests, lazy tabs — The Audit Log page draws only the record rows in view and waits until you pause typing before filtering. It no longer reloads all records when you change the audit-log filter, and it downloads the Platform menu once per visit. Each tab's code loads the first time the tab is opened.",
+      "Phase 2 verification across the 12 chart types (no code change)",
+      "Embedded dashboards: fixes from the end-to-end test — A dashboard embedded in another website now opens, follows the website's filters and survives a token renewal:; The embed page opens instead of jumping to the Sign In page (the session guard now treats `/embed/` as public).; It opens the same way every time: the builder's starting filter values, then the website's filters. The viewer's; tab-saved, remembered and synced filters are neither read nor written when embedded (they were restoring the last; visit's filters).; `ready` is sent once the dashboard knows its filters, and now lists their names; filters the website sends before that; are held (up to 20 messages) and applied after `ready`, so the website always hears `ready` first. Each message is applied; to the latest filters, so two quick messages no longer overwrite each other.; Renewing the token no longer reloads the dashboard (the page's load hooks now depend on \"is embedded\", not on the embed; details that change with each renewal).; No empty `chartClicked` message when the dashboard first opens; a real click and its clearing are still sent.; The token is removed from the address even when the page refuses to show (not framed by an allowed website)."
+    ],
     "knownIssues": [
       [
         "",
@@ -63,8 +395,35 @@
         "Formula fields are not evaluated correctly when used inside Tables and Charts on mobile. This is under review."
       ]
     ],
-    "apiChanges": [],
-    "configChanges": []
+    "apiChanges": [
+      [
+        "Backup service can read a workspace's Disaster Recovery limits",
+        "",
+        "New internal `GET /internal/backup-export/workspace/variables?names=A,B` returns `{ [name]: value }` from the workspace's environment variables. Names are validated (A-Z, 0-9, _; up to 20), and names the workspace doesn't have are left out. The backup service uses it for BACKUP_RETENTION_COUNT, BACKUP_MAX_RESTORES_PER_TOKEN and BACKUP_MAX_TOKEN_ATTEMPTS."
+      ],
+      [
+        "Bindings list says which level overrides which (FSD §9.3)",
+        "",
+        "`GET /keyboard-shortcuts/bindings` rows set at the requested level now also carry `overrideScope` (that level) and `parentSource` (the level they inherit from again on Reset: the next scope up, or `default`). Inherited rows carry `null` for both. Additive; nothing else changes."
+      ],
+      [
+        "New endpoint for the Change Password screen's live username / organization checks",
+        "",
+        "Added `GET /rbac/profile/password-context?workspaceId=` returning `{ username, organisationName }`,; the exact values change password compares against for `blockUsernameInPassword` and; `blockTenantNameInPassword`. It is scoped to the caller's own user (from the token), works with the; forced first-login token, and is self-service like the other `/rbac/profile/*` routes."
+      ]
+    ],
+    "configChanges": [
+      [
+        "Embedded dashboards load their role's permissions here (Smart Filters D4)",
+        "A dashboard shown inside another website calls this service through the RBAC gateway with no sign-in token: the; gateway sends the embed key's role in the usual identity headers and the embed token itself in `x-embed-token`. This; service now loads that role's permissions for such a request, and only when the token proves it:; `utils/embedAssertion.js` `verifiedEmbedClaims`: the token must verify with `EMBED_TOKEN_SECRET` (HS256 only, at least; 32 characters; unset = never), have `typ: \"cadp-embed\"`, and name the same workspace, the same single role and the same; embed user (`embed:<key id>`) as the identity headers.; `middleware/tenant.middleware.js`: with no sign-in token and a verified embed token, the permission index comes from; `workspace.service.js` `getEmbedPermissions` (cached like a user's, under the embed user id; an empty index when the; dashboard service cannot answer). Without one, nothing changes (an empty index, as before).; `communicators/client.ws.service.js` `getRolesForIdentity`: asks the dashboard service for the role the way the gateway; does (identity headers, `x-gateway-secret` when `GATEWAY_SHARED_SECRET` is set).",
+        "found by the D4 end-to-end test: every embedded data call (fields, record search, formula tiles) failed with 500; \"roles is not iterable\", because a request without a sign-in token got no permissions at all. Identity headers alone can; be sent by anyone who reaches this service directly, so they are not trusted without the embed token."
+      ],
+      [
+        "evaluate-table answers can be shared between servers (Redis, off by default)",
+        "the evaluate-table batch result cache (120 s by default) can keep a copy in Redis so every master server; reuses an answer one of them already worked out (Smart Filters D5). New env flag; `FORMULA_EVAL_BATCH_SHARED_CACHE=true` turns it on; without it nothing changes and Redis is not loaded by it.; Each feature has a version number in Redis (`evalbatch:ver:<featureId>`); the existing write invalidation; (`registerFormulaScanCacheInvalidator`) now also bumps it, and the version is part of every cache key, so a write on; any server retires every server's earlier answers (before, another server kept its copy until the TTL).; This server's cache is read first; values over 1 MB are not shared; any Redis error falls back to this server's; cache and never fails the request. New module `utils/sharedResultCache.js`.",
+        "Smart Filters plan, Phase D (D5 speed). Formula gate: \"proceed\". Needs a restart after setting the flag; (nodemon does not watch .env files)."
+      ]
+    ]
   },
   "approvedAt": null
 }
