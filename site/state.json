@@ -35,6 +35,58 @@
     {
       "id": 1839,
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
+    },
+    {
+      "id": 2115,
+      "subject": "Samvaadha → Message Delete → Bold Message Cannot Be Deleted"
+    },
+    {
+      "id": 2116,
+      "subject": "Samvaadha → Message Formatting → Italic Message Cannot Be Deleted"
+    },
+    {
+      "id": 2117,
+      "subject": "Samvaadha → DM → Highlight Text Color Not Retained After Sending Message"
+    },
+    {
+      "id": 2118,
+      "subject": "Samvaadha → Message Formatting → Underlined Message Cannot Be Deleted"
+    },
+    {
+      "id": 2119,
+      "subject": "Samvaadha → Group Chat → Highlight Text Color Not Retained After Sending Message"
+    },
+    {
+      "id": 2120,
+      "subject": "Samvaadha → Message Formatting → Strikethrough Message Cannot Be Deleted"
+    },
+    {
+      "id": 2122,
+      "subject": "Samvaadha → DM / Group Chat → Font Size Formatting Not Retained and Delete Message Functionality Fails"
+    },
+    {
+      "id": 2123,
+      "subject": "Samvaadha → Group Chat → Unarchived Group Not Displayed in Group Section"
+    },
+    {
+      "id": 2124,
+      "subject": "Samvaadha → Direct Messages (DM) → Archived Chat Cannot Be Found After Exiting Chat Screen"
+    },
+    {
+      "id": 2126,
+      "subject": "Samvaadha → Group Settings → Unable to Edit or Change Group Name"
+    },
+    {
+      "id": 2128,
+      "subject": "Samvaadha → Group Settings → Unable to Add or Remove Group Members"
+    },
+    {
+      "id": 2132,
+      "subject": "Samvaadha → DM / Group Chat → Emoji Picker → Send Image Upload Fails Due to Server Authentication Error (500)"
+    },
+    {
+      "id": 2133,
+      "subject": "Samvaadha → Direct Messages (DM) → Edited Message Content Not Updated When Using Formatting Options"
     }
   ],
   "overview": {},
@@ -426,6 +478,11 @@
         "New endpoint for the Change Password screen's live username / organization checks",
         "",
         "Added `GET /rbac/profile/password-context?workspaceId=` returning `{ username, organisationName }`,; the exact values change password compares against for `blockUsernameInPassword` and; `blockTenantNameInPassword`. It is scoped to the caller's own user (from the token), works with the; forced first-login token, and is self-service like the other `/rbac/profile/*` routes."
+      ],
+      [
+        "Search is always scoped to the workspace in your session",
+        "",
+        "`/common-search/global`, `/common-search/data` and `/common-search/by-type` now take the workspace from the verified session token only. A `workspaceId` sent in the request body is ignored, and a warning is logged when it differs from the token's workspace. `/data` returns 400 when the session has no workspace. Swagger marks the body `workspaceId` as deprecated and ignored."
       ]
     ],
     "configChanges": [
@@ -473,6 +530,11 @@
         "QA Kafka topics and consumer groups suffixed `-qa`",
         "Every topic in `.env.qa` now ends in `-qa`: `KAFKA_NOTIFICATION_TOPICS`, task, field, user, workflow, notification, workflow.actions, SLA, audit (+DLQ), platform-audit and workflow-audit. Consumer groups: `KAFKA_NOTIFICATION_CONSUMER_GROUP` was `cadp-notification-consumer-prod` and is now `-qa`; `KAFKA_TASK_EVENT_CONSUMER_GROUP` and `AUDIT_GROUP` are now `-qa`.",
         "QA shares its Kafka cluster with master uat, which used the same unsuffixed topic names (`field-events`, `task-events`, …). QA's workflow and notification consumers therefore also processed UAT's form events and task emails. Prod on the same cluster is already separated by its `-dev` names."
+      ],
+      [
+        "Global search uses one index per environment",
+        "Global search now reads and writes a single Elasticsearch index per environment, named explicitly by `ES_INDEX` in each env file: `global-search` (dev/devops — `.env.development`, `.env.production`), `global-search-qa` (`.env.qa`, new), `global-search-uat` (`.env.uat`). Per-tenant `{tenantId}_global_search` indexes are no longer used. Tenant isolation is enforced by a mandatory `tenantId` filter on every search (requests without a tenant are rejected), tenant-scoped document IDs (`{tenantId}:{entityId}`), and `routing=tenantId`. Tenant deletion now removes only that tenant's documents (`deleteByQuery`) instead of dropping an index. `ES_INDEX` has no code default; boot fails if ES is enabled and it is missing.",
+        "Environment-specific index names were required (dev/devops, QA, UAT). Also fixes filters on non-existent `workspaceId.keyword` / `entityType.keyword` subfields (now filter on the keyword fields directly), adds the missing `tags.keyword` subfield used by exact-match boosting, and drops the mapping-level `boost` that ES 8 rejects."
       ]
     ]
   },

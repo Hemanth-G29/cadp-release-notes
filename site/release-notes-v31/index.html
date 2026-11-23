@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (31) delivers 8 bug fixes, 22 new features, and 32 enhancements across the platform. Highlights include Charts can show only their top N categories, filter on category totals, and use formula filters, Open Module / Open Feature shortcuts can be limited to one page, and New workspaces get the System notifications kit from the notification service. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (31) delivers 21 bug fixes, 22 new features, and 32 enhancements across the platform. Highlights include Charts can show only their top N categories, filter on category totals, and use formula filters, Open Module / Open Feature shortcuts can be limited to one page, and New workspaces get the System notifications kit from the notification service. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -194,6 +194,19 @@
     <tr><td>1830</td><td>Components → Navbar → Links Style → Active→ Padding option is duplicated in Active link style.</td></tr>
     <tr><td>1837</td><td>Listing Properties → Preset →Listing Property Text Overlaps When Using Single Column Preset.</td></tr>
     <tr><td>1839</td><td>Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties.</td></tr>
+    <tr><td>2115</td><td>Samvaadha → Message Delete → Bold Message Cannot Be Deleted</td></tr>
+    <tr><td>2116</td><td>Samvaadha → Message Formatting → Italic Message Cannot Be Deleted</td></tr>
+    <tr><td>2117</td><td>Samvaadha → DM → Highlight Text Color Not Retained After Sending Message</td></tr>
+    <tr><td>2118</td><td>Samvaadha → Message Formatting → Underlined Message Cannot Be Deleted</td></tr>
+    <tr><td>2119</td><td>Samvaadha → Group Chat → Highlight Text Color Not Retained After Sending Message</td></tr>
+    <tr><td>2120</td><td>Samvaadha → Message Formatting → Strikethrough Message Cannot Be Deleted</td></tr>
+    <tr><td>2122</td><td>Samvaadha → DM / Group Chat → Font Size Formatting Not Retained and Delete Message Functionality Fails</td></tr>
+    <tr><td>2123</td><td>Samvaadha → Group Chat → Unarchived Group Not Displayed in Group Section</td></tr>
+    <tr><td>2124</td><td>Samvaadha → Direct Messages (DM) → Archived Chat Cannot Be Found After Exiting Chat Screen</td></tr>
+    <tr><td>2126</td><td>Samvaadha → Group Settings → Unable to Edit or Change Group Name</td></tr>
+    <tr><td>2128</td><td>Samvaadha → Group Settings → Unable to Add or Remove Group Members</td></tr>
+    <tr><td>2132</td><td>Samvaadha → DM / Group Chat → Emoji Picker → Send Image Upload Fails Due to Server Authentication Error (500)</td></tr>
+    <tr><td>2133</td><td>Samvaadha → Direct Messages (DM) → Edited Message Content Not Updated When Using Formatting Options</td></tr>
   </tbody>
 </table>
 
@@ -213,6 +226,7 @@
     <tr><td>Per-environment `feature-data-events` topic and consumer groups (dev / qa / uat)</td><td>Added `KAFKA_FEATURE_DATA_EVENTS_TOPIC=feature-data-events-{dev,qa,uat}`, the topic the record-write nodes announce on (`featureDataEventProducer.js`). Prod is unchanged (still `feature-data-events` and the default group names).</td><td>`KAFKA_FEATURE_DATA_EVENTS_TOPIC` was set in no env file, so every environment used `feature-data-events`. Dev and uat share one Kafka cluster, and qa and prod share another. Consumers with the same group id there split the partitions across environments, so an event could be handled by the wrong environment&#39;s pod. For example, uat RBAC&#39;s Credential Manager events landed on dev RBAC, which skipped them as `not-credential-feature`.</td></tr>
     <tr><td>QA Kafka topics and consumer groups suffixed `-qa`</td><td>Every topic in `.env.qa` now ends in `-qa`: field, user, workflow, notification, task, workflow.actions, SLA, global-search (+DLQ), audit / platform-audit / workflow-audit, and the consumed list `KAFKA_EVENT_TOPICS`. Added `KAFKA_ACTION_TOPICS=workflow.actions-qa`: the action consumer subscribes with this key, not `KAFKA_WORKFLOW_ACTIONS_TOPIC`, and without it QA kept listening on `workflow.actions`. The unused `KAFKA_GROUP_ID` was `workflow-backend-service-production` and is now `-qa`. Removed the second, byte-identical copy of the whole file (lines 127–249), because edits to the first copy were silently overridden by the second.</td><td>QA shares its Kafka cluster with master uat, which used the same unsuffixed topic names (`field-events`, `task-events`, …). QA&#39;s workflow and notification consumers therefore also processed UAT&#39;s form events and task emails. Prod on the same cluster is already separated by its `-dev` names.</td></tr>
     <tr><td>QA Kafka topics and consumer groups suffixed `-qa`</td><td>Every topic in `.env.qa` now ends in `-qa`: `KAFKA_NOTIFICATION_TOPICS`, task, field, user, workflow, notification, workflow.actions, SLA, audit (+DLQ), platform-audit and workflow-audit. Consumer groups: `KAFKA_NOTIFICATION_CONSUMER_GROUP` was `cadp-notification-consumer-prod` and is now `-qa`; `KAFKA_TASK_EVENT_CONSUMER_GROUP` and `AUDIT_GROUP` are now `-qa`.</td><td>QA shares its Kafka cluster with master uat, which used the same unsuffixed topic names (`field-events`, `task-events`, …). QA&#39;s workflow and notification consumers therefore also processed UAT&#39;s form events and task emails. Prod on the same cluster is already separated by its `-dev` names.</td></tr>
+    <tr><td>Global search uses one index per environment</td><td>Global search now reads and writes a single Elasticsearch index per environment, named explicitly by `ES_INDEX` in each env file: `global-search` (dev/devops — `.env.development`, `.env.production`), `global-search-qa` (`.env.qa`, new), `global-search-uat` (`.env.uat`). Per-tenant `{tenantId}_global_search` indexes are no longer used. Tenant isolation is enforced by a mandatory `tenantId` filter on every search (requests without a tenant are rejected), tenant-scoped document IDs (`{tenantId}:{entityId}`), and `routing=tenantId`. Tenant deletion now removes only that tenant&#39;s documents (`deleteByQuery`) instead of dropping an index. `ES_INDEX` has no code default; boot fails if ES is enabled and it is missing.</td><td>Environment-specific index names were required (dev/devops, QA, UAT). Also fixes filters on non-existent `workspaceId.keyword` / `entityType.keyword` subfields (now filter on the keyword fields directly), adds the missing `tags.keyword` subfield used by exact-match boosting, and drops the mapping-level `boost` that ES 8 rejects.</td></tr>
   </tbody>
 </table>
 
@@ -226,6 +240,7 @@
     <tr><td>Backup service can read a workspace&#39;s Disaster Recovery limits</td><td></td><td>New internal `GET /internal/backup-export/workspace/variables?names=A,B` returns `{ [name]: value }` from the workspace&#39;s environment variables. Names are validated (A-Z, 0-9, _; up to 20), and names the workspace doesn&#39;t have are left out. The backup service uses it for BACKUP_RETENTION_COUNT, BACKUP_MAX_RESTORES_PER_TOKEN and BACKUP_MAX_TOKEN_ATTEMPTS.</td></tr>
     <tr><td>Bindings list says which level overrides which (FSD §9.3)</td><td></td><td>`GET /keyboard-shortcuts/bindings` rows set at the requested level now also carry `overrideScope` (that level) and `parentSource` (the level they inherit from again on Reset: the next scope up, or `default`). Inherited rows carry `null` for both. Additive; nothing else changes.</td></tr>
     <tr><td>New endpoint for the Change Password screen&#39;s live username / organization checks</td><td></td><td>Added `GET /rbac/profile/password-context?workspaceId=` returning `{ username, organisationName }`,; the exact values change password compares against for `blockUsernameInPassword` and; `blockTenantNameInPassword`. It is scoped to the caller&#39;s own user (from the token), works with the; forced first-login token, and is self-service like the other `/rbac/profile/*` routes.</td></tr>
+    <tr><td>Search is always scoped to the workspace in your session</td><td></td><td>`/common-search/global`, `/common-search/data` and `/common-search/by-type` now take the workspace from the verified session token only. A `workspaceId` sent in the request body is ignored, and a warning is logged when it differs from the token&#39;s workspace. `/data` returns 400 when the session has no workspace. Swagger marks the body `workspaceId` as deprecated and ignored.</td></tr>
   </tbody>
 </table>
 
