@@ -9,8 +9,16 @@
       "subject": "Data Table → When the user views records in the mobile application, the records are not displayed in the correct ascending order. The record sequence differs from the order displayed in the web application."
     },
     {
+      "id": 1225,
+      "subject": "Data Table → As per the requirement, only the Export option should be available in the Table Records section."
+    },
+    {
       "id": 1226,
       "subject": "Data Table → When the user adds Formula fields in the web application and views the records in the mobile application, the records are displayed in descending order instead of the expected order."
+    },
+    {
+      "id": 1580,
+      "subject": "Components → List Block → List Block Properties→ Divider color is not reflected or retained in the List Block component."
     },
     {
       "id": 1634,
@@ -137,12 +145,24 @@
       "subject": "Shortcut Menu Overlaps When Adding a New Module."
     },
     {
+      "id": 2141,
+      "subject": "Image Upload Component → Upload Option and Edit Functionality Not Working as Expected"
+    },
+    {
       "id": 2142,
       "subject": "File Upload → Uploaded PDF File Cannot Be Opened Before and After Form Submission"
     },
     {
+      "id": 2144,
+      "subject": "List Component → Listing Properties → Data Source →Sort Field Dropdown Displays Irrelevant Data Fields."
+    },
+    {
       "id": 2156,
       "subject": "Components → Rich Text → Missing Placeholder Option and Incorrect Placeholder Styling"
+    },
+    {
+      "id": 2164,
+      "subject": "Badge Component → Conditional Visibility → Dropdown Arrow Overlaps with Text"
     }
   ],
   "overview": {},
