@@ -37,6 +37,18 @@
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
     },
     {
+      "id": 2086,
+      "subject": "Samvaadha-->Group-->Group name appears misaligned when the user enters a name exceeding 100 characters."
+    },
+    {
+      "id": 2101,
+      "subject": "Samvaadha → Direct Messages (DM) → Unable to Send Drawing Attachment"
+    },
+    {
+      "id": 2102,
+      "subject": "Samvaadha → Group Chat → Unable to Send Drawing Attachment"
+    },
+    {
       "id": 2115,
       "subject": "Samvaadha → Message Delete → Bold Message Cannot Be Deleted"
     },
@@ -61,6 +73,10 @@
       "subject": "Samvaadha → Message Formatting → Strikethrough Message Cannot Be Deleted"
     },
     {
+      "id": 2121,
+      "subject": "Samvaadha → Group Chat → Formatted Messages Cannot Be Deleted"
+    },
+    {
       "id": 2122,
       "subject": "Samvaadha → DM / Group Chat → Font Size Formatting Not Retained and Delete Message Functionality Fails"
     },
@@ -81,12 +97,16 @@
       "subject": "Samvaadha → Group Settings → Unable to Add or Remove Group Members"
     },
     {
-      "id": 2132,
-      "subject": "Samvaadha → DM / Group Chat → Emoji Picker → Send Image Upload Fails Due to Server Authentication Error (500)"
+      "id": 2129,
+      "subject": "Samvaadha → DM / Group Chat → File Upload → Incorrect Characters Displayed in Uploading Status Text"
     },
     {
       "id": 2133,
       "subject": "Samvaadha → Direct Messages (DM) → Edited Message Content Not Updated When Using Formatting Options"
+    },
+    {
+      "id": 2134,
+      "subject": "Samvaadha → Group Chat → Edited Message Content Not Updated When Using Formatting Options"
     }
   ],
   "overview": {},
