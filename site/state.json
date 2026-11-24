@@ -5,6 +5,18 @@
   "lastCutAt": "2026-11-17T04:44:40.648Z",
   "bugs": [
     {
+      "id": 1155,
+      "subject": "Data Table → When the user views records in the mobile application, the records are not displayed in the correct ascending order. The record sequence differs from the order displayed in the web application."
+    },
+    {
+      "id": 1226,
+      "subject": "Data Table → When the user adds Formula fields in the web application and views the records in the mobile application, the records are displayed in descending order instead of the expected order."
+    },
+    {
+      "id": 1634,
+      "subject": "Components → Footer → Footer Properties → Brand→ Logo overlaps and hides the Brand Name in the Footer component."
+    },
+    {
       "id": 1806,
       "subject": "List Component : Hover Background color is not applied to the complete List card. On hover, the configured color is visible only along the card border/bottom edge while the card content area remains unchanged."
     },
@@ -35,6 +47,18 @@
     {
       "id": 1839,
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
+    },
+    {
+      "id": 1916,
+      "subject": "DMS Lite → The Signature Pad component is not functioning properly in the mobile application."
+    },
+    {
+      "id": 1920,
+      "subject": "DMS Lite → In the mobile app, the entered Number Input value continuously scrolls within the input box, and the mapped Formula Field is not updated correctly."
+    },
+    {
+      "id": 2082,
+      "subject": "Favorite Icon Overlaps with the Components List."
     },
     {
       "id": 2086,
@@ -107,6 +131,18 @@
     {
       "id": 2134,
       "subject": "Samvaadha → Group Chat → Edited Message Content Not Updated When Using Formatting Options"
+    },
+    {
+      "id": 2138,
+      "subject": "Shortcut Menu Overlaps When Adding a New Module."
+    },
+    {
+      "id": 2142,
+      "subject": "File Upload → Uploaded PDF File Cannot Be Opened Before and After Form Submission"
+    },
+    {
+      "id": 2156,
+      "subject": "Components → Rich Text → Missing Placeholder Option and Incorrect Placeholder Styling"
     }
   ],
   "overview": {},
@@ -525,6 +561,11 @@
         "evaluate-table answers can be shared between servers (Redis, off by default)",
         "the evaluate-table batch result cache (120 s by default) can keep a copy in Redis so every master server; reuses an answer one of them already worked out (Smart Filters D5). New env flag; `FORMULA_EVAL_BATCH_SHARED_CACHE=true` turns it on; without it nothing changes and Redis is not loaded by it.; Each feature has a version number in Redis (`evalbatch:ver:<featureId>`); the existing write invalidation; (`registerFormulaScanCacheInvalidator`) now also bumps it, and the version is part of every cache key, so a write on; any server retires every server's earlier answers (before, another server kept its copy until the TTL).; This server's cache is read first; values over 1 MB are not shared; any Redis error falls back to this server's; cache and never fails the request. New module `utils/sharedResultCache.js`.",
         "Smart Filters plan, Phase D (D5 speed). Formula gate: \"proceed\". Needs a restart after setting the flag; (nodemon does not watch .env files)."
+      ],
+      [
+        "QA gateway now knows where the backup service is",
+        "`.env.qa` had no `BACKUP_SERVICE_URL`, so the gateway fell back to `http://localhost:3009/backup-service` and could not reach the backup service. It now sets `BACKUP_SERVICE_URL=http://cadp-backend-backup.cadp-qa.svc.cluster.local/backup-service` (matches `k8s/qa/service.yaml` in the backup repo). If the QA deployment reads a Key Vault env secret, check its `BACKUP_SERVICE_URL` too, since that takes precedence.",
+        "Without it, backup screens on QA get the gateway's 503 \"The backup service is currently unavailable\"."
       ],
       [
         "Per-environment `feature-data-events` topic and consumer groups (dev / qa / uat)",
