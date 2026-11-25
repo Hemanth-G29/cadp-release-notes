@@ -25,6 +25,10 @@
       "subject": "Components → Footer → Footer Properties → Brand→ Logo overlaps and hides the Brand Name in the Footer component."
     },
     {
+      "id": 1805,
+      "subject": "Components-> Product Name and Price Disappear After Feature Is Published."
+    },
+    {
       "id": 1806,
       "subject": "List Component : Hover Background color is not applied to the complete List card. On hover, the configured color is visible only along the card border/bottom edge while the card content area remains unchanged."
     },
@@ -49,12 +53,24 @@
       "subject": "Components → Navbar → Links Style → Active→ Padding option is duplicated in Active link style."
     },
     {
+      "id": 1834,
+      "subject": "Components → Carousel → Carousel Properties → Source Type → Feature Data → Card Design → Title→ Selected title field is not displayed in the Carousel."
+    },
+    {
       "id": 1837,
       "subject": "Listing Properties → Preset →Listing Property Text Overlaps When Using Single Column Preset."
     },
     {
       "id": 1839,
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
+    },
+    {
+      "id": 1880,
+      "subject": "Components → Lookup Field → Lookup Fields→ Irrelevant fields are displayed in the Sort Fetched Data By dropdown."
+    },
+    {
+      "id": 1895,
+      "subject": "DMS Lite-->Duplicate validation is not displayed in the mobile application; it is displayed only on the web application."
     },
     {
       "id": 1916,
@@ -145,6 +161,10 @@
       "subject": "Shortcut Menu Overlaps When Adding a New Module."
     },
     {
+      "id": 2140,
+      "subject": "List component -> Section Header -> Font Weight and Font Style Dropdown Options Do Not Apply Changes to the Title."
+    },
+    {
       "id": 2141,
       "subject": "Image Upload Component → Upload Option and Edit Functionality Not Working as Expected"
     },
@@ -155,6 +175,14 @@
     {
       "id": 2144,
       "subject": "List Component → Listing Properties → Data Source →Sort Field Dropdown Displays Irrelevant Data Fields."
+    },
+    {
+      "id": 2150,
+      "subject": "List Component → Listing Properties → Header → Controls → Filter Control Does Not Filter the Products."
+    },
+    {
+      "id": 2152,
+      "subject": "Selection Components → Multi-Selection Dropdown → \"Other\" Option Not Displayed After Publishing"
     },
     {
       "id": 2156,
