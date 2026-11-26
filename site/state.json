@@ -17,6 +17,14 @@
       "subject": "Data Table → When the user adds Formula fields in the web application and views the records in the mobile application, the records are displayed in descending order instead of the expected order."
     },
     {
+      "id": 1235,
+      "subject": "Charts → When the user creates charts in the web application and views them in the mobile application, the chart layout and formatting are not consistent with the web application."
+    },
+    {
+      "id": 1572,
+      "subject": "Components → Calendar→ Edit and Delete options are missing for calendar events on the Create page."
+    },
+    {
       "id": 1580,
       "subject": "Components → List Block → List Block Properties→ Divider color is not reflected or retained in the List Block component."
     },
@@ -79,6 +87,10 @@
     {
       "id": 1920,
       "subject": "DMS Lite → In the mobile app, the entered Number Input value continuously scrolls within the input box, and the mapped Formula Field is not updated correctly."
+    },
+    {
+      "id": 1921,
+      "subject": "Component → Button → Button Properties → Action→ Button action options are not functioning."
     },
     {
       "id": 2082,
