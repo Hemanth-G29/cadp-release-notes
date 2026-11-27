@@ -73,6 +73,10 @@
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
     },
     {
+      "id": 1856,
+      "subject": "Components → DateTime Picker → Advanced → DateTime Picker → Date Time Format→ Existing DateTime records are displayed in an incorrect format after format changes."
+    },
+    {
       "id": 1880,
       "subject": "Components → Lookup Field → Lookup Fields→ Irrelevant fields are displayed in the Sort Fetched Data By dropdown."
     },
@@ -621,6 +625,11 @@
         "evaluate-table answers can be shared between servers (Redis, off by default)",
         "the evaluate-table batch result cache (120 s by default) can keep a copy in Redis so every master server; reuses an answer one of them already worked out (Smart Filters D5). New env flag; `FORMULA_EVAL_BATCH_SHARED_CACHE=true` turns it on; without it nothing changes and Redis is not loaded by it.; Each feature has a version number in Redis (`evalbatch:ver:<featureId>`); the existing write invalidation; (`registerFormulaScanCacheInvalidator`) now also bumps it, and the version is part of every cache key, so a write on; any server retires every server's earlier answers (before, another server kept its copy until the TTL).; This server's cache is read first; values over 1 MB are not shared; any Redis error falls back to this server's; cache and never fails the request. New module `utils/sharedResultCache.js`.",
         "Smart Filters plan, Phase D (D5 speed). Formula gate: \"proceed\". Needs a restart after setting the flag; (nodemon does not watch .env files)."
+      ],
+      [
+        "Offer is its own Dynamic Field in Transaction Settings, with guided reward and status maps",
+        "offer settings are listed under the `offer` Dynamic Field (as tax is), not under price.; Registry cleanup: duplicate `offerExclusiveField` removed; added `offerTypeMap` (Offer Type → Reward; Kind Map), `offerStatusMap` (Status Meanings), `offerTypeLevel`, `offerSubtypeLevel`,; `offerOrderDiscountBase`. Guided editors: REWARD_PER_TYPE for the type map (types read from the Offer; Type master or the offers' own type field; amount fields from the offer master) and MEANING for status.; The reward map editor's header names the source field by its label (was a raw field id) and no longer; says \"found by the offer engine\".",
+        "offers needed their own place in the parameter table, every map needed a guided editor, and the engine reads 104 settings that must all be authorable."
       ],
       [
         "QA gateway now knows where the backup service is",
