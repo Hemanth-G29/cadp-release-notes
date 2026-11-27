@@ -5,8 +5,20 @@
   "lastCutAt": "2026-11-17T04:44:40.648Z",
   "bugs": [
     {
+      "id": 1027,
+      "subject": "Component positioning is altered in the table view."
+    },
+    {
+      "id": 1074,
+      "subject": "Components → Date Picker→ Existing date format changes after feature update."
+    },
+    {
       "id": 1155,
       "subject": "Data Table → When the user views records in the mobile application, the records are not displayed in the correct ascending order. The record sequence differs from the order displayed in the web application."
+    },
+    {
+      "id": 1217,
+      "subject": "Dark mode is not applied consistently across all application screens and UI components."
     },
     {
       "id": 1225,
@@ -17,16 +29,32 @@
       "subject": "Data Table → When the user adds Formula fields in the web application and views the records in the mobile application, the records are displayed in descending order instead of the expected order."
     },
     {
+      "id": 1233,
+      "subject": "Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted."
+    },
+    {
       "id": 1235,
       "subject": "Charts → When the user creates charts in the web application and views them in the mobile application, the chart layout and formatting are not consistent with the web application."
+    },
+    {
+      "id": 1484,
+      "subject": "Portal Management-->A newly created user in Portal Management is unable to log in."
     },
     {
       "id": 1572,
       "subject": "Components → Calendar→ Edit and Delete options are missing for calendar events on the Create page."
     },
     {
+      "id": 1577,
+      "subject": "Component → Lookup → Filter → Advance → Settings The data is configured successfully in the fields, but it is not displayed on the Preview page."
+    },
+    {
       "id": 1580,
       "subject": "Components → List Block → List Block Properties→ Divider color is not reflected or retained in the List Block component."
+    },
+    {
+      "id": 1599,
+      "subject": "Erudite Management → Documentation→ Clicking a DOCX document downloads the file automatically instead of opening or previewing the document."
     },
     {
       "id": 1634,
@@ -47,6 +75,10 @@
     {
       "id": 1814,
       "subject": "List Component – Data Source / DB Integration : Saved database integration is not available in the List component's DB Connection dropdown."
+    },
+    {
+      "id": 1824,
+      "subject": "Scrolling is not working in Tablet and Mobile previews."
     },
     {
       "id": 1825,
@@ -73,16 +105,48 @@
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
     },
     {
+      "id": 1843,
+      "subject": "Page Builder-->Order details are not stored in the Order feature after successful payment."
+    },
+    {
+      "id": 1849,
+      "subject": "Vertical Template-->Vertical Template creation displays only one module instead of all modules from the selected existing workspace."
+    },
+    {
       "id": 1856,
       "subject": "Components → DateTime Picker → Advanced → DateTime Picker → Date Time Format→ Existing DateTime records are displayed in an incorrect format after format changes."
+    },
+    {
+      "id": 1858,
+      "subject": "Components → Dropdown → Manual Option → Kanban→ Kanban color box is displayed incorrectly."
+    },
+    {
+      "id": 1860,
+      "subject": "Components-->The button added in the Form Design page is not displayed in the Preview page; it appears only on the Form Filling page."
+    },
+    {
+      "id": 1867,
+      "subject": "Components-->Event binding allows the form to submit with an empty Email field and shows the event as successful without triggering the configured validation condition."
     },
     {
       "id": 1880,
       "subject": "Components → Lookup Field → Lookup Fields→ Irrelevant fields are displayed in the Sort Fetched Data By dropdown."
     },
     {
+      "id": 1888,
+      "subject": "DMS LITE-->Offline-entered data is not displayed in the mobile table list until the data is synced."
+    },
+    {
+      "id": 1893,
+      "subject": "DMS LITE-->After closing, reopening, or refreshing the mobile app in Offline mode, the module shows “No Records Found” and the module list is not displayed."
+    },
+    {
       "id": 1895,
       "subject": "DMS Lite-->Duplicate validation is not displayed in the mobile application; it is displayed only on the web application."
+    },
+    {
+      "id": 1899,
+      "subject": "DMS Lite-->After reopening the app after 2 days, the application becomes unresponsive and the user is unable to proceed further."
     },
     {
       "id": 1916,
@@ -95,6 +159,18 @@
     {
       "id": 1921,
       "subject": "Component → Button → Button Properties → Action→ Button action options are not functioning."
+    },
+    {
+      "id": 1925,
+      "subject": "Deleted page is still accessible through the old URL."
+    },
+    {
+      "id": 1926,
+      "subject": "Deleted feature is still accessible through the button navigation."
+    },
+    {
+      "id": 1927,
+      "subject": "Unsaved component is retained after navigating away and refreshing."
     },
     {
       "id": 2082,
@@ -111,6 +187,22 @@
     {
       "id": 2102,
       "subject": "Samvaadha → Group Chat → Unable to Send Drawing Attachment"
+    },
+    {
+      "id": 2105,
+      "subject": "Document Hub → Release Notes →when user Click the Select AI option incorrectly opens a dropdown in the Release Version fields."
+    },
+    {
+      "id": 2107,
+      "subject": "Document Hub → Release Note Generator-->shared Release Note Generator link redirects users to the application login screen instead of opening the generated PDF."
+    },
+    {
+      "id": 2108,
+      "subject": "Document Hub-->Release Outline--> The Release Outline section does not provide scrolling, preventing users from viewing the last topic."
+    },
+    {
+      "id": 2111,
+      "subject": "Document Hub → Release Note Generator-->When a user with a different role attempts to approve a release note, the application displays a blank screen with a \"Something went wrong\" message instead of providing proper validation."
     },
     {
       "id": 2115,
@@ -165,6 +257,10 @@
       "subject": "Samvaadha → DM / Group Chat → File Upload → Incorrect Characters Displayed in Uploading Status Text"
     },
     {
+      "id": 2131,
+      "subject": "Document Hub → Release Note Generator -->Previously created draft release notes are displayed when the user selects a Major version."
+    },
+    {
       "id": 2133,
       "subject": "Samvaadha → Direct Messages (DM) → Edited Message Content Not Updated When Using Formatting Options"
     },
@@ -173,8 +269,16 @@
       "subject": "Samvaadha → Group Chat → Edited Message Content Not Updated When Using Formatting Options"
     },
     {
+      "id": 2137,
+      "subject": "Documentation Hub-->Release Note Generator-->The dropdown icons in the Release Type fields overlap each other."
+    },
+    {
       "id": 2138,
       "subject": "Shortcut Menu Overlaps When Adding a New Module."
+    },
+    {
+      "id": 2139,
+      "subject": "Tenant App Builder URL Takes Too Long to Load."
     },
     {
       "id": 2140,
@@ -201,12 +305,24 @@
       "subject": "Selection Components → Multi-Selection Dropdown → \"Other\" Option Not Displayed After Publishing"
     },
     {
+      "id": 2153,
+      "subject": "Input Components → Visibility → Hidden Fields Still Visible in Design Page"
+    },
+    {
+      "id": 2154,
+      "subject": "Components → Text Fields → Text Fields Accept Code as Text Without Proper Validation"
+    },
+    {
       "id": 2156,
       "subject": "Components → Rich Text → Missing Placeholder Option and Incorrect Placeholder Styling"
     },
     {
       "id": 2164,
       "subject": "Badge Component → Conditional Visibility → Dropdown Arrow Overlaps with Text"
+    },
+    {
+      "id": 2181,
+      "subject": "Phone Number Field Accepts Unlimited Numeric Values."
     }
   ],
   "overview": {},
@@ -600,6 +716,11 @@
         "Added `GET /rbac/profile/password-context?workspaceId=` returning `{ username, organisationName }`,; the exact values change password compares against for `blockUsernameInPassword` and; `blockTenantNameInPassword`. It is scoped to the caller's own user (from the token), works with the; forced first-login token, and is self-service like the other `/rbac/profile/*` routes."
       ],
       [
+        "GET /countries returns each country's phone number length",
+        "",
+        "`GET /countries` and `GET /countries/:iso3` now include `phoneMinLength` and; `phoneMaxLength` (local digits after the dial code). Additive; existing fields are unchanged."
+      ],
+      [
         "Search is always scoped to the workspace in your session",
         "",
         "`/common-search/global`, `/common-search/data` and `/common-search/by-type` now take the workspace from the verified session token only. A `workspaceId` sent in the request body is ignored, and a warning is logged when it differs from the token's workspace. `/data` returns 400 when the session has no workspace. Swagger marks the body `workspaceId` as deprecated and ignored."
@@ -645,6 +766,11 @@
         "QA Kafka topics and consumer groups suffixed `-qa`",
         "`.env.qa` now matches the `-qa` topics used by master, workflow and notification QA.; Changed: `KAFKA_TASK_EVENTS_TOPIC=task-events-qa` (Credential Manager / User Management password emails), `KAFKA_NOTIFICATION_EVENTS_TOPIC=notification-events-qa`, `AUDIT_TOPIC=platform.audit.logs.v1-qa`, `KAFKA_TOPIC=rbac-topic-qa`, `AUDIT_GROUP=platform.audit-consumers-v1-qa`. `KAFKA_GROUP_ID` was `rbac-service-development`; it is now `rbac-service-qa` and is not read by any consumer.; Added (previously falling back to code defaults): `KAFKA_FEATURE_DATA_EVENTS_TOPIC=feature-data-events-qa`, `KAFKA_GLOBAL_SEARCH_TOPIC=global-search-events-qa`, `KAFKA_CREDENTIAL_MANAGER_GROUP=cadp-rbac-credential-manager-sync-qa`, `KAFKA_HIERARCHY_DATASOURCE_GROUP=cadp-rbac-hierarchy-datasource-sync-qa`.",
         "Once the other QA services moved to `-qa` topics, RBAC QA would have consumed `feature-data-events` (receiving no Credential Manager records) and published password emails to `task-events` (which notification QA no longer reads). It also shared consumer group names with other environments on the same cluster."
+      ],
+      [
+        "Re-run the master seed to load country phone lengths",
+        "`countryData.json` now has `phoneMinLength` / `phoneMaxLength` for all 195 countries; (mobile-number lengths from Google libphonenumber metadata, less the area code for `+1-xxx`; dial codes). Run `npm run seed` (or `seed:qa` / `seed:uat` / `seed:prod`) once per environment;; the country seeder upserts by `iso3`, so existing rows are updated in place.",
+        "Until the seed runs, every country keeps the old 10-digit rule."
       ],
       [
         "Per-environment `feature-data-events` topic and consumer groups (dev / qa / uat)",

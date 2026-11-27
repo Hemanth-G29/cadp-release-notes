@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (31) delivers 51 bug fixes, 22 new features, and 32 enhancements across the platform. Highlights include Charts can show only their top N categories, filter on category totals, and use formula filters, Open Module / Open Feature shortcuts can be limited to one page, and New workspaces get the System notifications kit from the notification service. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (31) delivers 80 bug fixes, 22 new features, and 32 enhancements across the platform. Highlights include Charts can show only their top N categories, filter on category totals, and use formula filters, Open Module / Open Feature shortcuts can be limited to one page, and New workspaces get the System notifications kit from the notification service. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -186,33 +186,56 @@
     <tr><th>Bug ID</th><th>Description</th></tr>
   </thead>
   <tbody>
+    <tr><td>1027</td><td>Component positioning is altered in the table view.</td></tr>
+    <tr><td>1074</td><td>Components → Date Picker→ Existing date format changes after feature update.</td></tr>
     <tr><td>1155</td><td>Data Table → When the user views records in the mobile application, the records are not displayed in the correct ascending order. The record sequence differs from the order displayed in the web application.</td></tr>
+    <tr><td>1217</td><td>Dark mode is not applied consistently across all application screens and UI components.</td></tr>
     <tr><td>1225</td><td>Data Table → As per the requirement, only the Export option should be available in the Table Records section.</td></tr>
     <tr><td>1226</td><td>Data Table → When the user adds Formula fields in the web application and views the records in the mobile application, the records are displayed in descending order instead of the expected order.</td></tr>
+    <tr><td>1233</td><td>Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted.</td></tr>
     <tr><td>1235</td><td>Charts → When the user creates charts in the web application and views them in the mobile application, the chart layout and formatting are not consistent with the web application.</td></tr>
+    <tr><td>1484</td><td>Portal Management--&gt;A newly created user in Portal Management is unable to log in.</td></tr>
     <tr><td>1572</td><td>Components → Calendar→ Edit and Delete options are missing for calendar events on the Create page.</td></tr>
+    <tr><td>1577</td><td>Component → Lookup → Filter → Advance → Settings The data is configured successfully in the fields, but it is not displayed on the Preview page.</td></tr>
     <tr><td>1580</td><td>Components → List Block → List Block Properties→ Divider color is not reflected or retained in the List Block component.</td></tr>
+    <tr><td>1599</td><td>Erudite Management → Documentation→ Clicking a DOCX document downloads the file automatically instead of opening or previewing the document.</td></tr>
     <tr><td>1634</td><td>Components → Footer → Footer Properties → Brand→ Logo overlaps and hides the Brand Name in the Footer component.</td></tr>
     <tr><td>1805</td><td>Components-&gt; Product Name and Price Disappear After Feature Is Published.</td></tr>
     <tr><td>1806</td><td>List Component : Hover Background color is not applied to the complete List card. On hover, the configured color is visible only along the card border/bottom edge while the card content area remains unchanged.</td></tr>
     <tr><td>1809</td><td>List Component : Saved outbound API integration is not available in the List component&#39;s API Integration dropdown.</td></tr>
     <tr><td>1814</td><td>List Component – Data Source / DB Integration : Saved database integration is not available in the List component&#39;s DB Connection dropdown.</td></tr>
+    <tr><td>1824</td><td>Scrolling is not working in Tablet and Mobile previews.</td></tr>
     <tr><td>1825</td><td>Components → Navbar → Links Style → Normal→ Navbar link Text Color option is not working and Padding option is duplicated in Normal and Hover link styles.</td></tr>
     <tr><td>1828</td><td>Components → Navbar → Links Style → Hover→ Hover properties are not working.</td></tr>
     <tr><td>1830</td><td>Components → Navbar → Links Style → Active→ Padding option is duplicated in Active link style.</td></tr>
     <tr><td>1834</td><td>Components → Carousel → Carousel Properties → Source Type → Feature Data → Card Design → Title→ Selected title field is not displayed in the Carousel.</td></tr>
     <tr><td>1837</td><td>Listing Properties → Preset →Listing Property Text Overlaps When Using Single Column Preset.</td></tr>
     <tr><td>1839</td><td>Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties.</td></tr>
+    <tr><td>1843</td><td>Page Builder--&gt;Order details are not stored in the Order feature after successful payment.</td></tr>
+    <tr><td>1849</td><td>Vertical Template--&gt;Vertical Template creation displays only one module instead of all modules from the selected existing workspace.</td></tr>
     <tr><td>1856</td><td>Components → DateTime Picker → Advanced → DateTime Picker → Date Time Format→ Existing DateTime records are displayed in an incorrect format after format changes.</td></tr>
+    <tr><td>1858</td><td>Components → Dropdown → Manual Option → Kanban→ Kanban color box is displayed incorrectly.</td></tr>
+    <tr><td>1860</td><td>Components--&gt;The button added in the Form Design page is not displayed in the Preview page; it appears only on the Form Filling page.</td></tr>
+    <tr><td>1867</td><td>Components--&gt;Event binding allows the form to submit with an empty Email field and shows the event as successful without triggering the configured validation condition.</td></tr>
     <tr><td>1880</td><td>Components → Lookup Field → Lookup Fields→ Irrelevant fields are displayed in the Sort Fetched Data By dropdown.</td></tr>
+    <tr><td>1888</td><td>DMS LITE--&gt;Offline-entered data is not displayed in the mobile table list until the data is synced.</td></tr>
+    <tr><td>1893</td><td>DMS LITE--&gt;After closing, reopening, or refreshing the mobile app in Offline mode, the module shows “No Records Found” and the module list is not displayed.</td></tr>
     <tr><td>1895</td><td>DMS Lite--&gt;Duplicate validation is not displayed in the mobile application; it is displayed only on the web application.</td></tr>
+    <tr><td>1899</td><td>DMS Lite--&gt;After reopening the app after 2 days, the application becomes unresponsive and the user is unable to proceed further.</td></tr>
     <tr><td>1916</td><td>DMS Lite → The Signature Pad component is not functioning properly in the mobile application.</td></tr>
     <tr><td>1920</td><td>DMS Lite → In the mobile app, the entered Number Input value continuously scrolls within the input box, and the mapped Formula Field is not updated correctly.</td></tr>
     <tr><td>1921</td><td>Component → Button → Button Properties → Action→ Button action options are not functioning.</td></tr>
+    <tr><td>1925</td><td>Deleted page is still accessible through the old URL.</td></tr>
+    <tr><td>1926</td><td>Deleted feature is still accessible through the button navigation.</td></tr>
+    <tr><td>1927</td><td>Unsaved component is retained after navigating away and refreshing.</td></tr>
     <tr><td>2082</td><td>Favorite Icon Overlaps with the Components List.</td></tr>
     <tr><td>2086</td><td>Samvaadha--&gt;Group--&gt;Group name appears misaligned when the user enters a name exceeding 100 characters.</td></tr>
     <tr><td>2101</td><td>Samvaadha → Direct Messages (DM) → Unable to Send Drawing Attachment</td></tr>
     <tr><td>2102</td><td>Samvaadha → Group Chat → Unable to Send Drawing Attachment</td></tr>
+    <tr><td>2105</td><td>Document Hub → Release Notes →when user Click the Select AI option incorrectly opens a dropdown in the Release Version fields.</td></tr>
+    <tr><td>2107</td><td>Document Hub → Release Note Generator--&gt;shared Release Note Generator link redirects users to the application login screen instead of opening the generated PDF.</td></tr>
+    <tr><td>2108</td><td>Document Hub--&gt;Release Outline--&gt; The Release Outline section does not provide scrolling, preventing users from viewing the last topic.</td></tr>
+    <tr><td>2111</td><td>Document Hub → Release Note Generator--&gt;When a user with a different role attempts to approve a release note, the application displays a blank screen with a &quot;Something went wrong&quot; message instead of providing proper validation.</td></tr>
     <tr><td>2115</td><td>Samvaadha → Message Delete → Bold Message Cannot Be Deleted</td></tr>
     <tr><td>2116</td><td>Samvaadha → Message Formatting → Italic Message Cannot Be Deleted</td></tr>
     <tr><td>2117</td><td>Samvaadha → DM → Highlight Text Color Not Retained After Sending Message</td></tr>
@@ -226,17 +249,23 @@
     <tr><td>2126</td><td>Samvaadha → Group Settings → Unable to Edit or Change Group Name</td></tr>
     <tr><td>2128</td><td>Samvaadha → Group Settings → Unable to Add or Remove Group Members</td></tr>
     <tr><td>2129</td><td>Samvaadha → DM / Group Chat → File Upload → Incorrect Characters Displayed in Uploading Status Text</td></tr>
+    <tr><td>2131</td><td>Document Hub → Release Note Generator --&gt;Previously created draft release notes are displayed when the user selects a Major version.</td></tr>
     <tr><td>2133</td><td>Samvaadha → Direct Messages (DM) → Edited Message Content Not Updated When Using Formatting Options</td></tr>
     <tr><td>2134</td><td>Samvaadha → Group Chat → Edited Message Content Not Updated When Using Formatting Options</td></tr>
+    <tr><td>2137</td><td>Documentation Hub--&gt;Release Note Generator--&gt;The dropdown icons in the Release Type fields overlap each other.</td></tr>
     <tr><td>2138</td><td>Shortcut Menu Overlaps When Adding a New Module.</td></tr>
+    <tr><td>2139</td><td>Tenant App Builder URL Takes Too Long to Load.</td></tr>
     <tr><td>2140</td><td>List component -&gt; Section Header -&gt; Font Weight and Font Style Dropdown Options Do Not Apply Changes to the Title.</td></tr>
     <tr><td>2141</td><td>Image Upload Component → Upload Option and Edit Functionality Not Working as Expected</td></tr>
     <tr><td>2142</td><td>File Upload → Uploaded PDF File Cannot Be Opened Before and After Form Submission</td></tr>
     <tr><td>2144</td><td>List Component → Listing Properties → Data Source →Sort Field Dropdown Displays Irrelevant Data Fields.</td></tr>
     <tr><td>2150</td><td>List Component → Listing Properties → Header → Controls → Filter Control Does Not Filter the Products.</td></tr>
     <tr><td>2152</td><td>Selection Components → Multi-Selection Dropdown → &quot;Other&quot; Option Not Displayed After Publishing</td></tr>
+    <tr><td>2153</td><td>Input Components → Visibility → Hidden Fields Still Visible in Design Page</td></tr>
+    <tr><td>2154</td><td>Components → Text Fields → Text Fields Accept Code as Text Without Proper Validation</td></tr>
     <tr><td>2156</td><td>Components → Rich Text → Missing Placeholder Option and Incorrect Placeholder Styling</td></tr>
     <tr><td>2164</td><td>Badge Component → Conditional Visibility → Dropdown Arrow Overlaps with Text</td></tr>
+    <tr><td>2181</td><td>Phone Number Field Accepts Unlimited Numeric Values.</td></tr>
   </tbody>
 </table>
 
@@ -255,6 +284,7 @@
     <tr><td>QA gateway now knows where the backup service is</td><td>`.env.qa` had no `BACKUP_SERVICE_URL`, so the gateway fell back to `http://localhost:3009/backup-service` and could not reach the backup service. It now sets `BACKUP_SERVICE_URL=http://cadp-backend-backup.cadp-qa.svc.cluster.local/backup-service` (matches `k8s/qa/service.yaml` in the backup repo). If the QA deployment reads a Key Vault env secret, check its `BACKUP_SERVICE_URL` too, since that takes precedence.</td><td>Without it, backup screens on QA get the gateway&#39;s 503 &quot;The backup service is currently unavailable&quot;.</td></tr>
     <tr><td>Per-environment `feature-data-events` topic and consumer groups (dev / qa / uat)</td><td>Added `KAFKA_FEATURE_DATA_EVENTS_TOPIC=feature-data-events-{dev,uat}`, `KAFKA_CREDENTIAL_MANAGER_GROUP=cadp-rbac-credential-manager-sync-{dev,uat}` and `KAFKA_HIERARCHY_DATASOURCE_GROUP=cadp-rbac-hierarchy-datasource-sync-{dev,uat}`. There is no `.env.qa` in this repo; QA must set the same keys with the `-qa` suffix wherever its RBAC config lives. Prod is unchanged (still `feature-data-events` and the default group names).</td><td>`KAFKA_FEATURE_DATA_EVENTS_TOPIC` was set in no env file, so every environment used `feature-data-events`. Dev and uat share one Kafka cluster, and qa and prod share another. Consumers with the same group id there split the partitions across environments, so an event could be handled by the wrong environment&#39;s pod. For example, uat RBAC&#39;s Credential Manager events landed on dev RBAC, which skipped them as `not-credential-feature`.</td></tr>
     <tr><td>QA Kafka topics and consumer groups suffixed `-qa`</td><td>`.env.qa` now matches the `-qa` topics used by master, workflow and notification QA.; Changed: `KAFKA_TASK_EVENTS_TOPIC=task-events-qa` (Credential Manager / User Management password emails), `KAFKA_NOTIFICATION_EVENTS_TOPIC=notification-events-qa`, `AUDIT_TOPIC=platform.audit.logs.v1-qa`, `KAFKA_TOPIC=rbac-topic-qa`, `AUDIT_GROUP=platform.audit-consumers-v1-qa`. `KAFKA_GROUP_ID` was `rbac-service-development`; it is now `rbac-service-qa` and is not read by any consumer.; Added (previously falling back to code defaults): `KAFKA_FEATURE_DATA_EVENTS_TOPIC=feature-data-events-qa`, `KAFKA_GLOBAL_SEARCH_TOPIC=global-search-events-qa`, `KAFKA_CREDENTIAL_MANAGER_GROUP=cadp-rbac-credential-manager-sync-qa`, `KAFKA_HIERARCHY_DATASOURCE_GROUP=cadp-rbac-hierarchy-datasource-sync-qa`.</td><td>Once the other QA services moved to `-qa` topics, RBAC QA would have consumed `feature-data-events` (receiving no Credential Manager records) and published password emails to `task-events` (which notification QA no longer reads). It also shared consumer group names with other environments on the same cluster.</td></tr>
+    <tr><td>Re-run the master seed to load country phone lengths</td><td>`countryData.json` now has `phoneMinLength` / `phoneMaxLength` for all 195 countries; (mobile-number lengths from Google libphonenumber metadata, less the area code for `+1-xxx`; dial codes). Run `npm run seed` (or `seed:qa` / `seed:uat` / `seed:prod`) once per environment;; the country seeder upserts by `iso3`, so existing rows are updated in place.</td><td>Until the seed runs, every country keeps the old 10-digit rule.</td></tr>
     <tr><td>Per-environment `feature-data-events` topic and consumer groups (dev / qa / uat)</td><td>Added `KAFKA_FEATURE_DATA_EVENTS_TOPIC=feature-data-events-{dev,qa,uat}`, the topic the record-write nodes announce on (`featureDataEventProducer.js`). Prod is unchanged (still `feature-data-events` and the default group names).</td><td>`KAFKA_FEATURE_DATA_EVENTS_TOPIC` was set in no env file, so every environment used `feature-data-events`. Dev and uat share one Kafka cluster, and qa and prod share another. Consumers with the same group id there split the partitions across environments, so an event could be handled by the wrong environment&#39;s pod. For example, uat RBAC&#39;s Credential Manager events landed on dev RBAC, which skipped them as `not-credential-feature`.</td></tr>
     <tr><td>QA Kafka topics and consumer groups suffixed `-qa`</td><td>Every topic in `.env.qa` now ends in `-qa`: field, user, workflow, notification, task, workflow.actions, SLA, global-search (+DLQ), audit / platform-audit / workflow-audit, and the consumed list `KAFKA_EVENT_TOPICS`. Added `KAFKA_ACTION_TOPICS=workflow.actions-qa`: the action consumer subscribes with this key, not `KAFKA_WORKFLOW_ACTIONS_TOPIC`, and without it QA kept listening on `workflow.actions`. The unused `KAFKA_GROUP_ID` was `workflow-backend-service-production` and is now `-qa`. Removed the second, byte-identical copy of the whole file (lines 127–249), because edits to the first copy were silently overridden by the second.</td><td>QA shares its Kafka cluster with master uat, which used the same unsuffixed topic names (`field-events`, `task-events`, …). QA&#39;s workflow and notification consumers therefore also processed UAT&#39;s form events and task emails. Prod on the same cluster is already separated by its `-dev` names.</td></tr>
     <tr><td>QA Kafka topics and consumer groups suffixed `-qa`</td><td>Every topic in `.env.qa` now ends in `-qa`: `KAFKA_NOTIFICATION_TOPICS`, task, field, user, workflow, notification, workflow.actions, SLA, audit (+DLQ), platform-audit and workflow-audit. Consumer groups: `KAFKA_NOTIFICATION_CONSUMER_GROUP` was `cadp-notification-consumer-prod` and is now `-qa`; `KAFKA_TASK_EVENT_CONSUMER_GROUP` and `AUDIT_GROUP` are now `-qa`.</td><td>QA shares its Kafka cluster with master uat, which used the same unsuffixed topic names (`field-events`, `task-events`, …). QA&#39;s workflow and notification consumers therefore also processed UAT&#39;s form events and task emails. Prod on the same cluster is already separated by its `-dev` names.</td></tr>
@@ -272,6 +302,7 @@
     <tr><td>Backup service can read a workspace&#39;s Disaster Recovery limits</td><td></td><td>New internal `GET /internal/backup-export/workspace/variables?names=A,B` returns `{ [name]: value }` from the workspace&#39;s environment variables. Names are validated (A-Z, 0-9, _; up to 20), and names the workspace doesn&#39;t have are left out. The backup service uses it for BACKUP_RETENTION_COUNT, BACKUP_MAX_RESTORES_PER_TOKEN and BACKUP_MAX_TOKEN_ATTEMPTS.</td></tr>
     <tr><td>Bindings list says which level overrides which (FSD §9.3)</td><td></td><td>`GET /keyboard-shortcuts/bindings` rows set at the requested level now also carry `overrideScope` (that level) and `parentSource` (the level they inherit from again on Reset: the next scope up, or `default`). Inherited rows carry `null` for both. Additive; nothing else changes.</td></tr>
     <tr><td>New endpoint for the Change Password screen&#39;s live username / organization checks</td><td></td><td>Added `GET /rbac/profile/password-context?workspaceId=` returning `{ username, organisationName }`,; the exact values change password compares against for `blockUsernameInPassword` and; `blockTenantNameInPassword`. It is scoped to the caller&#39;s own user (from the token), works with the; forced first-login token, and is self-service like the other `/rbac/profile/*` routes.</td></tr>
+    <tr><td>GET /countries returns each country&#39;s phone number length</td><td></td><td>`GET /countries` and `GET /countries/:iso3` now include `phoneMinLength` and; `phoneMaxLength` (local digits after the dial code). Additive; existing fields are unchanged.</td></tr>
     <tr><td>Search is always scoped to the workspace in your session</td><td></td><td>`/common-search/global`, `/common-search/data` and `/common-search/by-type` now take the workspace from the verified session token only. A `workspaceId` sent in the request body is ignored, and a warning is logged when it differs from the token&#39;s workspace. `/data` returns 400 when the session has no workspace. Swagger marks the body `workspaceId` as deprecated and ignored.</td></tr>
   </tbody>
 </table>
