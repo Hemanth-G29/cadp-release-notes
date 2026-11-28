@@ -13,6 +13,10 @@
       "subject": "Components → Date Picker→ Existing date format changes after feature update."
     },
     {
+      "id": 1128,
+      "subject": "Role-restricted sections are visible in mobile application despite access restrictions configured in web application."
+    },
+    {
       "id": 1155,
       "subject": "Data Table → When the user views records in the mobile application, the records are not displayed in the correct ascending order. The record sequence differs from the order displayed in the web application."
     },
@@ -39,6 +43,10 @@
     {
       "id": 1484,
       "subject": "Portal Management-->A newly created user in Portal Management is unable to log in."
+    },
+    {
+      "id": 1485,
+      "subject": "Approve/Reject actions are not available despite permission being granted."
     },
     {
       "id": 1572,
@@ -105,10 +113,6 @@
       "subject": "Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties."
     },
     {
-      "id": 1843,
-      "subject": "Page Builder-->Order details are not stored in the Order feature after successful payment."
-    },
-    {
       "id": 1849,
       "subject": "Vertical Template-->Vertical Template creation displays only one module instead of all modules from the selected existing workspace."
     },
@@ -135,6 +139,10 @@
     {
       "id": 1888,
       "subject": "DMS LITE-->Offline-entered data is not displayed in the mobile table list until the data is synced."
+    },
+    {
+      "id": 1889,
+      "subject": "RBAC: Viewer User Can Create Modules, Features, and Data Despite View-Only Access."
     },
     {
       "id": 1893,
@@ -319,10 +327,6 @@
     {
       "id": 2164,
       "subject": "Badge Component → Conditional Visibility → Dropdown Arrow Overlaps with Text"
-    },
-    {
-      "id": 2181,
-      "subject": "Phone Number Field Accepts Unlimited Numeric Values."
     }
   ],
   "overview": {},

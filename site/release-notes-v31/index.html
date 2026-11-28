@@ -103,7 +103,7 @@
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>2. Release Summary</h2>
-<p>This release of CADP Workspace Version 1.0.0 (31) delivers 80 bug fixes, 22 new features, and 32 enhancements across the platform. Highlights include Charts can show only their top N categories, filter on category totals, and use formula filters, Open Module / Open Feature shortcuts can be limited to one page, and New workspaces get the System notifications kit from the notification service. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
+<p>This release of CADP Workspace Version 1.0.0 (31) delivers 81 bug fixes, 22 new features, and 32 enhancements across the platform. Highlights include Charts can show only their top N categories, filter on category totals, and use formula filters, Open Module / Open Feature shortcuts can be limited to one page, and New workspaces get the System notifications kit from the notification service. It also includes a required configuration change (see Configuration Changes) and API changes (see API Changes). Refer to the Known Issues section for current limitations.</p>
 
 <!-- ═══════════════════════════════════════════════ -->
 <h2>3. New Features</h2>
@@ -188,6 +188,7 @@
   <tbody>
     <tr><td>1027</td><td>Component positioning is altered in the table view.</td></tr>
     <tr><td>1074</td><td>Components → Date Picker→ Existing date format changes after feature update.</td></tr>
+    <tr><td>1128</td><td>Role-restricted sections are visible in mobile application despite access restrictions configured in web application.</td></tr>
     <tr><td>1155</td><td>Data Table → When the user views records in the mobile application, the records are not displayed in the correct ascending order. The record sequence differs from the order displayed in the web application.</td></tr>
     <tr><td>1217</td><td>Dark mode is not applied consistently across all application screens and UI components.</td></tr>
     <tr><td>1225</td><td>Data Table → As per the requirement, only the Export option should be available in the Table Records section.</td></tr>
@@ -195,6 +196,7 @@
     <tr><td>1233</td><td>Data Table → Third-Party Integration: Data is not fetched in the development environment. In the production environment, data is fetched, but it is not displayed after the record is submitted.</td></tr>
     <tr><td>1235</td><td>Charts → When the user creates charts in the web application and views them in the mobile application, the chart layout and formatting are not consistent with the web application.</td></tr>
     <tr><td>1484</td><td>Portal Management--&gt;A newly created user in Portal Management is unable to log in.</td></tr>
+    <tr><td>1485</td><td>Approve/Reject actions are not available despite permission being granted.</td></tr>
     <tr><td>1572</td><td>Components → Calendar→ Edit and Delete options are missing for calendar events on the Create page.</td></tr>
     <tr><td>1577</td><td>Component → Lookup → Filter → Advance → Settings The data is configured successfully in the fields, but it is not displayed on the Preview page.</td></tr>
     <tr><td>1580</td><td>Components → List Block → List Block Properties→ Divider color is not reflected or retained in the List Block component.</td></tr>
@@ -211,7 +213,6 @@
     <tr><td>1834</td><td>Components → Carousel → Carousel Properties → Source Type → Feature Data → Card Design → Title→ Selected title field is not displayed in the Carousel.</td></tr>
     <tr><td>1837</td><td>Listing Properties → Preset →Listing Property Text Overlaps When Using Single Column Preset.</td></tr>
     <tr><td>1839</td><td>Components → Navbar→ Sticky Navbar option is duplicated in Navbar Properties.</td></tr>
-    <tr><td>1843</td><td>Page Builder--&gt;Order details are not stored in the Order feature after successful payment.</td></tr>
     <tr><td>1849</td><td>Vertical Template--&gt;Vertical Template creation displays only one module instead of all modules from the selected existing workspace.</td></tr>
     <tr><td>1856</td><td>Components → DateTime Picker → Advanced → DateTime Picker → Date Time Format→ Existing DateTime records are displayed in an incorrect format after format changes.</td></tr>
     <tr><td>1858</td><td>Components → Dropdown → Manual Option → Kanban→ Kanban color box is displayed incorrectly.</td></tr>
@@ -219,6 +220,7 @@
     <tr><td>1867</td><td>Components--&gt;Event binding allows the form to submit with an empty Email field and shows the event as successful without triggering the configured validation condition.</td></tr>
     <tr><td>1880</td><td>Components → Lookup Field → Lookup Fields→ Irrelevant fields are displayed in the Sort Fetched Data By dropdown.</td></tr>
     <tr><td>1888</td><td>DMS LITE--&gt;Offline-entered data is not displayed in the mobile table list until the data is synced.</td></tr>
+    <tr><td>1889</td><td>RBAC: Viewer User Can Create Modules, Features, and Data Despite View-Only Access.</td></tr>
     <tr><td>1893</td><td>DMS LITE--&gt;After closing, reopening, or refreshing the mobile app in Offline mode, the module shows “No Records Found” and the module list is not displayed.</td></tr>
     <tr><td>1895</td><td>DMS Lite--&gt;Duplicate validation is not displayed in the mobile application; it is displayed only on the web application.</td></tr>
     <tr><td>1899</td><td>DMS Lite--&gt;After reopening the app after 2 days, the application becomes unresponsive and the user is unable to proceed further.</td></tr>
@@ -265,7 +267,6 @@
     <tr><td>2154</td><td>Components → Text Fields → Text Fields Accept Code as Text Without Proper Validation</td></tr>
     <tr><td>2156</td><td>Components → Rich Text → Missing Placeholder Option and Incorrect Placeholder Styling</td></tr>
     <tr><td>2164</td><td>Badge Component → Conditional Visibility → Dropdown Arrow Overlaps with Text</td></tr>
-    <tr><td>2181</td><td>Phone Number Field Accepts Unlimited Numeric Values.</td></tr>
   </tbody>
 </table>
 
